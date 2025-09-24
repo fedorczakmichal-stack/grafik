@@ -10,9 +10,15 @@
 
     <div id="app-container">
         <header class="calendar-header">
-            <button id="prev-month-btn" class="nav-btn">&lt;</button>
-            <h2 id="current-month-display"></h2>
-            <button id="next-month-btn" class="nav-btn">&gt;</button>
+            <div>
+                <button id="prev-month-btn" class="nav-btn">&lt;</button>
+                <h2 id="current-month-display"></h2>
+                <button id="next-month-btn" class="nav-btn">&gt;</button>
+            </div>
+            <div>
+                <button id="manage-staff-btn" class="header-action-btn">Personel</button>
+                <button id="generate-schedule-btn" class="header-action-btn success">Generuj Grafik</button>
+            </div>
         </header>
 
         <main class="calendar-grid-container">
@@ -58,5 +64,24 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Modal do zarządzania personelem -->
+    <div id="staff-modal" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3>Zarządzaj Personelem</h3>
+                <button id="close-staff-modal-btn" class="close-btn">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div id="staff-list-container">
+                    <!-- Lista personelu będzie renderowana tutaj -->
+                </div>
+                <div class="add-staff-form">
+                    <input type="text" id="new-staff-name" placeholder="Imię i nazwisko">
+                    <button id="add-staff-btn" class="success">Dodaj</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
