@@ -220,57 +220,65 @@
         }
         
         .schedule-cell {
-            padding: 10px;
+            padding: 8px;
             min-height: 80px;
             position: relative;
+            vertical-align: top;
         }
         
-        .shift-assignment {
-            background: #e8f4f8;
-            border-radius: 5px;
-            padding: 5px;
-            margin: 3px 0;
+        .shift-block {
+            border-radius: 6px;
+            padding: 8px;
+            margin: 4px 0;
             font-size: 13px;
+            line-height: 1.4;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+
+        .shift-block strong {
+            font-weight: 600;
         }
         
         .shift-morning {
-            background: #fff3cd;
-            border-left: 3px solid #ffc107;
+            background-color: #fffbe6;
+            color: #665100;
+            border-left: 4px solid #ffc107;
         }
         
         .shift-afternoon {
-            background: #cce5ff;
-            border-left: 3px solid #007bff;
+            background-color: #eaf4ff;
+            color: #004085;
+            border-left: 4px solid #007bff;
         }
         
         .shift-night {
-            background: #d1ecf1;
-            border-left: 3px solid #17a2b8;
+            background-color: #e6f7fa;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
         }
         
         .shift-24h {
-            background: #d4edda;
-            border-left: 3px solid #28a745;
+            background-color: #e9f7ef;
+            color: #155724;
+            border-left: 4px solid #28a745;
         }
         
         .editable-assignment {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
-            margin: 3px 0;
-            min-height: 30px;
             cursor: text;
-            background: white;
         }
         
         .editable-assignment:hover {
-            border-color: #667eea;
-            background: #f0f0ff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            border-color: rgba(0,0,0,0.05);
         }
         
         .editable-assignment:focus {
             outline: none;
-            border: 2px solid #667eea;
+            border: 1px solid #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+            background-color: white; /* Bring back white background only on focus for better editing */
         }
         
         .legend {
@@ -902,9 +910,11 @@
                     } else {
                         assignments.forEach((assignment, index) => {
                             const shiftClass = getShiftClass(assignment.start, assignment.end);
-                            html += `<div class="${isViewOnly ? 'shift-assignment' : 'editable-assignment'} ${shiftClass}" 
+                            const editableClass = isViewOnly ? '' : 'editable-assignment';
+
+                            html += `<div class="shift-block ${shiftClass} ${editableClass}"
                                           ${isViewOnly ? '' : `contenteditable="true" onblur="updateSchedule(${day}, ${room}, ${index}, this.innerText)"`}>
-                                        <small>${assignment.start}-${assignment.end}</small><br>
+                                        <small>${assignment.start} - ${assignment.end}</small><br>
                                         <strong>${assignment.staff}</strong>
                                      </div>`;
                         });
