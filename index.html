@@ -1022,6 +1022,11 @@
             gap: 10px;
             font-weight: 500;
             border: 2px solid var(--gray-200);
+            justify-content: space-between;
+        }
+
+        .station-chip-content {
+            flex: 1;
         }
 
         .remove-chip {
@@ -1283,12 +1288,72 @@
             .header-actions,
             .view-tabs,
             .btn,
-            .login-screen {
+            .login-screen,
+            .month-nav,
+            .stats-grid,
+            .room-hours-section {
                 display: none !important;
             }
 
             .table-view {
                 box-shadow: none;
+                padding: 0;
+            }
+
+            .header {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .header-title h1 {
+                font-size: 18px;
+            }
+
+            .header-subtitle,
+            .current-user {
+                display: none;
+            }
+
+            .schedule-table {
+                font-size: 8px;
+                min-width: auto;
+            }
+
+            .schedule-table th {
+                padding: 4px 2px;
+                font-size: 7px;
+            }
+
+            .schedule-table td {
+                padding: 4px 2px;
+                font-size: 8px;
+            }
+
+            .assignment-name {
+                font-size: 8px;
+            }
+
+            .assignment-time {
+                font-size: 7px;
+            }
+
+            .shift-24h-badge {
+                font-size: 6px;
+                padding: 2px 4px;
+            }
+
+            .table-title {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .table-header {
+                margin-bottom: 10px;
+            }
+
+            @page {
+                size: landscape;
+                margin: 10mm;
             }
         }
     </style>
@@ -1608,6 +1673,45 @@
         </div>
     </div>
 
+    <!-- EDIT STATION MODAL -->
+    <div class="modal-overlay" id="editStationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Edytuj stanowisko</div>
+                <button class="btn btn-icon btn-outline" onclick="app.closeEditStationModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nazwa stanowiska</label>
+                    <input type="text" class="form-input" id="editStationName" placeholder="Np. OAIT 24h">
+                </div>
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="editStation24h" onchange="app.toggleEditStation24h()">
+                        <span>Stanowisko dyżurowe 24h (08:00 → 08:00 następnego dnia)</span>
+                    </label>
+                </div>
+                <div class="form-group" id="editStationDefaultHours">
+                    <label class="form-label">Domyślne godziny pracy (dla stanowisk nie-dyżurowych)</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Od</label>
+                            <input type="time" class="form-input" id="editStationStart" value="08:00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Do</label>
+                            <input type="time" class="form-input" id="editStationEnd" value="15:00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="app.closeEditStationModal()">Anuluj</button>
+                <button class="btn btn-success" onclick="app.saveStationEdit()">Zapisz zmiany</button>
+            </div>
+        </div>
+    </div>
+
     <!-- GENERATOR MODAL -->
     <div class="modal-overlay" id="generatorModal">
         <div class="modal">
@@ -1657,6 +1761,7 @@
                 this.currentUser = null;
                 this.selectedRole = 'admin';
                 this.selectedAvailabilityDate = null;
+                this.editingStationIndex = null;
                 
                 // Stanowiska z oznaczeniem czy są 24h
                 this.stations = [
@@ -2003,8 +2108,9 @@
 
             renderMonthDisplay() {
                 const monthName = this.currentDate.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
-                document.getElementById('monthDisplay').textContent = monthName;
-                document.getElementById('tableMonthDisplay').textContent = monthName;
+                const monthNameCapitalized = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+                document.getElementById('monthDisplay').textContent = monthNameCapitalized;
+                document.getElementById('tableMonthDisplay').textContent = monthNameCapitalized;
             }
 
             renderCalendar() {
@@ -2364,6 +2470,8 @@
             renderRoomHours() {
                 const container = document.getElementById('roomHoursContainer');
                 const dateStr = this.selectedDate;
+                const date = new Date(dateStr);
+                const dateDisplay = date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
                 
                 if (!this.roomHours[dateStr]) {
                     this.roomHours[dateStr] = {};
@@ -2371,7 +2479,12 @@
 
                 const nonDutyStations = this.stations.filter(s => !s.is24h);
                 
-                container.innerHTML = nonDutyStations.map(station => {
+                const introText = `<p style="color: var(--gray-600); font-size: 13px; margin-bottom: 12px;">
+                    Ustaw godziny pracy sal dla <strong>${dateDisplay}</strong>. 
+                    Np. jeśli ortopedia tego dnia pracuje do 18:00 zamiast 15:00, zmień godziny poniżej.
+                </p>`;
+                
+                container.innerHTML = introText + nonDutyStations.map(station => {
                     const hours = this.roomHours[dateStr][station.name] || station.defaultHours;
                     
                     return `
@@ -2536,8 +2649,14 @@
                 const container = document.getElementById('stationsList');
                 container.innerHTML = this.stations.map((station, index) => `
                     <div class="station-chip">
-                        <span>${station.name}${station.is24h ? ' <span class="shift-24h-badge">24h</span>' : ''}</span>
-                        <span class="remove-chip" onclick="app.removeStation(${index})">×</span>
+                        <div class="station-chip-content">
+                            <span>${station.name}${station.is24h ? ' <span class="shift-24h-badge">24h</span>' : ''}</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <span style="cursor: pointer; color: var(--primary); font-size: 18px;" 
+                                onclick="app.editStation(${index})" title="Edytuj">✏️</span>
+                            <span class="remove-chip" onclick="app.removeStation(${index})" title="Usuń">×</span>
+                        </div>
                     </div>
                 `).join('');
             }
@@ -2573,6 +2692,86 @@
                     this.saveData();
                     this.renderStationsList();
                 }
+            }
+
+            editStation(index) {
+                this.editingStationIndex = index;
+                const station = this.stations[index];
+                
+                document.getElementById('editStationName').value = station.name;
+                document.getElementById('editStation24h').checked = station.is24h;
+                document.getElementById('editStationStart').value = station.defaultHours.start;
+                document.getElementById('editStationEnd').value = station.defaultHours.end;
+                
+                this.toggleEditStation24h();
+                document.getElementById('editStationModal').classList.add('active');
+            }
+
+            closeEditStationModal() {
+                document.getElementById('editStationModal').classList.remove('active');
+                this.editingStationIndex = null;
+            }
+
+            toggleEditStation24h() {
+                const is24h = document.getElementById('editStation24h').checked;
+                const defaultHoursSection = document.getElementById('editStationDefaultHours');
+                
+                if (is24h) {
+                    defaultHoursSection.style.opacity = '0.5';
+                    defaultHoursSection.style.pointerEvents = 'none';
+                    document.getElementById('editStationStart').value = '08:00';
+                    document.getElementById('editStationEnd').value = '08:00';
+                } else {
+                    defaultHoursSection.style.opacity = '1';
+                    defaultHoursSection.style.pointerEvents = 'auto';
+                }
+            }
+
+            saveStationEdit() {
+                if (this.editingStationIndex === null) return;
+                
+                const oldStation = this.stations[this.editingStationIndex];
+                const newName = document.getElementById('editStationName').value.trim();
+                const is24h = document.getElementById('editStation24h').checked;
+                const start = document.getElementById('editStationStart').value;
+                const end = document.getElementById('editStationEnd').value;
+                
+                if (!newName) {
+                    alert('Podaj nazwę stanowiska');
+                    return;
+                }
+                
+                // Update station
+                this.stations[this.editingStationIndex] = {
+                    name: newName,
+                    is24h: is24h,
+                    defaultHours: { start, end }
+                };
+                
+                // Update all shifts with old station name to new name
+                if (oldStation.name !== newName) {
+                    Object.keys(this.shifts).forEach(dateStr => {
+                        this.shifts[dateStr].forEach(shift => {
+                            if (shift.station === oldStation.name) {
+                                shift.station = newName;
+                            }
+                        });
+                    });
+                    
+                    // Update room hours
+                    Object.keys(this.roomHours).forEach(dateStr => {
+                        if (this.roomHours[dateStr][oldStation.name]) {
+                            this.roomHours[dateStr][newName] = this.roomHours[dateStr][oldStation.name];
+                            delete this.roomHours[dateStr][oldStation.name];
+                        }
+                    });
+                }
+                
+                this.saveData();
+                this.closeEditStationModal();
+                this.renderStationsList();
+                this.render();
+                alert('✅ Stanowisko zostało zaktualizowane!');
             }
 
             // ===== STAFF =====
