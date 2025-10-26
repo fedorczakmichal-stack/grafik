@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -11,2299 +12,2662 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-900: #111827;
+```
+    :root {
+        --primary: #3b82f6;
+        --primary-dark: #2563eb;
+        --primary-light: #dbeafe;
+        --success: #10b981;
+        --success-light: #d1fae5;
+        --warning: #f59e0b;
+        --warning-light: #fef3c7;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --info: #06b6d4;
+        --info-light: #cffafe;
+        --purple: #8b5cf6;
+        --purple-light: #ede9fe;
+        
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        color: var(--gray-900);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* ===== LOGIN SCREEN ===== */
+    .login-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-card {
+        background: white;
+        border-radius: 24px;
+        padding: 50px 40px;
+        box-shadow: var(--shadow-xl);
+        max-width: 600px;
+        width: 100%;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .login-logo-icon {
+        font-size: 64px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .login-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .login-subtitle {
+        color: var(--gray-600);
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 16px;
+    }
+
+    .role-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .role-btn {
+        padding: 30px 20px;
+        border: 3px solid var(--gray-200);
+        border-radius: 16px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .role-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .role-btn.active {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .role-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .staff-list-login {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .staff-login-btn {
+        padding: 25px 15px;
+        border: 2px solid var(--gray-200);
+        border-radius: 12px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .staff-login-btn:hover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* ===== LAYOUT ===== */
+    .app-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        background: white;
+        border-radius: 20px;
+        padding: 25px 30px;
+        margin-bottom: 25px;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .header-title h1 {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 5px;
+    }
+
+    .header-subtitle {
+        color: var(--gray-600);
+        font-size: 14px;
+    }
+
+    .current-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+        box-shadow: var(--shadow-md);
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        background: var(--gray-50);
+        border-radius: 16px;
+        flex-wrap: wrap;
+    }
+
+    .month-nav {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .month-display {
+        font-size: 18px;
+        font-weight: 700;
+        min-width: 200px;
+        text-align: center;
+        color: var(--gray-900);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #059669;
+    }
+
+    .btn-secondary {
+        background: var(--gray-600);
+        color: white;
+    }
+
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-warning {
+        background: var(--warning);
+        color: white;
+    }
+
+    .btn-info {
+        background: var(--info);
+        color: white;
+    }
+
+    .btn-outline {
+        background: white;
+        color: var(--gray-700);
+        border: 2px solid var(--gray-300);
+    }
+
+    .btn-outline:hover {
+        background: var(--gray-50);
+        border-color: var(--gray-400);
+    }
+
+    .btn-icon {
+        padding: 10px;
+        font-size: 20px;
+        min-width: 44px;
+        justify-content: center;
+    }
+
+    .btn-sm {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .btn-lg {
+        padding: 16px 32px;
+        font-size: 16px;
+    }
+
+    /* ===== VIEW TABS ===== */
+    .view-tabs {
+        display: flex;
+        gap: 8px;
+        background: white;
+        padding: 6px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .view-tab {
+        padding: 10px 20px;
+        background: transparent;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-600);
+        transition: all 0.3s;
+    }
+
+    .view-tab:hover {
+        background: var(--gray-100);
+    }
+
+    .view-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: var(--shadow-md);
+    }
+
+    /* ===== CALENDAR VIEW ===== */
+    .calendar-view {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .weekday {
+        text-align: center;
+        font-weight: 700;
+        color: var(--gray-600);
+        padding: 12px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+    }
+
+    .calendar-day {
+        min-height: 120px;
+        border: 2px solid var(--gray-200);
+        border-radius: 12px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        background: white;
+        overflow: hidden;
+    }
+
+    .calendar-day:hover {
+        border-color: var(--primary);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .calendar-day.empty {
+        background: var(--gray-50);
+        cursor: default;
+        border-color: transparent;
+    }
+
+    .calendar-day.empty:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .calendar-day.weekend {
+        background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    }
+
+    .calendar-day.today {
+        border-color: var(--primary);
+        border-width: 3px;
+        box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .day-number {
+        font-weight: 700;
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: var(--gray-900);
+    }
+
+    .today .day-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .day-shifts {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .shift-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: var(--gray-100);
+        color: var(--gray-700);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 500;
+    }
+
+    .shift-badge.assigned {
+        background: var(--success-light);
+        color: var(--success);
+        font-weight: 600;
+    }
+
+    .day-stats {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        font-size: 11px;
+        background: var(--gray-900);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .availability-indicator {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .availability-time {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        font-size: 10px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    /* ===== TABLE VIEW ===== */
+    .table-view {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .table-header {
+        margin-bottom: 25px;
+    }
+
+    .table-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+        border: 1px solid var(--gray-200);
+    }
+
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        min-width: 900px;
+    }
+
+    .schedule-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 600;
+        border: none;
+        white-space: nowrap;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .schedule-table td {
+        padding: 10px;
+        border: 1px solid var(--gray-200);
+        vertical-align: top;
+        font-size: 11px;
+    }
+
+    .schedule-table tr:hover td {
+        background: var(--primary-light);
+    }
+
+    .schedule-table .date-cell {
+        font-weight: 700;
+        background: var(--gray-50);
+        min-width: 80px;
+    }
+
+    .schedule-table .weekend-row .date-cell {
+        background: var(--danger-light);
+    }
+
+    .assignment-cell {
+        line-height: 1.5;
+    }
+
+    .assignment-name {
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .assignment-time {
+        color: var(--gray-600);
+        font-size: 10px;
+    }
+
+    /* ===== MODALS ===== */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .modal-overlay.active {
+        display: flex;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .modal {
+        background: white;
+        border-radius: 20px;
+        max-width: 700px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        margin: auto;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    .modal-header {
+        padding: 25px 30px;
+        border-bottom: 2px solid var(--gray-100);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--gray-900);
+    }
+
+    .modal-body {
+        padding: 30px;
+    }
+
+    .modal-footer {
+        padding: 25px 30px;
+        border-top: 2px solid var(--gray-100);
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        position: sticky;
+        bottom: 0;
+        background: white;
+        border-radius: 0 0 20px 20px;
+    }
+
+    /* ===== FORMS ===== */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--gray-700);
+        font-size: 14px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--gray-300);
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .form-checkbox input {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    /* ===== PREFERENCES CARD ===== */
+    .preferences-card {
+        background: var(--gray-50);
+        border: 2px solid var(--gray-200);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+
+    .preferences-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--gray-900);
+    }
+
+    .preference-item {
+        margin-bottom: 20px;
+    }
+
+    .station-preferences {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .station-pref-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: white;
+        border: 2px solid var(--gray-200);
+        border-radius: 10px;
+    }
+
+    .station-pref-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    .station-pref-item label {
+        flex: 1;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* ===== AVAILABILITY EDITOR ===== */
+    .availability-editor {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .availability-day {
+        padding: 20px;
+        border: 2px solid var(--gray-200);
+        border-radius: 12px;
+        background: white;
+        transition: all 0.3s;
+    }
+
+    .availability-day:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+    }
+
+    .availability-day-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .availability-day-date {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--gray-900);
+    }
+
+    .availability-status {
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .availability-status.available {
+        background: var(--success-light);
+        color: var(--success);
+    }
+
+    .availability-status.preferred {
+        background: var(--primary-light);
+        color: var(--primary);
+    }
+
+    .availability-status.unavailable {
+        background: var(--danger-light);
+        color: var(--danger);
+    }
+
+    .availability-options {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .availability-btn {
+        padding: 10px 16px;
+        border: 2px solid var(--gray-300);
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .availability-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .availability-btn.active {
+        border-color: var(--success);
+        background: var(--success);
+        color: white;
+    }
+
+    .availability-btn.preferred {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: white;
+    }
+
+    .availability-btn.unavailable {
+        border-color: var(--danger);
+        background: var(--danger);
+        color: white;
+    }
+
+    /* ===== STAFF LIST ===== */
+    .staff-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .staff-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: var(--gray-50);
+        border-radius: 12px;
+        border: 2px solid var(--gray-200);
+        flex-wrap: wrap;
+        gap: 15px;
+        transition: all 0.3s;
+    }
+
+    .staff-item:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+    }
+
+    .staff-info {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .staff-name {
+        font-weight: 700;
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: var(--gray-900);
+    }
+
+    .staff-stats {
+        font-size: 13px;
+        color: var(--gray-600);
+    }
+
+    .staff-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* ===== SHIFTS EDITOR ===== */
+    .shifts-editor {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .shift-item {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding: 20px;
+        background: var(--gray-50);
+        border-radius: 12px;
+        border: 2px solid var(--gray-200);
+        flex-wrap: wrap;
+    }
+
+    .shift-info {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .shift-station {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .shift-time {
+        font-size: 13px;
+        color: var(--gray-600);
+    }
+
+    /* ===== STATS CARDS ===== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: var(--shadow-lg);
+        color: white;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        margin-bottom: 8px;
+        opacity: 0.9;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .stations-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .station-chip {
+        padding: 10px 16px;
+        background: var(--gray-100);
+        border-radius: 20px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        border: 2px solid var(--gray-200);
+    }
+
+    .remove-chip {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
+        color: var(--danger);
+    }
+
+    .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        border: 2px solid;
+    }
+
+    .alert-success {
+        background: var(--success-light);
+        color: #065f46;
+        border-color: var(--success);
+    }
+
+    .alert-warning {
+        background: var(--warning-light);
+        color: #92400e;
+        border-color: var(--warning);
+    }
+
+    .alert-danger {
+        background: var(--danger-light);
+        color: #991b1b;
+        border-color: var(--danger);
+    }
+
+    .alert-info {
+        background: var(--info-light);
+        color: #164e63;
+        border-color: var(--info);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+        .calendar-day {
+            min-height: 90px;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--gray-50);
-            color: var(--gray-900);
-            line-height: 1.5;
-            overflow-x: hidden;
+        .day-shifts {
+            display: none;
         }
+    }
 
-        /* ===== LOGIN SCREEN ===== */
-        .login-screen {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .login-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .login-subtitle {
-            color: var(--gray-600);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .role-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .role-btn {
-            flex: 1;
-            padding: 20px;
-            border: 3px solid var(--gray-200);
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .role-btn:hover {
-            border-color: var(--primary);
-            background: var(--gray-50);
-        }
-
-        .role-btn.active {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-        }
-
-        .role-icon {
-            font-size: 32px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .staff-list-login {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .staff-login-btn {
-            padding: 20px 15px;
-            border: 2px solid var(--gray-200);
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .staff-login-btn:hover {
-            border-color: var(--primary);
-            background: var(--gray-50);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-        }
-
-        /* ===== LAYOUT ===== */
+    @media (max-width: 768px) {
         .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
             padding: 10px;
         }
 
         .header {
-            background: white;
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
         }
 
         .header-title h1 {
-            font-size: 20px;
-            color: var(--gray-900);
+            font-size: 22px;
         }
 
-        .header-subtitle {
-            color: var(--gray-600);
-            font-size: 13px;
-        }
-
-        .current-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 15px;
-            background: var(--gray-100);
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .nav-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            flex-wrap: wrap;
-        }
-
-        .month-nav {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .month-display {
-            font-size: 16px;
-            font-weight: 600;
-            min-width: 160px;
-            text-align: center;
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            line-height: 1.4;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .btn-secondary {
-            background: var(--gray-600);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-700);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-outline {
-            background: white;
-            color: var(--gray-700);
-            border: 2px solid var(--gray-300);
-        }
-
-        .btn-outline:hover {
-            background: var(--gray-50);
-        }
-
-        .btn-icon {
-            padding: 8px;
-            font-size: 18px;
-            min-width: 36px;
-            justify-content: center;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-
-        /* ===== VIEW TABS ===== */
-        .view-tabs {
-            display: flex;
-            gap: 5px;
-            background: var(--gray-100);
-            padding: 4px;
-            border-radius: 8px;
-        }
-
-        .view-tab {
-            padding: 6px 12px;
-            background: transparent;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--gray-600);
-            transition: all 0.2s;
-        }
-
-        .view-tab.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* ===== CALENDAR VIEW ===== */
-        .calendar-view {
-            background: white;
-            border-radius: 12px;
+        .calendar-view,
+        .table-view {
             padding: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-
-        .weekday {
-            text-align: center;
-            font-weight: 600;
-            color: var(--gray-600);
-            padding: 8px;
-            font-size: 12px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
         }
 
         .calendar-day {
-            min-height: 100px;
-            border: 2px solid var(--gray-200);
-            border-radius: 8px;
+            min-height: 70px;
             padding: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            background: white;
-            overflow: hidden;
-        }
-
-        .calendar-day:hover {
-            border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .calendar-day.empty {
-            background: var(--gray-50);
-            cursor: default;
-            border-color: transparent;
-        }
-
-        .calendar-day.empty:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .calendar-day.weekend {
-            background: #fef2f2;
-        }
-
-        .calendar-day.today {
-            border-color: var(--primary);
-            border-width: 3px;
         }
 
         .day-number {
-            font-weight: 600;
             font-size: 14px;
-            margin-bottom: 4px;
-            color: var(--gray-900);
         }
 
-        .today .day-number {
-            background: var(--primary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .day-shifts {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .shift-badge {
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 4px;
-            background: var(--gray-100);
-            color: var(--gray-700);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .shift-badge.assigned {
-            background: var(--success);
-            color: white;
-        }
-
-        .shift-badge.partial {
-            background: var(--warning);
-            color: white;
-        }
-
-        .day-stats {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            font-size: 10px;
-            background: var(--gray-600);
-            color: white;
-            padding: 2px 5px;
-            border-radius: 8px;
-        }
-
-        .availability-indicator {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            font-size: 16px;
-        }
-
-        .availability-time {
-            position: absolute;
-            bottom: 4px;
-            left: 4px;
-            font-size: 9px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 2px 5px;
-            border-radius: 4px;
-        }
-
-        /* ===== TABLE VIEW ===== */
-        .table-view {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .table-header {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
+        .weekday {
             font-size: 11px;
-            min-width: 800px;
-        }
-
-        .schedule-table th {
-            background: var(--gray-100);
-            padding: 8px 6px;
-            text-align: left;
-            font-weight: 600;
-            border: 1px solid var(--gray-300);
-            white-space: nowrap;
-            font-size: 10px;
-        }
-
-        .schedule-table td {
-            padding: 6px;
-            border: 1px solid var(--gray-300);
-            vertical-align: top;
-            font-size: 10px;
-        }
-
-        .schedule-table tr:hover td {
-            background: var(--gray-50);
-        }
-
-        .schedule-table .date-cell {
-            font-weight: 600;
-            background: var(--gray-50);
-            min-width: 70px;
-        }
-
-        .schedule-table .weekend-row .date-cell {
-            background: #fef2f2;
-        }
-
-        .assignment-cell {
-            font-size: 10px;
-            line-height: 1.3;
-        }
-
-        .assignment-name {
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .assignment-time {
-            color: var(--gray-600);
-            font-size: 9px;
-        }
-
-        /* ===== MODALS ===== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .modal-overlay.active {
-            display: flex;
+            padding: 8px 4px;
         }
 
         .modal {
-            background: white;
-            border-radius: 12px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            margin: auto;
+            border-radius: 16px;
         }
 
-        .modal-header {
-            padding: 15px;
-            border-bottom: 1px solid var(--gray-200);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .modal-body {
-            padding: 15px;
-        }
-
+        .modal-body,
+        .modal-header,
         .modal-footer {
-            padding: 15px;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            position: sticky;
-            bottom: 0;
-            background: white;
+            padding: 20px;
         }
 
-        /* ===== FORMS ===== */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--gray-700);
-            font-size: 13px;
-        }
-
-        .form-input,
-        .form-select {
+        .view-tabs {
             width: 100%;
-            padding: 10px;
-            border: 2px solid var(--gray-300);
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.2s;
         }
 
-        .form-input:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
+        .view-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 8px;
+            font-size: 12px;
         }
 
         .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr;
         }
 
-        /* ===== AVAILABILITY EDITOR ===== */
-        .availability-editor {
-            display: flex;
+        .staff-item,
+        .shift-item {
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .availability-day {
-            padding: 12px;
-            border: 2px solid var(--gray-200);
-            border-radius: 8px;
-            background: var(--gray-50);
-        }
-
-        .availability-day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .availability-day-date {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .availability-options {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .availability-btn {
-            padding: 8px 12px;
-            border: 2px solid var(--gray-300);
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .availability-btn:hover {
-            border-color: var(--primary);
-        }
-
-        .availability-btn.active {
-            border-color: var(--success);
-            background: var(--success);
-            color: white;
-        }
-
-        .availability-btn.preferred {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-        }
-
-        .availability-btn.unavailable {
-            border-color: var(--danger);
-            background: var(--danger);
-            color: white;
-        }
-
-        .time-inputs {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .time-inputs input {
-            flex: 1;
-            padding: 6px;
-            border: 2px solid var(--gray-300);
-            border-radius: 6px;
-            font-size: 12px;
-        }
-
-        /* ===== STAFF LIST ===== */
-        .staff-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .staff-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border: 2px solid var(--gray-200);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .staff-info {
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .staff-name {
-            font-weight: 600;
-            margin-bottom: 3px;
-            font-size: 14px;
-        }
-
-        .staff-stats {
-            font-size: 11px;
-            color: var(--gray-600);
+            align-items: flex-start;
         }
 
         .staff-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
+            width: 100%;
         }
 
-        /* ===== SHIFTS EDITOR ===== */
-        .shifts-editor {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .shift-item {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            padding: 12px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border: 2px solid var(--gray-200);
-            flex-wrap: wrap;
-        }
-
-        .shift-info {
+        .staff-actions button {
             flex: 1;
-            min-width: 120px;
         }
 
-        .shift-station {
-            font-weight: 600;
-            color: var(--primary);
+        .login-card {
+            padding: 30px 25px;
+        }
+
+        .login-title {
+            font-size: 26px;
+        }
+
+        .staff-list-login {
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        }
+
+        .role-selector {
+            grid-template-columns: 1fr;
+        }
+
+        .nav-section {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .month-nav {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 16px;
             font-size: 13px;
-        }
-
-        .shift-time {
-            font-size: 11px;
-            color: var(--gray-600);
-        }
-
-        /* ===== STATS CARDS ===== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid var(--gray-200);
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: var(--gray-600);
-            margin-bottom: 4px;
         }
 
         .stat-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gray-900);
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .calendar-grid {
+            gap: 5px;
         }
 
-        .stations-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+        .calendar-day {
+            min-height: 60px;
+            padding: 4px;
         }
 
-        .station-chip {
-            padding: 6px 12px;
-            background: var(--gray-100);
-            border-radius: 20px;
+        .day-number {
             font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        }
+    }
+
+    /* ===== UTILITIES ===== */
+    .hidden {
+        display: none !important;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mt-15 {
+        margin-top: 15px;
+    }
+
+    .mb-15 {
+        margin-bottom: 15px;
+    }
+
+    /* ===== PROGRESS ===== */
+    .generator-progress {
+        margin-top: 20px;
+        padding: 20px;
+        background: var(--gray-50);
+        border-radius: 12px;
+        display: none;
+    }
+
+    .generator-progress.active {
+        display: block;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 10px;
+        background: var(--gray-200);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--success), var(--info));
+        transition: width 0.3s;
+        border-radius: 10px;
+    }
+
+    .progress-text {
+        font-size: 14px;
+        color: var(--gray-700);
+        font-weight: 600;
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+        body {
+            background: white;
         }
 
-        .remove-chip {
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .edit-mode-banner {
-            background: var(--warning);
-            color: white;
-            padding: 12px 15px;
-            text-align: center;
-            font-weight: 500;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            display: none;
-            font-size: 13px;
-        }
-
-        .edit-mode-banner.active {
-            display: block;
-        }
-
-        .alert {
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 13px;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #6ee7b7;
-        }
-
-        .alert-warning {
-            background: #fef3c7;
-            color: #92400e;
-            border: 1px solid #fcd34d;
-        }
-
-        .alert-danger {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
-        }
-
-        .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #93c5fd;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .calendar-day {
-                min-height: 80px;
-                font-size: 12px;
-            }
-
-            .day-shifts {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                padding: 5px;
-            }
-
-            .header {
-                padding: 12px 15px;
-            }
-
-            .header-title h1 {
-                font-size: 16px;
-            }
-
-            .header-subtitle {
-                font-size: 12px;
-            }
-
-            .header-actions {
-                width: 100%;
-            }
-
-            .btn {
-                padding: 7px 10px;
-                font-size: 12px;
-            }
-
-            .month-display {
-                font-size: 14px;
-                min-width: 130px;
-            }
-
-            .calendar-view,
-            .table-view {
-                padding: 10px;
-            }
-
-            .calendar-day {
-                min-height: 60px;
-                padding: 4px;
-            }
-
-            .day-number {
-                font-size: 11px;
-            }
-
-            .weekday {
-                font-size: 10px;
-                padding: 5px 2px;
-            }
-
-            .modal {
-                max-width: 100%;
-                margin: 0;
-                border-radius: 12px;
-            }
-
-            .view-tabs {
-                width: 100%;
-            }
-
-            .view-tab {
-                flex: 1;
-                text-align: center;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .staff-item,
-            .shift-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .staff-actions {
-                width: 100%;
-            }
-
-            .staff-actions button {
-                flex: 1;
-            }
-
-            .login-card {
-                padding: 25px 20px;
-            }
-
-            .login-title {
-                font-size: 22px;
-            }
-
-            .staff-list-login {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 10px;
-            }
-
-            .staff-login-btn {
-                padding: 15px 10px;
-                font-size: 13px;
-            }
-
-            .role-selector {
-                flex-direction: column;
-            }
-
-            .nav-section {
-                flex-direction: column;
-            }
-
-            .current-user {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .calendar-grid {
-                gap: 3px;
-            }
-
-            .calendar-day {
-                min-height: 50px;
-                padding: 3px;
-            }
-
-            .day-number {
-                font-size: 10px;
-            }
-
-            .day-stats {
-                font-size: 8px;
-                padding: 1px 3px;
-            }
-
-            .availability-time {
-                font-size: 8px;
-            }
-        }
-
-        /* ===== UTILITIES ===== */
-        .hidden {
+        .header-actions,
+        .view-tabs,
+        .btn,
+        .login-screen {
             display: none !important;
         }
 
-        .text-center {
-            text-align: center;
+        .table-view {
+            box-shadow: none;
         }
+    }
+</style>
+```
 
-        .mt-10 {
-            margin-top: 10px;
-        }
-
-        .mb-10 {
-            margin-bottom: 10px;
-        }
-
-        /* ===== PRINT STYLES ===== */
-        @media print {
-            body {
-                background: white;
-            }
-
-            .header-actions,
-            .view-tabs,
-            .btn,
-            .edit-mode-banner,
-            .login-screen {
-                display: none !important;
-            }
-
-            .table-view {
-                box-shadow: none;
-            }
-
-            .schedule-table {
-                font-size: 9px;
-            }
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 3px;
-            }
-        }
-
-        .generator-progress {
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            display: none;
-        }
-
-        .generator-progress.active {
-            display: block;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--gray-200);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            font-size: 12px;
-            color: var(--gray-600);
-        }
-    </style>
 </head>
 <body>
     <!-- LOGIN SCREEN -->
     <div class="login-screen" id="loginScreen">
         <div class="login-card">
-            <div class="login-title">🏥 System Grafików</div>
-            <div class="login-subtitle">OAIiT - Dyżury Anestezjologów</div>
-            
-            <div class="role-selector">
-                <button class="role-btn active" onclick="app.selectRole('admin')" id="adminRoleBtn">
-                    <span class="role-icon">👨‍💼</span>
-                    Administrator
-                </button>
-                <button class="role-btn" onclick="app.selectRole('staff')" id="staffRoleBtn">
-                    <span class="role-icon">👨‍⚕️</span>
-                    Personel
-                </button>
+            <div class="login-logo">
+                <span class="login-logo-icon">🏥</span>
+                <div class="login-title">System Grafików</div>
+                <div class="login-subtitle">OAIiT - Dyżury Anestezjologów</div>
             </div>
 
-            <div id="staffSelectDiv" class="hidden">
-                <div class="form-label">Wybierz swoją osobę:</div>
-                <div class="staff-list-login" id="staffListLogin"></div>
+```
+        <div class="role-selector">
+            <button class="role-btn active" onclick="app.selectRole('admin')" id="adminRoleBtn">
+                <span class="role-icon">👨‍💼</span>
+                Administrator
+            </button>
+            <button class="role-btn" onclick="app.selectRole('staff')" id="staffRoleBtn">
+                <span class="role-icon">👨‍⚕️</span>
+                Personel
+            </button>
+        </div>
+
+        <div id="staffSelectDiv" class="hidden">
+            <div class="form-label">Wybierz swoją osobę:</div>
+            <div class="staff-list-login" id="staffListLogin"></div>
+        </div>
+
+        <div id="adminLoginDiv">
+            <button class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;" onclick="app.loginAsAdmin()">
+                Zaloguj jako Administrator
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app-container hidden" id="mainApp">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-top">
+            <div class="header-title">
+                <h1>System Grafików Medycznych</h1>
+                <div class="header-subtitle">OAIiT - Dyżury Anestezjologów</div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <div class="current-user" id="currentUser"></div>
+                <button class="btn btn-outline btn-sm" onclick="app.logout()">Wyloguj</button>
+            </div>
+        </div>
+
+        <div id="adminControls" class="hidden">
+            <div class="header-actions">
+                <button class="btn btn-outline btn-sm" onclick="app.manageStations()">⚙️ Stanowiska</button>
+                <button class="btn btn-outline btn-sm" onclick="app.manageStaff()">👥 Personel</button>
+                <button class="btn btn-success btn-sm" onclick="app.showGenerator()">🤖 Generuj Grafik</button>
+                <button class="btn btn-warning btn-sm" onclick="app.generateTestData()">🧪 Generuj Przykład</button>
+                <button class="btn btn-primary btn-sm" onclick="app.exportData()">💾 Eksport</button>
+                <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Drukuj</button>
+            </div>
+        </div>
+
+        <div id="staffControls" class="hidden">
+            <div class="header-actions">
+                <button class="btn btn-info btn-sm" onclick="app.showPreferences()">⚙️ Moje Preferencje</button>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="view-tabs">
+                <button class="view-tab active" onclick="app.switchView('calendar')">📅 Kalendarz</button>
+                <button class="view-tab" onclick="app.switchView('table')">📊 Tabela</button>
+                <button class="view-tab hidden" id="availabilityTab" onclick="app.switchView('availability')">🗓️ Dyspozycje</button>
             </div>
 
-            <div id="adminLoginDiv">
-                <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 15px; font-size: 16px;" onclick="app.loginAsAdmin()">
-                    Zaloguj jako Administrator
-                </button>
+            <div class="month-nav">
+                <button class="btn btn-outline btn-icon" onclick="app.changeMonth(-1)">←</button>
+                <div class="month-display" id="monthDisplay"></div>
+                <button class="btn btn-outline btn-icon" onclick="app.changeMonth(1)">→</button>
+                <button class="btn btn-outline btn-sm" onclick="app.goToToday()">Dziś</button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP -->
-    <div class="app-container hidden" id="mainApp">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="header-top">
-                <div class="header-title">
-                    <h1>System Grafików Medycznych</h1>
-                    <div class="header-subtitle">OAIiT - Dyżury Anestezjologów</div>
-                </div>
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <div class="current-user" id="currentUser"></div>
-                    <button class="btn btn-outline btn-sm" onclick="app.logout()">Wyloguj</button>
-                </div>
-            </div>
-
-            <div id="adminControls" class="hidden">
-                <div class="header-actions">
-                    <button class="btn btn-outline btn-sm" onclick="app.manageStations()">⚙️ Stanowiska</button>
-                    <button class="btn btn-outline btn-sm" onclick="app.manageStaff()">👥 Personel</button>
-                    <button class="btn btn-success btn-sm" onclick="app.showGenerator()">🤖 Generuj Grafik</button>
-                    <button class="btn btn-primary btn-sm" onclick="app.exportData()">💾 Zapisz</button>
-                    <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Drukuj</button>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="view-tabs">
-                    <button class="view-tab active" onclick="app.switchView('calendar')">📅 Kalendarz</button>
-                    <button class="view-tab" onclick="app.switchView('table')">📊 Tabela</button>
-                    <button class="view-tab" id="availabilityTab" onclick="app.switchView('availability')">🗓️ Moje dyspozycje</button>
-                </div>
-
-                <div class="month-nav">
-                    <button class="btn btn-outline btn-icon" onclick="app.changeMonth(-1)">←</button>
-                    <div class="month-display" id="monthDisplay"></div>
-                    <button class="btn btn-outline btn-icon" onclick="app.changeMonth(1)">→</button>
-                    <button class="btn btn-outline btn-sm" onclick="app.goToToday()">Dziś</button>
-                </div>
-            </div>
+    <!-- CALENDAR VIEW -->
+    <div class="calendar-view" id="calendarView">
+        <div class="weekdays">
+            <div class="weekday">Pon</div>
+            <div class="weekday">Wt</div>
+            <div class="weekday">Śr</div>
+            <div class="weekday">Czw</div>
+            <div class="weekday">Pt</div>
+            <div class="weekday">Sob</div>
+            <div class="weekday">Niedz</div>
         </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
 
-        <!-- CALENDAR VIEW -->
-        <div class="calendar-view" id="calendarView">
-            <div class="weekdays">
-                <div class="weekday">Pon</div>
-                <div class="weekday">Wt</div>
-                <div class="weekday">Śr</div>
-                <div class="weekday">Czw</div>
-                <div class="weekday">Pt</div>
-                <div class="weekday">Sob</div>
-                <div class="weekday">Niedz</div>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
+    <!-- TABLE VIEW -->
+    <div class="table-view hidden" id="tableView">
+        <div class="table-header">
+            <h3 class="table-title">Grafik - <span id="tableMonthDisplay"></span></h3>
+            <div class="stats-grid" id="statsGrid"></div>
         </div>
-
-        <!-- TABLE VIEW -->
-        <div class="table-view hidden" id="tableView">
-            <div class="table-header">
-                <h3>Grafik - <span id="tableMonthDisplay"></span></h3>
-                <div class="stats-grid" id="statsGrid"></div>
-            </div>
-            <div class="table-container">
-                <table class="schedule-table" id="scheduleTable"></table>
-            </div>
-        </div>
-
-        <!-- AVAILABILITY VIEW -->
-        <div class="calendar-view hidden" id="availabilityView">
-            <div class="alert alert-info">
-                <strong>ℹ️ Jak wypełnić dyspozycje:</strong><br>
-                Kliknij przycisk przy dniu, żeby zaznaczyć swoją dostępność. Możesz podać godziny (np. dostępny tylko do 14:00).
-            </div>
-            <div class="availability-editor" id="availabilityEditor"></div>
+        <div class="table-container">
+            <table class="schedule-table" id="scheduleTable"></table>
         </div>
     </div>
 
-    <!-- DAY MODAL (Admin) -->
-    <div class="modal-overlay" id="dayModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title" id="dayModalTitle"></div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeDayModal()">×</button>
+    <!-- AVAILABILITY VIEW -->
+    <div class="calendar-view hidden" id="availabilityView">
+        <div class="alert alert-info">
+            <strong>ℹ️ Wypełnij swoje dyspozycje</strong><br>
+            Zaznacz dni kiedy jesteś dostępny, preferowany lub niedostępny. Możesz podać konkretne godziny (np. dostępny 08:00-14:00).
+        </div>
+        <div class="availability-editor" id="availabilityEditor"></div>
+    </div>
+</div>
+
+<!-- PREFERENCES MODAL -->
+<div class="modal-overlay" id="preferencesModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">⚙️ Moje Preferencje</div>
+            <button class="btn btn-icon btn-outline" onclick="app.closePreferencesModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="preferences-card">
+                <h3>Limity dyżurów</h3>
+                <div class="preference-item">
+                    <label class="form-label">Maksymalna liczba dyżurów w miesiącu</label>
+                    <input type="number" class="form-input" id="prefMaxShifts" min="0" max="31" value="15">
+                </div>
+                <div class="preference-item">
+                    <label class="form-label">Maksymalna liczba dyżurów 24h w miesiącu</label>
+                    <input type="number" class="form-input" id="prefMax24h" min="0" max="15" value="8">
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="shifts-editor" id="shiftsEditor"></div>
-                <button class="btn btn-success mt-10" style="width: 100%;" onclick="app.addShiftToDay()">+ Dodaj dyżur</button>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="app.closeDayModal()">Zamknij</button>
+
+            <div class="preferences-card">
+                <h3>Preferencje stanowisk</h3>
+                <p style="color: var(--gray-600); margin-bottom: 15px; font-size: 14px;">
+                    Zaznacz stanowiska, na których preferujesz pracować. Generator będzie priorytetowo przydzielał Cię na te stanowiska.
+                </p>
+                <div class="station-preferences" id="stationPreferences"></div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="app.closePreferencesModal()">Anuluj</button>
+            <button class="btn btn-success" onclick="app.savePreferences()">Zapisz Preferencje</button>
+        </div>
     </div>
+</div>
 
-    <!-- ADD SHIFT MODAL -->
-    <div class="modal-overlay" id="addShiftModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Dodaj dyżur</div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeAddShiftModal()">×</button>
+<!-- DAY MODAL (Admin) -->
+<div class="modal-overlay" id="dayModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="dayModalTitle"></div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeDayModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="shifts-editor" id="shiftsEditor"></div>
+            <button class="btn btn-success mt-15" style="width: 100%;" onclick="app.addShiftToDay()">+ Dodaj dyżur</button>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="app.closeDayModal()">Zamknij</button>
+        </div>
+    </div>
+</div>
+
+<!-- ADD SHIFT MODAL -->
+<div class="modal-overlay" id="addShiftModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Dodaj dyżur</div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeAddShiftModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Stanowisko</label>
+                <select class="form-select" id="shiftStation"></select>
             </div>
-            <div class="modal-body">
+            <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Stanowisko</label>
-                    <select class="form-select" id="shiftStation"></select>
+                    <label class="form-label">Od</label>
+                    <input type="time" class="form-input" id="shiftStart" value="08:00">
                 </div>
+                <div class="form-group">
+                    <label class="form-label">Do</label>
+                    <input type="time" class="form-input" id="shiftEnd" value="16:00">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Przypisz osobę (opcjonalnie)</label>
+                <select class="form-select" id="shiftStaff">
+                    <option value="">-- Nie przypisuj --</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="app.closeAddShiftModal()">Anuluj</button>
+            <button class="btn btn-success" onclick="app.saveShift()">Zapisz</button>
+        </div>
+    </div>
+</div>
+
+<!-- AVAILABILITY MODAL -->
+<div class="modal-overlay" id="availabilityModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="availabilityModalTitle"></div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeAvailabilityModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="availability-options">
+                <button class="availability-btn" onclick="app.setDayAvailability('available')">
+                    ✅ Dostępny
+                </button>
+                <button class="availability-btn" onclick="app.setDayAvailability('preferred')">
+                    ⭐ Preferowany
+                </button>
+                <button class="availability-btn" onclick="app.setDayAvailability('unavailable')">
+                    ❌ Niedostępny
+                </button>
+                <button class="availability-btn" onclick="app.setDayAvailability(null)">
+                    🔄 Wyczyść
+                </button>
+            </div>
+
+            <div class="form-group mt-15">
+                <label class="form-checkbox">
+                    <input type="checkbox" id="hasTimeLimit" onchange="app.toggleTimeLimit()">
+                    <span>Ograniczenie czasowe</span>
+                </label>
+                <p style="color: var(--gray-600); font-size: 13px; margin-top: 8px;">
+                    Zaznacz jeśli jesteś dostępny tylko w określonych godzinach (np. tylko rano do 14:00, lub tylko po południu od 15:00)
+                </p>
+            </div>
+
+            <div id="timeLimitInputs" class="hidden">
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Od</label>
-                        <input type="time" class="form-input" id="shiftStart" value="08:00">
+                        <label class="form-label">Od godziny</label>
+                        <input type="time" class="form-input" id="availableFrom" value="08:00">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Do</label>
-                        <input type="time" class="form-input" id="shiftEnd" value="16:00">
+                        <label class="form-label">Do godziny</label>
+                        <input type="time" class="form-input" id="availableTo" value="16:00">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Przypisz osobę (opcjonalnie)</label>
-                    <select class="form-select" id="shiftStaff">
-                        <option value="">-- Nie przypisuj --</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="app.closeAddShiftModal()">Anuluj</button>
-                <button class="btn btn-success" onclick="app.saveShift()">Zapisz</button>
             </div>
         </div>
-    </div>
-
-    <!-- AVAILABILITY MODAL -->
-    <div class="modal-overlay" id="availabilityModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title" id="availabilityModalTitle"></div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeAvailabilityModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="availability-options">
-                    <button class="availability-btn" onclick="app.setDayAvailability('available')">
-                        ✅ Dostępny
-                    </button>
-                    <button class="availability-btn" onclick="app.setDayAvailability('preferred')">
-                        ⭐ Preferowany
-                    </button>
-                    <button class="availability-btn" onclick="app.setDayAvailability('unavailable')">
-                        ❌ Niedostępny
-                    </button>
-                    <button class="availability-btn" onclick="app.setDayAvailability(null)">
-                        🔄 Wyczyść
-                    </button>
-                </div>
-
-                <div class="form-group mt-10">
-                    <label class="form-label">
-                        <input type="checkbox" id="hasTimeLimit" onchange="app.toggleTimeLimit()">
-                        Ograniczenie czasowe (np. dostępny tylko do 14:00)
-                    </label>
-                </div>
-
-                <div id="timeLimitInputs" class="hidden">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Od godziny</label>
-                            <input type="time" class="form-input" id="availableFrom" value="08:00">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Do godziny</label>
-                            <input type="time" class="form-input" id="availableTo" value="16:00">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="app.closeAvailabilityModal()">Zamknij</button>
-            </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="app.closeAvailabilityModal()">Zamknij</button>
         </div>
     </div>
+</div>
 
-    <!-- STATIONS MODAL -->
-    <div class="modal-overlay" id="stationsModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Zarządzaj stanowiskami</div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeStationsModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="stations-list" id="stationsList"></div>
-                <div class="form-group mt-10">
-                    <label class="form-label">Dodaj nowe stanowisko</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" class="form-input" id="newStationName" placeholder="Np. OAIT 24h">
-                        <button class="btn btn-success" onclick="app.addStation()">Dodaj</button>
-                    </div>
+<!-- STATIONS MODAL -->
+<div class="modal-overlay" id="stationsModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Zarządzaj stanowiskami</div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeStationsModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="stations-list" id="stationsList"></div>
+            <div class="form-group mt-15">
+                <label class="form-label">Dodaj nowe stanowisko</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-input" id="newStationName" placeholder="Np. OAIT 24h">
+                    <button class="btn btn-success" onclick="app.addStation()">Dodaj</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="app.closeStationsModal()">Gotowe</button>
             </div>
         </div>
-    </div>
-
-    <!-- STAFF MODAL -->
-    <div class="modal-overlay" id="staffModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Zarządzaj personelem</div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeStaffModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="staff-list" id="staffList"></div>
-                <div class="form-group mt-10">
-                    <label class="form-label">Dodaj nową osobę</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" class="form-input" id="newStaffName" placeholder="Imię i nazwisko">
-                        <button class="btn btn-success" onclick="app.addStaff()">Dodaj</button>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="app.closeStaffModal()">Gotowe</button>
-            </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="app.closeStationsModal()">Gotowe</button>
         </div>
     </div>
+</div>
 
-    <!-- GENERATOR MODAL -->
-    <div class="modal-overlay" id="generatorModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Generator grafiku</div>
-                <button class="btn btn-icon btn-outline" onclick="app.closeGeneratorModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-warning">
-                    <strong>⚠️ Uwaga!</strong> Generator nadpisze wszystkie istniejące przypisania personelu w tym miesiącu.
+<!-- STAFF MODAL -->
+<div class="modal-overlay" id="staffModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Zarządzaj personelem</div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeStaffModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="staff-list" id="staffList"></div>
+            <div class="form-group mt-15">
+                <label class="form-label">Dodaj nową osobę</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-input" id="newStaffName" placeholder="Imię i nazwisko">
+                    <button class="btn btn-success" onclick="app.addStaff()">Dodaj</button>
                 </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Maksymalna liczba dyżurów na osobę</label>
-                    <input type="number" class="form-input" id="maxShiftsPerPerson" value="15">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Maksymalna liczba dyżurów 24h na osobę</label>
-                    <input type="number" class="form-input" id="max24hShifts" value="8">
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="respectAvailability" checked>
-                        Respektuj dyspozycje personelu (godziny i dostępność)
-                    </label>
-                </div>
-
-                <div class="generator-progress" id="generatorProgress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text" id="progressText"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="app.closeGeneratorModal()">Anuluj</button>
-                <button class="btn btn-success" onclick="app.generateSchedule()">🤖 Wygeneruj</button>
             </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="app.closeStaffModal()">Gotowe</button>
+        </div>
     </div>
+</div>
 
-    <script>
-        class ScheduleApp {
-            constructor() {
-                this.currentDate = new Date();
-                this.currentView = 'calendar';
-                this.selectedDate = null;
-                this.currentUser = null; // { role: 'admin' | 'staff', staffId: 'xxx' }
-                this.selectedRole = 'admin';
-                this.selectedAvailabilityDate = null;
-                
-                // Data structure
-                this.stations = [
-                    'OAIT Dzienny 08:00-14:00',
-                    'OAIT 24h 08:00-8:00',
-                    'Anestezjolog I 24h',
-                    'Anestezjolog II 08:00-16:00',
-                    'Anestezjolog III',
-                    'Anestezjolog IV Ortopedia',
-                    'Sala Wybudzeń',
-                    'Endoskopia'
-                ];
+<!-- GENERATOR MODAL -->
+<div class="modal-overlay" id="generatorModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Generator grafiku</div>
+            <button class="btn btn-icon btn-outline" onclick="app.closeGeneratorModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-warning">
+                <strong>⚠️ Uwaga!</strong> Generator nadpisze wszystkie istniejące przypisania personelu w tym miesiącu.
+            </div>
+            
+            <div class="form-group">
+                <label class="form-checkbox">
+                    <input type="checkbox" id="respectAvailability" checked>
+                    <span>Respektuj dyspozycje personelu (godziny i dostępność)</span>
+                </label>
+            </div>
 
-                this.staff = [
-                    { id: this.generateId(), name: 'M. Olszewska' },
-                    { id: this.generateId(), name: 'E. Jaszczuk' },
-                    { id: this.generateId(), name: 'M. Fedorczak' },
-                    { id: this.generateId(), name: 'B. Marynowski' },
-                    { id: this.generateId(), name: 'A. Tadesusiak' },
-                    { id: this.generateId(), name: 'L. Weber' },
-                    { id: this.generateId(), name: 'J. Wieczorek' },
-                    { id: this.generateId(), name: 'A. Głapiński' }
-                ];
+            <div class="form-group">
+                <label class="form-checkbox">
+                    <input type="checkbox" id="respectPreferences" checked>
+                    <span>Respektuj preferencje stanowisk i limity dyżurów</span>
+                </label>
+            </div>
 
-                // shifts: { 'YYYY-MM-DD': [{ id, station, start, end, staffId }] }
-                this.shifts = {};
-                
-                // availability: { staffId: { 'YYYY-MM-DD': { status: 'available|preferred|unavailable', from: '08:00', to: '16:00' } } }
-                this.availability = {};
+            <div class="generator-progress" id="generatorProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="app.closeGeneratorModal()">Anuluj</button>
+            <button class="btn btn-success" onclick="app.generateSchedule()">🤖 Wygeneruj</button>
+        </div>
+    </div>
+</div>
 
-                this.loadData();
-                this.init();
-            }
+<script src="data:text/javascript;base64,Y2xhc3MgU2NoZWR1bGVBcHAgewogICAgY29uc3RydWN0b3IoKSB7CiAgICAgICAgdGhpcy5jdXJyZW50RGF0ZSA9IG5ldyBEYXRlKCk7CiAgICAgICAgdGhpcy5jdXJyZW50VmlldyA9ICdjYWxlbmRhcic7CiAgICAgICAgdGhpcy5zZWxlY3RlZERhdGUgPSBudWxsOwogICAgICAgIHRoaXMuY3VycmVudFVzZXIgPSBudWxsOwogICAgICAgIHRoaXMuc2VsZWN0ZWRSb2xlID0gJ2FkbWluJzsKICAgICAgICB0aGlzLnNlbGVjdGVkQXZhaWxhYmlsaXR5RGF0ZSA9IG51bGw7CiAgICAgICAgCiAgICAgICAgdGhpcy5zdGF0aW9ucyA9IFsKICAgICAgICAgICAgJ09BSVQgRHppZW5ueSAwODowMC0xNDowMCcsCiAgICAgICAgICAgICdPQUlUIDI0aCAwODowMC04OjAwJywKICAgICAgICAgICAgJ0FuZXN0ZXpqb2xvZyBJIDI0aCcsCiAgICAgICAgICAgICdBbmVzdGVzempvbG9nIElJIDA4OjAwLTE2OjAwJywKICAgICAgICAgICAgJ0FuZXN0ZXNqb2xvZyBJSUknLAogICAgICAgICAgICAnQW5lc3Rlempvbm9nIElWIE9ydG9wZWRpYScsCiAgICAgICAgICAgICdTYWxhIFd5YnVkemXFhCcsCiAgICAgICAgICAgICdFbmRvc2tvcGlhJwogICAgICAgIF07CgogICAgICAgIHRoaXMuc3RhZmYgPSBbCiAgICAgICAgICAgIHsgaWQ6IHRoaXMuZ2VuZXJhdGVJZCgpLCBuYW1lOiAnTS4gT2xzemV3c2thJyB9LAogICAgICAgICAgICB7IGlkOiB0aGlzLmdlbmVyYXRlSWQoKSwgbmFtZTogJ0UuIEphc3pjenVrJyB9LAogICAgICAgICAgICB7IGlkOiB0aGlzLmdlbmVyYXRlSWQoKSwgbmFtZTogJ00uIEZlZG9yY3phay=="></script>
+<script>
+    class ScheduleApp {
+        constructor() {
+            this.currentDate = new Date();
+            this.currentView = 'calendar';
+            this.selectedDate = null;
+            this.currentUser = null;
+            this.selectedRole = 'admin';
+            this.selectedAvailabilityDate = null;
+            
+            this.stations = [
+                'OAIT Dzienny 08:00-14:00',
+                'OAIT 24h 08:00-8:00',
+                'Anestezjolog I 24h',
+                'Anestezjolog II 08:00-16:00',
+                'Anestezjolog III',
+                'Anestezjolog IV Ortopedia',
+                'Sala Wybudzeń',
+                'Endoskopia'
+            ];
 
-            generateId() {
-                return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            }
+            this.staff = [
+                { id: this.generateId(), name: 'M. Olszewska' },
+                { id: this.generateId(), name: 'E. Jaszczuk' },
+                { id: this.generateId(), name: 'M. Fedorczak' },
+                { id: this.generateId(), name: 'B. Marynowski' },
+                { id: this.generateId(), name: 'A. Tadesusiak' },
+                { id: this.generateId(), name: 'L. Weber' },
+                { id: this.generateId(), name: 'J. Wieczorek' },
+                { id: this.generateId(), name: 'A. Głapiński' }
+            ];
 
-            init() {
-                this.renderLoginScreen();
-                this.autoSave();
-            }
+            this.shifts = {};
+            this.availability = {};
+            
+            // preferences: { staffId: { maxShifts: 15, max24h: 8, preferredStations: ['OAIT 24h', ...] } }
+            this.preferences = {};
 
-            autoSave() {
-                setInterval(() => this.saveData(), 30000);
-            }
+            this.loadData();
+            this.init();
+        }
 
-            saveData() {
-                const data = {
-                    stations: this.stations,
-                    staff: this.staff,
-                    shifts: this.shifts,
-                    availability: this.availability
-                };
-                localStorage.setItem('scheduleData', JSON.stringify(data));
-            }
+        generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
 
-            loadData() {
-                const saved = localStorage.getItem('scheduleData');
-                if (saved) {
-                    try {
-                        const data = JSON.parse(saved);
-                        this.stations = data.stations || this.stations;
-                        this.staff = data.staff || this.staff;
-                        this.shifts = data.shifts || {};
-                        this.availability = data.availability || {};
-                    } catch (e) {
-                        console.error('Error loading data:', e);
-                    }
+        init() {
+            this.renderLoginScreen();
+            this.autoSave();
+        }
+
+        autoSave() {
+            setInterval(() => this.saveData(), 30000);
+        }
+
+        saveData() {
+            const data = {
+                stations: this.stations,
+                staff: this.staff,
+                shifts: this.shifts,
+                availability: this.availability,
+                preferences: this.preferences
+            };
+            localStorage.setItem('scheduleData', JSON.stringify(data));
+        }
+
+        loadData() {
+            const saved = localStorage.getItem('scheduleData');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    this.stations = data.stations || this.stations;
+                    this.staff = data.staff || this.staff;
+                    this.shifts = data.shifts || {};
+                    this.availability = data.availability || {};
+                    this.preferences = data.preferences || {};
+                } catch (e) {
+                    console.error('Error loading data:', e);
                 }
-            }
-
-            exportData() {
-                const data = {
-                    stations: this.stations,
-                    staff: this.staff,
-                    shifts: this.shifts,
-                    availability: this.availability,
-                    exported: new Date().toISOString()
-                };
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `grafik_${this.formatDate(new Date(), 'YYYY-MM')}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                alert('✅ Dane zostały wyeksportowane!');
-            }
-
-            // ===== LOGIN =====
-
-            renderLoginScreen() {
-                const staffList = document.getElementById('staffListLogin');
-                staffList.innerHTML = this.staff.map(person => `
-                    <button class="staff-login-btn" onclick="app.loginAsStaff('${person.id}')">
-                        ${person.name}
-                    </button>
-                `).join('');
-            }
-
-            selectRole(role) {
-                this.selectedRole = role;
-                document.getElementById('adminRoleBtn').classList.toggle('active', role === 'admin');
-                document.getElementById('staffRoleBtn').classList.toggle('active', role === 'staff');
-                
-                if (role === 'admin') {
-                    document.getElementById('adminLoginDiv').classList.remove('hidden');
-                    document.getElementById('staffSelectDiv').classList.add('hidden');
-                } else {
-                    document.getElementById('adminLoginDiv').classList.add('hidden');
-                    document.getElementById('staffSelectDiv').classList.remove('hidden');
-                }
-            }
-
-            loginAsAdmin() {
-                this.currentUser = { role: 'admin' };
-                this.showMainApp();
-            }
-
-            loginAsStaff(staffId) {
-                this.currentUser = { role: 'staff', staffId };
-                this.showMainApp();
-            }
-
-            logout() {
-                this.currentUser = null;
-                document.getElementById('mainApp').classList.add('hidden');
-                document.getElementById('loginScreen').classList.remove('hidden');
-            }
-
-            showMainApp() {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                
-                // Update UI based on role
-                const staff = this.getStaffById(this.currentUser.staffId);
-                if (this.currentUser.role === 'admin') {
-                    document.getElementById('currentUser').innerHTML = '👨‍💼 Administrator';
-                    document.getElementById('adminControls').classList.remove('hidden');
-                    document.getElementById('availabilityTab').classList.add('hidden');
-                } else {
-                    document.getElementById('currentUser').innerHTML = `👨‍⚕️ ${staff.name}`;
-                    document.getElementById('adminControls').classList.add('hidden');
-                    document.getElementById('availabilityTab').classList.remove('hidden');
-                }
-                
-                this.render();
-            }
-
-            // ===== RENDERING =====
-
-            render() {
-                this.renderMonthDisplay();
-                if (this.currentView === 'calendar') {
-                    this.renderCalendar();
-                } else if (this.currentView === 'table') {
-                    this.renderTable();
-                } else if (this.currentView === 'availability') {
-                    this.renderAvailabilityView();
-                }
-            }
-
-            renderMonthDisplay() {
-                const monthName = this.currentDate.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
-                document.getElementById('monthDisplay').textContent = monthName;
-                document.getElementById('tableMonthDisplay').textContent = monthName;
-            }
-
-            renderCalendar() {
-                const grid = document.getElementById('calendarGrid');
-                grid.innerHTML = '';
-
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const firstDay = new Date(year, month, 1);
-                const lastDay = new Date(year, month + 1, 0);
-                const daysInMonth = lastDay.getDate();
-                const startDayOfWeek = (firstDay.getDay() + 6) % 7;
-
-                // Empty cells
-                for (let i = 0; i < startDayOfWeek; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'calendar-day empty';
-                    grid.appendChild(cell);
-                }
-
-                // Days
-                const today = new Date();
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const date = new Date(year, month, day);
-                    const dateStr = this.formatDate(date);
-                    const cell = document.createElement('div');
-                    cell.className = 'calendar-day';
-                    cell.dataset.date = dateStr;
-
-                    const dayOfWeek = date.getDay();
-                    if (dayOfWeek === 0 || dayOfWeek === 6) {
-                        cell.classList.add('weekend');
-                    }
-
-                    if (this.formatDate(date) === this.formatDate(today)) {
-                        cell.classList.add('today');
-                    }
-
-                    const dayNum = document.createElement('div');
-                    dayNum.className = 'day-number';
-                    dayNum.textContent = day;
-                    cell.appendChild(dayNum);
-
-                    // Show availability for staff
-                    if (this.currentUser && this.currentUser.role === 'staff') {
-                        const avail = this.availability[this.currentUser.staffId]?.[dateStr];
-                        if (avail) {
-                            const indicator = document.createElement('div');
-                            indicator.className = 'availability-indicator';
-                            if (avail.status === 'available') indicator.textContent = '✅';
-                            else if (avail.status === 'preferred') indicator.textContent = '⭐';
-                            else if (avail.status === 'unavailable') indicator.textContent = '❌';
-                            cell.appendChild(indicator);
-
-                            if (avail.from || avail.to) {
-                                const timeInfo = document.createElement('div');
-                                timeInfo.className = 'availability-time';
-                                timeInfo.textContent = `${avail.from || '...'} - ${avail.to || '...'}`;
-                                cell.appendChild(timeInfo);
-                            }
-                        }
-                    }
-
-                    // Shifts
-                    const dayShifts = this.shifts[dateStr] || [];
-                    if (dayShifts.length > 0 && this.currentUser && this.currentUser.role === 'admin') {
-                        const shiftsContainer = document.createElement('div');
-                        shiftsContainer.className = 'day-shifts';
-                        
-                        dayShifts.slice(0, 3).forEach(shift => {
-                            const badge = document.createElement('div');
-                            badge.className = 'shift-badge';
-                            if (shift.staffId) {
-                                badge.classList.add('assigned');
-                            }
-                            const staff = this.getStaffById(shift.staffId);
-                            badge.textContent = staff ? staff.name.split(' ').pop() : shift.station.split(' ')[0];
-                            shiftsContainer.appendChild(badge);
-                        });
-                        
-                        cell.appendChild(shiftsContainer);
-
-                        const assigned = dayShifts.filter(s => s.staffId).length;
-                        const total = dayShifts.length;
-                        const stats = document.createElement('div');
-                        stats.className = 'day-stats';
-                        stats.textContent = `${assigned}/${total}`;
-                        cell.appendChild(stats);
-                    }
-
-                    // Click handler
-                    if (this.currentUser && this.currentUser.role === 'admin') {
-                        cell.addEventListener('click', () => this.openDayModal(dateStr));
-                    }
-
-                    grid.appendChild(cell);
-                }
-            }
-
-            renderTable() {
-                const table = document.getElementById('scheduleTable');
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                let html = '<thead><tr>';
-                html += '<th>Data</th>';
-                this.stations.forEach(station => {
-                    html += `<th>${station}</th>`;
-                });
-                html += '</tr></thead><tbody>';
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const date = new Date(year, month, day);
-                    const dateStr = this.formatDate(date);
-                    const dayName = date.toLocaleDateString('pl-PL', { weekday: 'short' });
-                    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-                    
-                    html += `<tr class="${isWeekend ? 'weekend-row' : ''}">`;
-                    html += `<td class="date-cell">${day} ${dayName}</td>`;
-
-                    this.stations.forEach(station => {
-                        const shifts = (this.shifts[dateStr] || []).filter(s => s.station === station);
-                        html += '<td class="assignment-cell">';
-                        shifts.forEach(shift => {
-                            if (shift.staffId) {
-                                const staff = this.getStaffById(shift.staffId);
-                                html += `<div class="assignment-name">${staff ? staff.name : 'BRAK'}</div>`;
-                                html += `<div class="assignment-time">${shift.start}-${shift.end}</div>`;
-                            }
-                        });
-                        html += '</td>';
-                    });
-
-                    html += '</tr>';
-                }
-
-                html += '</tbody>';
-                table.innerHTML = html;
-
-                this.renderStats();
-            }
-
-            renderStats() {
-                const statsGrid = document.getElementById('statsGrid');
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                let totalShifts = 0;
-                let assignedShifts = 0;
-                let total24h = 0;
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dateStr = this.formatDate(new Date(year, month, day));
-                    const dayShifts = this.shifts[dateStr] || [];
-                    totalShifts += dayShifts.length;
-                    assignedShifts += dayShifts.filter(s => s.staffId).length;
-                    total24h += dayShifts.filter(s => s.station.includes('24h')).length;
-                }
-
-                const coverage = totalShifts > 0 ? Math.round((assignedShifts / totalShifts) * 100) : 0;
-
-                statsGrid.innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-label">Wszystkie dyżury</div>
-                        <div class="stat-value">${totalShifts}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Obsadzone</div>
-                        <div class="stat-value">${assignedShifts}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Obsadzenie</div>
-                        <div class="stat-value">${coverage}%</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Dyżury 24h</div>
-                        <div class="stat-value">${total24h}</div>
-                    </div>
-                `;
-            }
-
-            renderAvailabilityView() {
-                if (!this.currentUser || this.currentUser.role !== 'staff') return;
-
-                const container = document.getElementById('availabilityEditor');
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                container.innerHTML = '';
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const date = new Date(year, month, day);
-                    const dateStr = this.formatDate(date);
-                    const dayName = date.toLocaleDateString('pl-PL', { weekday: 'long' });
-                    
-                    const avail = this.availability[this.currentUser.staffId]?.[dateStr];
-                    
-                    const dayDiv = document.createElement('div');
-                    dayDiv.className = 'availability-day';
-                    
-                    let statusText = 'Nie ustawiono';
-                    let statusIcon = '⚪';
-                    if (avail) {
-                        if (avail.status === 'available') {
-                            statusText = 'Dostępny';
-                            statusIcon = '✅';
-                        } else if (avail.status === 'preferred') {
-                            statusText = 'Preferowany';
-                            statusIcon = '⭐';
-                        } else if (avail.status === 'unavailable') {
-                            statusText = 'Niedostępny';
-                            statusIcon = '❌';
-                        }
-                        
-                        if (avail.from || avail.to) {
-                            statusText += ` (${avail.from || '...'} - ${avail.to || '...'})`;
-                        }
-                    }
-                    
-                    dayDiv.innerHTML = `
-                        <div class="availability-day-header">
-                            <div class="availability-day-date">${day} ${dayName}</div>
-                            <div>${statusIcon} ${statusText}</div>
-                        </div>
-                        <button class="btn btn-outline btn-sm" onclick="app.editDayAvailability('${dateStr}')">
-                            Edytuj
-                        </button>
-                    `;
-                    
-                    container.appendChild(dayDiv);
-                }
-            }
-
-            editDayAvailability(dateStr) {
-                this.selectedAvailabilityDate = dateStr;
-                const date = new Date(dateStr);
-                document.getElementById('availabilityModalTitle').textContent = 
-                    date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' });
-                
-                const avail = this.availability[this.currentUser.staffId]?.[dateStr];
-                if (avail && (avail.from || avail.to)) {
-                    document.getElementById('hasTimeLimit').checked = true;
-                    document.getElementById('timeLimitInputs').classList.remove('hidden');
-                    if (avail.from) document.getElementById('availableFrom').value = avail.from;
-                    if (avail.to) document.getElementById('availableTo').value = avail.to;
-                } else {
-                    document.getElementById('hasTimeLimit').checked = false;
-                    document.getElementById('timeLimitInputs').classList.add('hidden');
-                }
-                
-                document.getElementById('availabilityModal').classList.add('active');
-            }
-
-            closeAvailabilityModal() {
-                document.getElementById('availabilityModal').classList.remove('active');
-            }
-
-            toggleTimeLimit() {
-                const checked = document.getElementById('hasTimeLimit').checked;
-                document.getElementById('timeLimitInputs').classList.toggle('hidden', !checked);
-            }
-
-            setDayAvailability(status) {
-                if (!this.currentUser || this.currentUser.role !== 'staff') return;
-
-                const staffId = this.currentUser.staffId;
-                const dateStr = this.selectedAvailabilityDate;
-                
-                if (!this.availability[staffId]) {
-                    this.availability[staffId] = {};
-                }
-
-                if (status === null) {
-                    delete this.availability[staffId][dateStr];
-                } else {
-                    const hasTimeLimit = document.getElementById('hasTimeLimit').checked;
-                    this.availability[staffId][dateStr] = { status };
-                    
-                    if (hasTimeLimit) {
-                        this.availability[staffId][dateStr].from = document.getElementById('availableFrom').value;
-                        this.availability[staffId][dateStr].to = document.getElementById('availableTo').value;
-                    }
-                }
-
-                this.saveData();
-                this.closeAvailabilityModal();
-                this.renderAvailabilityView();
-            }
-
-            // ===== NAVIGATION =====
-
-            changeMonth(delta) {
-                this.currentDate.setMonth(this.currentDate.getMonth() + delta);
-                this.render();
-            }
-
-            goToToday() {
-                this.currentDate = new Date();
-                this.render();
-            }
-
-            switchView(view) {
-                this.currentView = view;
-                
-                document.querySelectorAll('.view-tab').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                event.target.classList.add('active');
-
-                document.getElementById('calendarView').classList.add('hidden');
-                document.getElementById('tableView').classList.add('hidden');
-                document.getElementById('availabilityView').classList.add('hidden');
-
-                if (view === 'calendar') {
-                    document.getElementById('calendarView').classList.remove('hidden');
-                    this.renderCalendar();
-                } else if (view === 'table') {
-                    document.getElementById('tableView').classList.remove('hidden');
-                    this.renderTable();
-                } else if (view === 'availability') {
-                    document.getElementById('availabilityView').classList.remove('hidden');
-                    this.renderAvailabilityView();
-                }
-            }
-
-            // ===== DAY MODAL =====
-
-            openDayModal(dateStr) {
-                if (this.currentUser.role !== 'admin') return;
-
-                this.selectedDate = dateStr;
-                const date = new Date(dateStr);
-                document.getElementById('dayModalTitle').textContent = 
-                    date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                
-                this.renderShiftsEditor();
-                document.getElementById('dayModal').classList.add('active');
-            }
-
-            closeDayModal() {
-                document.getElementById('dayModal').classList.remove('active');
-                this.selectedDate = null;
-            }
-
-            renderShiftsEditor() {
-                const container = document.getElementById('shiftsEditor');
-                const shifts = this.shifts[this.selectedDate] || [];
-
-                if (shifts.length === 0) {
-                    container.innerHTML = '<div class="text-center" style="color: var(--gray-600); padding: 20px;">Brak dyżurów w tym dniu</div>';
-                    return;
-                }
-
-                container.innerHTML = '';
-                shifts.forEach((shift, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'shift-item';
-                    
-                    const staff = this.getStaffById(shift.staffId);
-                    
-                    item.innerHTML = `
-                        <div class="shift-info">
-                            <div class="shift-station">${shift.station}</div>
-                            <div class="shift-time">${shift.start} - ${shift.end}</div>
-                        </div>
-                        <select class="form-select" style="max-width: 180px; min-width: 140px;" onchange="app.assignStaffToShift('${this.selectedDate}', ${index}, this.value)">
-                            <option value="">-- Nie przypisano --</option>
-                            ${this.staff.map(s => `
-                                <option value="${s.id}" ${s.id === shift.staffId ? 'selected' : ''}>
-                                    ${s.name}
-                                </option>
-                            `).join('')}
-                        </select>
-                        <button class="btn btn-danger btn-sm" onclick="app.removeShift('${this.selectedDate}', ${index})">×</button>
-                    `;
-                    
-                    container.appendChild(item);
-                });
-            }
-
-            addShiftToDay() {
-                this.closeDayModal();
-                this.openAddShiftModal(this.selectedDate);
-            }
-
-            // ===== ADD SHIFT MODAL =====
-
-            openAddShiftModal(dateStr = null) {
-                this.selectedDate = dateStr || this.selectedDate;
-                
-                const stationSelect = document.getElementById('shiftStation');
-                stationSelect.innerHTML = this.stations.map(s => `<option value="${s}">${s}</option>`).join('');
-                
-                const staffSelect = document.getElementById('shiftStaff');
-                staffSelect.innerHTML = '<option value="">-- Nie przypisuj --</option>' +
-                    this.staff.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-                
-                document.getElementById('addShiftModal').classList.add('active');
-            }
-
-            closeAddShiftModal() {
-                document.getElementById('addShiftModal').classList.remove('active');
-            }
-
-            saveShift() {
-                const station = document.getElementById('shiftStation').value;
-                const start = document.getElementById('shiftStart').value;
-                const end = document.getElementById('shiftEnd').value;
-                const staffId = document.getElementById('shiftStaff').value || null;
-
-                if (!station || !start || !end) {
-                    alert('Wypełnij wszystkie wymagane pola');
-                    return;
-                }
-
-                if (!this.shifts[this.selectedDate]) {
-                    this.shifts[this.selectedDate] = [];
-                }
-
-                this.shifts[this.selectedDate].push({
-                    id: this.generateId(),
-                    station,
-                    start,
-                    end,
-                    staffId
-                });
-
-                this.saveData();
-                this.closeAddShiftModal();
-                this.render();
-                
-                if (this.selectedDate) {
-                    setTimeout(() => this.openDayModal(this.selectedDate), 100);
-                }
-            }
-
-            assignStaffToShift(dateStr, shiftIndex, staffId) {
-                if (this.shifts[dateStr] && this.shifts[dateStr][shiftIndex]) {
-                    this.shifts[dateStr][shiftIndex].staffId = staffId || null;
-                    this.saveData();
-                    this.render();
-                    this.renderShiftsEditor();
-                }
-            }
-
-            removeShift(dateStr, shiftIndex) {
-                if (confirm('Czy na pewno usunąć ten dyżur?')) {
-                    this.shifts[dateStr].splice(shiftIndex, 1);
-                    if (this.shifts[dateStr].length === 0) {
-                        delete this.shifts[dateStr];
-                    }
-                    this.saveData();
-                    this.renderShiftsEditor();
-                    this.render();
-                }
-            }
-
-            // ===== STATIONS =====
-
-            manageStations() {
-                this.renderStationsList();
-                document.getElementById('stationsModal').classList.add('active');
-            }
-
-            closeStationsModal() {
-                document.getElementById('stationsModal').classList.remove('active');
-                this.render();
-            }
-
-            renderStationsList() {
-                const container = document.getElementById('stationsList');
-                container.innerHTML = this.stations.map((station, index) => `
-                    <div class="station-chip">
-                        <span>${station}</span>
-                        <span class="remove-chip" onclick="app.removeStation(${index})">×</span>
-                    </div>
-                `).join('');
-            }
-
-            addStation() {
-                const input = document.getElementById('newStationName');
-                const name = input.value.trim();
-                if (name) {
-                    this.stations.push(name);
-                    input.value = '';
-                    this.saveData();
-                    this.renderStationsList();
-                }
-            }
-
-            removeStation(index) {
-                if (confirm('Czy na pewno usunąć to stanowisko? Wszystkie dyżury na tym stanowisku zostaną usunięte.')) {
-                    const station = this.stations[index];
-                    this.stations.splice(index, 1);
-                    
-                    Object.keys(this.shifts).forEach(dateStr => {
-                        this.shifts[dateStr] = this.shifts[dateStr].filter(s => s.station !== station);
-                        if (this.shifts[dateStr].length === 0) {
-                            delete this.shifts[dateStr];
-                        }
-                    });
-                    
-                    this.saveData();
-                    this.renderStationsList();
-                }
-            }
-
-            // ===== STAFF =====
-
-            manageStaff() {
-                this.renderStaffList();
-                document.getElementById('staffModal').classList.add('active');
-            }
-
-            closeStaffModal() {
-                document.getElementById('staffModal').classList.remove('active');
-                this.render();
-            }
-
-            renderStaffList() {
-                const container = document.getElementById('staffList');
-                container.innerHTML = this.staff.map(person => {
-                    const stats = this.getStaffStats(person.id);
-                    return `
-                        <div class="staff-item">
-                            <div class="staff-info">
-                                <div class="staff-name">${person.name}</div>
-                                <div class="staff-stats">${stats.total} dyżurów (${stats.hours24} x 24h)</div>
-                            </div>
-                            <div class="staff-actions">
-                                <button class="btn btn-danger btn-sm" onclick="app.removeStaff('${person.id}')">Usuń</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-
-            addStaff() {
-                const input = document.getElementById('newStaffName');
-                const name = input.value.trim();
-                if (name) {
-                    const newId = this.generateId();
-                    this.staff.push({
-                        id: newId,
-                        name
-                    });
-                    input.value = '';
-                    this.saveData();
-                    this.renderStaffList();
-                    this.renderLoginScreen();
-                }
-            }
-
-            removeStaff(staffId) {
-                const staff = this.getStaffById(staffId);
-                if (confirm(`Czy na pewno usunąć ${staff.name}? Wszystkie przypisania zostaną usunięte.`)) {
-                    this.staff = this.staff.filter(s => s.id !== staffId);
-                    
-                    Object.keys(this.shifts).forEach(dateStr => {
-                        this.shifts[dateStr].forEach(shift => {
-                            if (shift.staffId === staffId) {
-                                shift.staffId = null;
-                            }
-                        });
-                    });
-                    
-                    delete this.availability[staffId];
-                    
-                    this.saveData();
-                    this.renderStaffList();
-                    this.renderLoginScreen();
-                }
-            }
-
-            getStaffById(staffId) {
-                return this.staff.find(s => s.id === staffId);
-            }
-
-            getStaffStats(staffId) {
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                let total = 0;
-                let hours24 = 0;
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dateStr = this.formatDate(new Date(year, month, day));
-                    const dayShifts = (this.shifts[dateStr] || []).filter(s => s.staffId === staffId);
-                    total += dayShifts.length;
-                    hours24 += dayShifts.filter(s => s.station.includes('24h')).length;
-                }
-
-                return { total, hours24 };
-            }
-
-            // ===== GENERATOR =====
-
-            showGenerator() {
-                document.getElementById('generatorModal').classList.add('active');
-            }
-
-            closeGeneratorModal() {
-                document.getElementById('generatorModal').classList.remove('active');
-            }
-
-            async generateSchedule() {
-                const maxShifts = parseInt(document.getElementById('maxShiftsPerPerson').value);
-                const max24h = parseInt(document.getElementById('max24hShifts').value);
-                const respectAvailability = document.getElementById('respectAvailability').checked;
-
-                if (!confirm('Generator nadpisze wszystkie przypisania w tym miesiącu. Kontynuować?')) {
-                    return;
-                }
-
-                const progress = document.getElementById('generatorProgress');
-                const progressFill = document.getElementById('progressFill');
-                const progressText = document.getElementById('progressText');
-                progress.classList.add('active');
-
-                const year = this.currentDate.getFullYear();
-                const month = this.currentDate.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                Object.keys(this.shifts).forEach(dateStr => {
-                    if (dateStr.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`)) {
-                        this.shifts[dateStr].forEach(shift => shift.staffId = null);
-                    }
-                });
-
-                const workload = {};
-                const workload24h = {};
-                this.staff.forEach(person => {
-                    workload[person.id] = 0;
-                    workload24h[person.id] = 0;
-                });
-
-                let assignedCount = 0;
-                let totalShifts = 0;
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dateStr = this.formatDate(new Date(year, month, day));
-                    totalShifts += (this.shifts[dateStr] || []).length;
-                }
-
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dateStr = this.formatDate(new Date(year, month, day));
-                    const dayShifts = this.shifts[dateStr] || [];
-
-                    for (const shift of dayShifts) {
-                        const is24h = shift.station.includes('24h');
-
-                        const candidates = this.staff
-                            .map(person => {
-                                const avail = this.availability[person.id]?.[dateStr];
-                                
-                                if (workload[person.id] >= maxShifts) return null;
-                                if (is24h && workload24h[person.id] >= max24h) return null;
-                                
-                                if (respectAvailability && avail) {
-                                    if (avail.status === 'unavailable') return null;
-                                    
-                                    // Check time compatibility
-                                    if (avail.from || avail.to) {
-                                        const shiftStart = shift.start;
-                                        const shiftEnd = shift.end;
-                                        
-                                        if (avail.from && shiftStart < avail.from) return null;
-                                        if (avail.to && shiftEnd > avail.to) return null;
-                                    }
-                                }
-
-                                return {
-                                    id: person.id,
-                                    name: person.name,
-                                    availability: avail?.status,
-                                    workload: workload[person.id],
-                                    workload24h: workload24h[person.id]
-                                };
-                            })
-                            .filter(c => c !== null)
-                            .sort((a, b) => {
-                                const availScore = { preferred: 2, available: 1 };
-                                const scoreA = availScore[a.availability] || 0;
-                                const scoreB = availScore[b.availability] || 0;
-                                
-                                if (scoreA !== scoreB) return scoreB - scoreA;
-                                return a.workload - b.workload;
-                            });
-
-                        if (candidates.length > 0) {
-                            const assigned = candidates[0];
-                            shift.staffId = assigned.id;
-                            workload[assigned.id]++;
-                            if (is24h) workload24h[assigned.id]++;
-                            assignedCount++;
-                        }
-
-                        const percent = Math.round((assignedCount / totalShifts) * 100);
-                        progressFill.style.width = `${percent}%`;
-                        progressText.textContent = `Przypisano ${assignedCount} z ${totalShifts} dyżurów (${percent}%)`;
-                        
-                        await new Promise(resolve => setTimeout(resolve, 10));
-                    }
-                }
-
-                this.saveData();
-                progress.classList.remove('active');
-                this.closeGeneratorModal();
-                this.render();
-                
-                alert(`✅ Grafik wygenerowany!\n\nObsadzono ${assignedCount} z ${totalShifts} dyżurów (${Math.round((assignedCount/totalShifts)*100)}%)`);
-            }
-
-            // ===== UTILITIES =====
-
-            formatDate(date, format = 'YYYY-MM-DD') {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
             }
         }
 
-        let app;
-        document.addEventListener('DOMContentLoaded', () => {
-            app = new ScheduleApp();
-        });
-    </script>
+        exportData() {
+            const data = {
+                stations: this.stations,
+                staff: this.staff,
+                shifts: this.shifts,
+                availability: this.availability,
+                preferences: this.preferences,
+                exported: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `grafik_${this.formatDate(new Date(), 'YYYY-MM')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Dane zostały wyeksportowane!');
+        }
+
+        // ===== TEST DATA GENERATOR =====
+
+        generateTestData() {
+            if (!confirm('Czy wygenerować przykładowy grafik z losowymi danymi? Nadpisze to obecne dane.')) {
+                return;
+            }
+
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Generuj dyżury dla każdego dnia
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = this.formatDate(new Date(year, month, day));
+                this.shifts[dateStr] = [];
+
+                // Losowo 4-6 dyżurów dziennie
+                const numShifts = 4 + Math.floor(Math.random() * 3);
+                const usedStations = [];
+
+                for (let i = 0; i < numShifts; i++) {
+                    // Wybierz losowe stanowisko (nie powtarzaj)
+                    let station;
+                    do {
+                        station = this.stations[Math.floor(Math.random() * this.stations.length)];
+                    } while (usedStations.includes(station) && usedStations.length < this.stations.length);
+                    usedStations.push(station);
+
+                    // Losowe godziny
+                    const starts = ['07:00', '08:00', '08:30', '09:00', '12:00', '14:00', '15:00'];
+                    const ends = ['14:00', '15:00', '16:00', '19:00', '20:00', '22:00'];
+                    const start = starts[Math.floor(Math.random() * starts.length)];
+                    const end = ends[Math.floor(Math.random() * ends.length)];
+
+                    // Losowa osoba (70% szans na przypisanie)
+                    let staffId = null;
+                    if (Math.random() > 0.3) {
+                        staffId = this.staff[Math.floor(Math.random() * this.staff.length)].id;
+                    }
+
+                    this.shifts[dateStr].push({
+                        id: this.generateId(),
+                        station,
+                        start,
+                        end,
+                        staffId
+                    });
+                }
+            }
+
+            // Generuj przykładowe dyspozycje
+            this.staff.forEach(person => {
+                this.availability[person.id] = {};
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = this.formatDate(new Date(year, month, day));
+                    const rand = Math.random();
+                    
+                    if (rand < 0.15) { // 15% niedostępny
+                        this.availability[person.id][dateStr] = { status: 'unavailable' };
+                    } else if (rand < 0.25) { // 10% preferowany
+                        this.availability[person.id][dateStr] = { status: 'preferred' };
+                    } else if (rand < 0.4) { // 15% dostępny z godzinami
+                        const times = [
+                            { from: '08:00', to: '14:00' },
+                            { from: '08:00', to: '16:00' },
+                            { from: '12:00', to: '20:00' },
+                            { from: '14:00', to: '22:00' }
+                        ];
+                        const time = times[Math.floor(Math.random() * times.length)];
+                        this.availability[person.id][dateStr] = { 
+                            status: 'available',
+                            from: time.from,
+                            to: time.to
+                        };
+                    }
+                    // 60% - brak statusu (dostępny bez ograniczeń)
+                }
+            });
+
+            // Generuj przykładowe preferencje
+            this.staff.forEach(person => {
+                this.preferences[person.id] = {
+                    maxShifts: 12 + Math.floor(Math.random() * 6), // 12-17
+                    max24h: 5 + Math.floor(Math.random() * 4), // 5-8
+                    preferredStations: []
+                };
+
+                // Losowo wybierz 2-4 preferowane stanowiska
+                const numPref = 2 + Math.floor(Math.random() * 3);
+                const shuffled = [...this.stations].sort(() => 0.5 - Math.random());
+                this.preferences[person.id].preferredStations = shuffled.slice(0, numPref);
+            });
+
+            this.saveData();
+            this.render();
+            alert('✅ Wygenerowano przykładowy grafik z danymi testowymi!');
+        }
+
+        // ===== LOGIN =====
+
+        renderLoginScreen() {
+            const staffList = document.getElementById('staffListLogin');
+            staffList.innerHTML = this.staff.map(person => `
+                <button class="staff-login-btn" onclick="app.loginAsStaff('${person.id}')">
+                    ${person.name}
+                </button>
+            `).join('');
+        }
+
+        selectRole(role) {
+            this.selectedRole = role;
+            document.getElementById('adminRoleBtn').classList.toggle('active', role === 'admin');
+            document.getElementById('staffRoleBtn').classList.toggle('active', role === 'staff');
+            
+            if (role === 'admin') {
+                document.getElementById('adminLoginDiv').classList.remove('hidden');
+                document.getElementById('staffSelectDiv').classList.add('hidden');
+            } else {
+                document.getElementById('adminLoginDiv').classList.add('hidden');
+                document.getElementById('staffSelectDiv').classList.remove('hidden');
+            }
+        }
+
+        loginAsAdmin() {
+            this.currentUser = { role: 'admin' };
+            this.showMainApp();
+        }
+
+        loginAsStaff(staffId) {
+            this.currentUser = { role: 'staff', staffId };
+            this.showMainApp();
+        }
+
+        logout() {
+            this.currentUser = null;
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        showMainApp() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            const staff = this.getStaffById(this.currentUser.staffId);
+            if (this.currentUser.role === 'admin') {
+                document.getElementById('currentUser').innerHTML = '👨‍💼 Administrator';
+                document.getElementById('adminControls').classList.remove('hidden');
+                document.getElementById('staffControls').classList.add('hidden');
+                document.getElementById('availabilityTab').classList.add('hidden');
+            } else {
+                document.getElementById('currentUser').innerHTML = `👨‍⚕️ ${staff.name}`;
+                document.getElementById('adminControls').classList.add('hidden');
+                document.getElementById('staffControls').classList.remove('hidden');
+                document.getElementById('availabilityTab').classList.remove('hidden');
+            }
+            
+            this.render();
+        }
+
+        // ===== PREFERENCES =====
+
+        showPreferences() {
+            const staffId = this.currentUser.staffId;
+            const prefs = this.preferences[staffId] || { maxShifts: 15, max24h: 8, preferredStations: [] };
+
+            document.getElementById('prefMaxShifts').value = prefs.maxShifts;
+            document.getElementById('prefMax24h').value = prefs.max24h;
+
+            const container = document.getElementById('stationPreferences');
+            container.innerHTML = this.stations.map(station => `
+                <div class="station-pref-item">
+                    <input type="checkbox" id="pref_${station}" 
+                        ${prefs.preferredStations.includes(station) ? 'checked' : ''}>
+                    <label for="pref_${station}">${station}</label>
+                </div>
+            `).join('');
+
+            document.getElementById('preferencesModal').classList.add('active');
+        }
+
+        closePreferencesModal() {
+            document.getElementById('preferencesModal').classList.remove('active');
+        }
+
+        savePreferences() {
+            const staffId = this.currentUser.staffId;
+            const maxShifts = parseInt(document.getElementById('prefMaxShifts').value);
+            const max24h = parseInt(document.getElementById('prefMax24h').value);
+
+            const preferredStations = this.stations.filter(station => {
+                return document.getElementById(`pref_${station}`).checked;
+            });
+
+            this.preferences[staffId] = { maxShifts, max24h, preferredStations };
+            this.saveData();
+            this.closePreferencesModal();
+            alert('✅ Preferencje zostały zapisane!');
+        }
+
+        // ===== RENDERING =====
+
+        render() {
+            this.renderMonthDisplay();
+            if (this.currentView === 'calendar') {
+                this.renderCalendar();
+            } else if (this.currentView === 'table') {
+                this.renderTable();
+            } else if (this.currentView === 'availability') {
+                this.renderAvailabilityView();
+            }
+        }
+
+        renderMonthDisplay() {
+            const monthName = this.currentDate.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
+            document.getElementById('monthDisplay').textContent = monthName;
+            document.getElementById('tableMonthDisplay').textContent = monthName;
+        }
+
+        renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDayOfWeek = (firstDay.getDay() + 6) % 7;
+
+            for (let i = 0; i < startDayOfWeek; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'calendar-day empty';
+                grid.appendChild(cell);
+            }
+
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = this.formatDate(date);
+                const cell = document.createElement('div');
+                cell.className = 'calendar-day';
+                cell.dataset.date = dateStr;
+
+                const dayOfWeek = date.getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    cell.classList.add('weekend');
+                }
+
+                if (this.formatDate(date) === this.formatDate(today)) {
+                    cell.classList.add('today');
+                }
+
+                const dayNum = document.createElement('div');
+                dayNum.className = 'day-number';
+                dayNum.textContent = day;
+                cell.appendChild(dayNum);
+
+                if (this.currentUser && this.currentUser.role === 'staff') {
+                    const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                    if (avail) {
+                        const indicator = document.createElement('div');
+                        indicator.className = 'availability-indicator';
+                        if (avail.status === 'available') indicator.textContent = '✅';
+                        else if (avail.status === 'preferred') indicator.textContent = '⭐';
+                        else if (avail.status === 'unavailable') indicator.textContent = '❌';
+                        cell.appendChild(indicator);
+
+                        if (avail.from || avail.to) {
+                            const timeInfo = document.createElement('div');
+                            timeInfo.className = 'availability-time';
+                            timeInfo.textContent = `${avail.from || '...'} - ${avail.to || '...'}`;
+                            cell.appendChild(timeInfo);
+                        }
+                    }
+                }
+
+                const dayShifts = this.shifts[dateStr] || [];
+                if (dayShifts.length > 0 && this.currentUser && this.currentUser.role === 'admin') {
+                    const shiftsContainer = document.createElement('div');
+                    shiftsContainer.className = 'day-shifts';
+                    
+                    dayShifts.slice(0, 3).forEach(shift => {
+                        const badge = document.createElement('div');
+                        badge.className = 'shift-badge';
+                        if (shift.staffId) {
+                            badge.classList.add('assigned');
+                        }
+                        const staff = this.getStaffById(shift.staffId);
+                        badge.textContent = staff ? staff.name.split(' ').pop() : shift.station.split(' ')[0];
+                        shiftsContainer.appendChild(badge);
+                    });
+                    
+                    cell.appendChild(shiftsContainer);
+
+                    const assigned = dayShifts.filter(s => s.staffId).length;
+                    const total = dayShifts.length;
+                    const stats = document.createElement('div');
+                    stats.className = 'day-stats';
+                    stats.textContent = `${assigned}/${total}`;
+                    cell.appendChild(stats);
+                }
+
+                if (this.currentUser && this.currentUser.role === 'admin') {
+                    cell.addEventListener('click', () => this.openDayModal(dateStr));
+                }
+
+                grid.appendChild(cell);
+            }
+        }
+
+        renderTable() {
+            const table = document.getElementById('scheduleTable');
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let html = '<thead><tr>';
+            html += '<th>Data</th>';
+            this.stations.forEach(station => {
+                html += `<th>${station}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = this.formatDate(date);
+                const dayName = date.toLocaleDateString('pl-PL', { weekday: 'short' });
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                
+                html += `<tr class="${isWeekend ? 'weekend-row' : ''}">`;
+                html += `<td class="date-cell">${day} ${dayName}</td>`;
+
+                this.stations.forEach(station => {
+                    const shifts = (this.shifts[dateStr] || []).filter(s => s.station === station);
+                    html += '<td class="assignment-cell">';
+                    shifts.forEach(shift => {
+                        if (shift.staffId) {
+                            const staff = this.getStaffById(shift.staffId);
+                            html += `<div class="assignment-name">${staff ? staff.name : 'BRAK'}</div>`;
+                            html += `<div class="assignment-time">${shift.start}-${shift.end}</div>`;
+                        }
+                    });
+                    html += '</td>';
+                });
+
+                html += '</tr>';
+            }
+
+            html += '</tbody>';
+            table.innerHTML = html;
+
+            this.renderStats();
+        }
+
+        renderStats() {
+            const statsGrid = document.getElementById('statsGrid');
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let totalShifts = 0;
+            let assignedShifts = 0;
+            let total24h = 0;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = this.formatDate(new Date(year, month, day));
+                const dayShifts = this.shifts[dateStr] || [];
+                totalShifts += dayShifts.length;
+                assignedShifts += dayShifts.filter(s => s.staffId).length;
+                total24h += dayShifts.filter(s => s.station.includes('24h')).length;
+            }
+
+            const coverage = totalShifts > 0 ? Math.round((assignedShifts / totalShifts) * 100) : 0;
+
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Wszystkie dyżury</div>
+                    <div class="stat-value">${totalShifts}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Obsadzone</div>
+                    <div class="stat-value">${assignedShifts}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Obsadzenie</div>
+                    <div class="stat-value">${coverage}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Dyżury 24h</div>
+                    <div class="stat-value">${total24h}</div>
+                </div>
+            `;
+        }
+
+        renderAvailabilityView() {
+            if (!this.currentUser || this.currentUser.role !== 'staff') return;
+
+            const container = document.getElementById('availabilityEditor');
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            container.innerHTML = '';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = this.formatDate(date);
+                const dayName = date.toLocaleDateString('pl-PL', { weekday: 'long' });
+                
+                const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'availability-day';
+                
+                let statusHtml = '<span style="color: var(--gray-500)">⚪ Nie ustawiono</span>';
+                if (avail) {
+                    if (avail.status === 'available') {
+                        statusHtml = '<span class="availability-status available">✅ Dostępny</span>';
+                    } else if (avail.status === 'preferred') {
+                        statusHtml = '<span class="availability-status preferred">⭐ Preferowany</span>';
+                    } else if (avail.status === 'unavailable') {
+                        statusHtml = '<span class="availability-status unavailable">❌ Niedostępny</span>';
+                    }
+                    
+                    if (avail.from || avail.to) {
+                        statusHtml += ` <span style="color: var(--gray-600); font-size: 13px;">(${avail.from || '...'} - ${avail.to || '...'})</span>`;
+                    }
+                }
+                
+                dayDiv.innerHTML = `
+                    <div class="availability-day-header">
+                        <div class="availability-day-date">${day} ${dayName}</div>
+                        <div>${statusHtml}</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="app.editDayAvailability('${dateStr}')">
+                        Edytuj
+                    </button>
+                `;
+                
+                container.appendChild(dayDiv);
+            }
+        }
+
+        editDayAvailability(dateStr) {
+            this.selectedAvailabilityDate = dateStr;
+            const date = new Date(dateStr);
+            document.getElementById('availabilityModalTitle').textContent = 
+                date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' });
+            
+            const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+            if (avail && (avail.from || avail.to)) {
+                document.getElementById('hasTimeLimit').checked = true;
+                document.getElementById('timeLimitInputs').classList.remove('hidden');
+                if (avail.from) document.getElementById('availableFrom').value = avail.from;
+                if (avail.to) document.getElementById('availableTo').value = avail.to;
+            } else {
+                document.getElementById('hasTimeLimit').checked = false;
+                document.getElementById('timeLimitInputs').classList.add('hidden');
+                document.getElementById('availableFrom').value = '08:00';
+                document.getElementById('availableTo').value = '16:00';
+            }
+            
+            document.getElementById('availabilityModal').classList.add('active');
+        }
+
+        closeAvailabilityModal() {
+            document.getElementById('availabilityModal').classList.remove('active');
+        }
+
+        toggleTimeLimit() {
+            const checked = document.getElementById('hasTimeLimit').checked;
+            document.getElementById('timeLimitInputs').classList.toggle('hidden', !checked);
+        }
+
+        setDayAvailability(status) {
+            if (!this.currentUser || this.currentUser.role !== 'staff') return;
+
+            const staffId = this.currentUser.staffId;
+            const dateStr = this.selectedAvailabilityDate;
+            
+            if (!this.availability[staffId]) {
+                this.availability[staffId] = {};
+            }
+
+            if (status === null) {
+                delete this.availability[staffId][dateStr];
+            } else {
+                const hasTimeLimit = document.getElementById('hasTimeLimit').checked;
+                this.availability[staffId][dateStr] = { status };
+                
+                if (hasTimeLimit) {
+                    this.availability[staffId][dateStr].from = document.getElementById('availableFrom').value;
+                    this.availability[staffId][dateStr].to = document.getElementById('availableTo').value;
+                }
+            }
+
+            this.saveData();
+            this.closeAvailabilityModal();
+            this.renderAvailabilityView();
+        }
+
+        // ===== NAVIGATION =====
+
+        changeMonth(delta) {
+            this.currentDate.setMonth(this.currentDate.getMonth() + delta);
+            this.render();
+        }
+
+        goToToday() {
+            this.currentDate = new Date();
+            this.render();
+        }
+
+        switchView(view) {
+            this.currentView = view;
+            
+            document.querySelectorAll('.view-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.getElementById('calendarView').classList.add('hidden');
+            document.getElementById('tableView').classList.add('hidden');
+            document.getElementById('availabilityView').classList.add('hidden');
+
+            if (view === 'calendar') {
+                document.getElementById('calendarView').classList.remove('hidden');
+                this.renderCalendar();
+            } else if (view === 'table') {
+                document.getElementById('tableView').classList.remove('hidden');
+                this.renderTable();
+            } else if (view === 'availability') {
+                document.getElementById('availabilityView').classList.remove('hidden');
+                this.renderAvailabilityView();
+            }
+        }
+
+        // ===== DAY MODAL =====
+
+        openDayModal(dateStr) {
+            if (this.currentUser.role !== 'admin') return;
+
+            this.selectedDate = dateStr;
+            const date = new Date(dateStr);
+            document.getElementById('dayModalTitle').textContent = 
+                date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            
+            this.renderShiftsEditor();
+            document.getElementById('dayModal').classList.add('active');
+        }
+
+        closeDayModal() {
+            document.getElementById('dayModal').classList.remove('active');
+            this.selectedDate = null;
+        }
+
+        renderShiftsEditor() {
+            const container = document.getElementById('shiftsEditor');
+            const shifts = this.shifts[this.selectedDate] || [];
+
+            if (shifts.length === 0) {
+                container.innerHTML = '<div class="text-center" style="color: var(--gray-600); padding: 30px;">Brak dyżurów w tym dniu</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            shifts.forEach((shift, index) => {
+                const item = document.createElement('div');
+                item.className = 'shift-item';
+                
+                const staff = this.getStaffById(shift.staffId);
+                
+                item.innerHTML = `
+                    <div class="shift-info">
+                        <div class="shift-station">${shift.station}</div>
+                        <div class="shift-time">${shift.start} - ${shift.end}</div>
+                    </div>
+                    <select class="form-select" style="max-width: 200px; min-width: 160px;" onchange="app.assignStaffToShift('${this.selectedDate}', ${index}, this.value)">
+                        <option value="">-- Nie przypisano --</option>
+                        ${this.staff.map(s => `
+                            <option value="${s.id}" ${s.id === shift.staffId ? 'selected' : ''}>
+                                ${s.name}
+                            </option>
+                        `).join('')}
+                    </select>
+                    <button class="btn btn-danger btn-sm" onclick="app.removeShift('${this.selectedDate}', ${index})">×</button>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        addShiftToDay() {
+            this.closeDayModal();
+            this.openAddShiftModal(this.selectedDate);
+        }
+
+        // ===== ADD SHIFT MODAL =====
+
+        openAddShiftModal(dateStr = null) {
+            this.selectedDate = dateStr || this.selectedDate;
+            
+            const stationSelect = document.getElementById('shiftStation');
+            stationSelect.innerHTML = this.stations.map(s => `<option value="${s}">${s}</option>`).join('');
+            
+            const staffSelect = document.getElementById('shiftStaff');
+            staffSelect.innerHTML = '<option value="">-- Nie przypisuj --</option>' +
+                this.staff.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            
+            document.getElementById('addShiftModal').classList.add('active');
+        }
+
+        closeAddShiftModal() {
+            document.getElementById('addShiftModal').classList.remove('active');
+        }
+
+        saveShift() {
+            const station = document.getElementById('shiftStation').value;
+            const start = document.getElementById('shiftStart').value;
+            const end = document.getElementById('shiftEnd').value;
+            const staffId = document.getElementById('shiftStaff').value || null;
+
+            if (!station || !start || !end) {
+                alert('Wypełnij wszystkie wymagane pola');
+                return;
+            }
+
+            if (!this.shifts[this.selectedDate]) {
+                this.shifts[this.selectedDate] = [];
+            }
+
+            this.shifts[this.selectedDate].push({
+                id: this.generateId(),
+                station,
+                start,
+                end,
+                staffId
+            });
+
+            this.saveData();
+            this.closeAddShiftModal();
+            this.render();
+            
+            if (this.selectedDate) {
+                setTimeout(() => this.openDayModal(this.selectedDate), 100);
+            }
+        }
+
+        assignStaffToShift(dateStr, shiftIndex, staffId) {
+            if (this.shifts[dateStr] && this.shifts[dateStr][shiftIndex]) {
+                this.shifts[dateStr][shiftIndex].staffId = staffId || null;
+                this.saveData();
+                this.render();
+                this.renderShiftsEditor();
+            }
+        }
+
+        removeShift(dateStr, shiftIndex) {
+            if (confirm('Czy na pewno usunąć ten dyżur?')) {
+                this.shifts[dateStr].splice(shiftIndex, 1);
+                if (this.shifts[dateStr].length === 0) {
+                    delete this.shifts[dateStr];
+                }
+                this.saveData();
+                this.renderShiftsEditor();
+                this.render();
+            }
+        }
+
+        // ===== STATIONS =====
+
+        manageStations() {
+            this.renderStationsList();
+            document.getElementById('stationsModal').classList.add('active');
+        }
+
+        closeStationsModal() {
+            document.getElementById('stationsModal').classList.remove('active');
+            this.render();
+        }
+
+        renderStationsList() {
+            const container = document.getElementById('stationsList');
+            container.innerHTML = this.stations.map((station, index) => `
+                <div class="station-chip">
+                    <span>${station}</span>
+                    <span class="remove-chip" onclick="app.removeStation(${index})">×</span>
+                </div>
+            `).join('');
+        }
+
+        addStation() {
+            const input = document.getElementById('newStationName');
+            const name = input.value.trim();
+            if (name) {
+                this.stations.push(name);
+                input.value = '';
+                this.saveData();
+                this.renderStationsList();
+            }
+        }
+
+        removeStation(index) {
+            if (confirm('Czy na pewno usunąć to stanowisko? Wszystkie dyżury na tym stanowisku zostaną usunięte.')) {
+                const station = this.stations[index];
+                this.stations.splice(index, 1);
+                
+                Object.keys(this.shifts).forEach(dateStr => {
+                    this.shifts[dateStr] = this.shifts[dateStr].filter(s => s.station !== station);
+                    if (this.shifts[dateStr].length === 0) {
+                        delete this.shifts[dateStr];
+                    }
+                });
+                
+                this.saveData();
+                this.renderStationsList();
+            }
+        }
+
+        // ===== STAFF =====
+
+        manageStaff() {
+            this.renderStaffList();
+            document.getElementById('staffModal').classList.add('active');
+        }
+
+        closeStaffModal() {
+            document.getElementById('staffModal').classList.remove('active');
+            this.render();
+        }
+
+        renderStaffList() {
+            const container = document.getElementById('staffList');
+            container.innerHTML = this.staff.map(person => {
+                const stats = this.getStaffStats(person.id);
+                const prefs = this.preferences[person.id];
+                const prefText = prefs ? `Limit: ${prefs.maxShifts} dyż. (${prefs.max24h}×24h)` : 'Brak preferencji';
+                
+                return `
+                    <div class="staff-item">
+                        <div class="staff-info">
+                            <div class="staff-name">${person.name}</div>
+                            <div class="staff-stats">${stats.total} dyżurów (${stats.hours24} × 24h) • ${prefText}</div>
+                        </div>
+                        <div class="staff-actions">
+                            <button class="btn btn-danger btn-sm" onclick="app.removeStaff('${person.id}')">Usuń</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        addStaff() {
+            const input = document.getElementById('newStaffName');
+            const name = input.value.trim();
+            if (name) {
+                const newId = this.generateId();
+                this.staff.push({
+                    id: newId,
+                    name
+                });
+                input.value = '';
+                this.saveData();
+                this.renderStaffList();
+                this.renderLoginScreen();
+            }
+        }
+
+        removeStaff(staffId) {
+            const staff = this.getStaffById(staffId);
+            if (confirm(`Czy na pewno usunąć ${staff.name}? Wszystkie przypisania zostaną usunięte.`)) {
+                this.staff = this.staff.filter(s => s.id !== staffId);
+                
+                Object.keys(this.shifts).forEach(dateStr => {
+                    this.shifts[dateStr].forEach(shift => {
+                        if (shift.staffId === staffId) {
+                            shift.staffId = null;
+                        }
+                    });
+                });
+                
+                delete this.availability[staffId];
+                delete this.preferences[staffId];
+                
+                this.saveData();
+                this.renderStaffList();
+                this.renderLoginScreen();
+            }
+        }
+
+        getStaffById(staffId) {
+            return this.staff.find(s => s.id === staffId);
+        }
+
+        getStaffStats(staffId) {
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let total = 0;
+            let hours24 = 0;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = this.formatDate(new Date(year, month, day));
+                const dayShifts = (this.shifts[dateStr] || []).filter(s => s.staffId === staffId);
+                total += dayShifts.length;
+                hours24 += dayShifts.filter(s => s.station.includes('24h')).length;
+            }
+
+            return { total, hours24 };
+        }
+
+        // ===== GENERATOR =====
+
+        showGenerator() {
+            document.getElementById('generatorModal').classList.add('active');
+        }
+
+        closeGeneratorModal() {
+            document.getElementById('generatorModal').classList.remove('active');
+        }
+
+        async generateSchedule() {
+            const respectAvailability = document.getElementById('respectAvailability').checked;
+            const respectPreferences = document.getElementById('respectPreferences').checked;
+
+            if (!confirm('Generator nadpisze wszystkie przypisania w tym miesiącu. Kontynuować?')) {
+                return;
+            }
+
+            const progress = document.getElementById('generatorProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            progress.classList.add('active');
+
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Reset assignments
+            Object.keys(this.shifts).forEach(dateStr => {
+                if (dateStr.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`)) {
+                    this.shifts[dateStr].forEach(shift => shift.staffId = null);
+                }
+            });
+
+            const workload = {};
+            const workload24h = {};
+            this.staff.forEach(person => {
+                workload[person.id] = 0;
+                workload24h[person.id] = 0;
+            });
+
+            let assignedCount = 0;
+            let totalShifts = 0;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = this.formatDate(new Date(year, month, day));
+                totalShifts += (this.shifts[dateStr] || []).length;
+            }
+
+            // Assign shifts
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = this.formatDate(new Date(year, month, day));
+                const dayShifts = this.shifts[dateStr] || [];
+
+                for (const shift of dayShifts) {
+                    const is24h = shift.station.includes('24h');
+
+                    const candidates = this.staff
+                        .map(person => {
+                            const prefs = this.preferences[person.id] || { maxShifts: 20, max24h: 10, preferredStations: [] };
+                            const avail = this.availability[person.id]?.[dateStr];
+                            
+                            // Check limits
+                            if (respectPreferences) {
+                                if (workload[person.id] >= prefs.maxShifts) return null;
+                                if (is24h && workload24h[person.id] >= prefs.max24h) return null;
+                            }
+                            
+                            // Check availability
+                            if (respectAvailability && avail) {
+                                if (avail.status === 'unavailable') return null;
+                                
+                                // Check time compatibility
+                                if (avail.from || avail.to) {
+                                    const shiftStart = shift.start;
+                                    const shiftEnd = shift.end;
+                                    
+                                    if (avail.from && shiftStart < avail.from) return null;
+                                    if (avail.to && shiftEnd > avail.to) return null;
+                                }
+                            }
+
+                            // Calculate score
+                            let score = 0;
+                            
+                            // Availability bonus
+                            if (avail) {
+                                if (avail.status === 'preferred') score += 100;
+                                else if (avail.status === 'available') score += 50;
+                            }
+                            
+                            // Station preference bonus
+                            if (respectPreferences && prefs.preferredStations.includes(shift.station)) {
+                                score += 30;
+                            }
+                            
+                            // Lower workload bonus
+                            score += (20 - workload[person.id]);
+
+                            return {
+                                id: person.id,
+                                name: person.name,
+                                score,
+                                workload: workload[person.id]
+                            };
+                        })
+                        .filter(c => c !== null)
+                        .sort((a, b) => b.score - a.score);
+
+                    if (candidates.length > 0) {
+                        const assigned = candidates[0];
+                        shift.staffId = assigned.id;
+                        workload[assigned.id]++;
+                        if (is24h) workload24h[assigned.id]++;
+                        assignedCount++;
+                    }
+
+                    const percent = Math.round((assignedCount / totalShifts) * 100);
+                    progressFill.style.width = `${percent}%`;
+                    progressText.textContent = `Przypisano ${assignedCount} z ${totalShifts} dyżurów (${percent}%)`;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                }
+            }
+
+            this.saveData();
+            progress.classList.remove('active');
+            this.closeGeneratorModal();
+            this.render();
+            
+            alert(`✅ Grafik wygenerowany!\n\nObsadzono ${assignedCount} z ${totalShifts} dyżurów (${Math.round((assignedCount/totalShifts)*100)}%)`);
+        }
+
+        // ===== UTILITIES =====
+
+        formatDate(date, format = 'YYYY-MM-DD') {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+    }
+
+    let app;
+    document.addEventListener('DOMContentLoaded', () => {
+        app = new ScheduleApp();
+    });
+</script>
+```
+
 </body>
 </html>
