@@ -31,6 +31,100 @@
             background: var(--gray-50);
             color: var(--gray-900);
             line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            color: var(--gray-600);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 20px;
+            border: 3px solid var(--gray-200);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .role-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .role-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .staff-list-login {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .staff-login-btn {
+            padding: 20px 15px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .staff-login-btn:hover {
+            border-color: var(--primary);
+            background: var(--gray-50);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
         }
 
         /* ===== LAYOUT ===== */
@@ -43,7 +137,7 @@
         .header {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px 20px;
             margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
@@ -58,56 +152,69 @@
         }
 
         .header-title h1 {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--gray-900);
         }
 
         .header-subtitle {
             color: var(--gray-600);
+            font-size: 13px;
+        }
+
+        .current-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: var(--gray-100);
+            border-radius: 8px;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .nav-section {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
+            gap: 10px;
+            padding: 12px;
             background: var(--gray-50);
             border-radius: 8px;
+            flex-wrap: wrap;
         }
 
         .month-nav {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .month-display {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            min-width: 200px;
+            min-width: 160px;
             text-align: center;
         }
 
         /* ===== BUTTONS ===== */
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             white-space: nowrap;
+            line-height: 1.4;
         }
 
         .btn:active {
@@ -157,15 +264,15 @@
         }
 
         .btn-icon {
-            padding: 10px;
-            font-size: 20px;
-            min-width: 40px;
+            padding: 8px;
+            font-size: 18px;
+            min-width: 36px;
             justify-content: center;
         }
 
         .btn-sm {
             padding: 6px 12px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* ===== VIEW TABS ===== */
@@ -173,17 +280,17 @@
             display: flex;
             gap: 5px;
             background: var(--gray-100);
-            padding: 5px;
+            padding: 4px;
             border-radius: 8px;
         }
 
         .view-tab {
-            padding: 8px 16px;
+            padding: 6px 12px;
             background: transparent;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             color: var(--gray-600);
             transition: all 0.2s;
@@ -199,40 +306,41 @@
         .calendar-view {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 6px;
         }
 
         .weekday {
             text-align: center;
             font-weight: 600;
             color: var(--gray-600);
-            padding: 10px;
-            font-size: 13px;
+            padding: 8px;
+            font-size: 12px;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
 
         .calendar-day {
-            min-height: 120px;
+            min-height: 100px;
             border: 2px solid var(--gray-200);
             border-radius: 8px;
-            padding: 8px;
+            padding: 6px;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
             background: white;
+            overflow: hidden;
         }
 
         .calendar-day:hover {
@@ -263,31 +371,32 @@
 
         .day-number {
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-size: 14px;
+            margin-bottom: 4px;
             color: var(--gray-900);
         }
 
         .today .day-number {
             background: var(--primary);
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            font-size: 12px;
         }
 
         .day-shifts {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
         }
 
         .shift-badge {
-            font-size: 10px;
-            padding: 3px 6px;
+            font-size: 9px;
+            padding: 2px 5px;
             border-radius: 4px;
             background: var(--gray-100);
             color: var(--gray-700);
@@ -308,22 +417,39 @@
 
         .day-stats {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 11px;
+            bottom: 4px;
+            right: 4px;
+            font-size: 10px;
             background: var(--gray-600);
             color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 2px 5px;
+            border-radius: 8px;
+        }
+
+        .availability-indicator {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 16px;
+        }
+
+        .availability-time {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            font-size: 9px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
         }
 
         /* ===== TABLE VIEW ===== */
         .table-view {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            overflow-x: auto;
         }
 
         .table-header {
@@ -335,26 +461,33 @@
             gap: 10px;
         }
 
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
+            min-width: 800px;
         }
 
         .schedule-table th {
             background: var(--gray-100);
-            padding: 10px 8px;
+            padding: 8px 6px;
             text-align: left;
             font-weight: 600;
             border: 1px solid var(--gray-300);
             white-space: nowrap;
+            font-size: 10px;
         }
 
         .schedule-table td {
-            padding: 8px;
+            padding: 6px;
             border: 1px solid var(--gray-300);
             vertical-align: top;
-            min-width: 100px;
+            font-size: 10px;
         }
 
         .schedule-table tr:hover td {
@@ -364,7 +497,7 @@
         .schedule-table .date-cell {
             font-weight: 600;
             background: var(--gray-50);
-            min-width: 80px;
+            min-width: 70px;
         }
 
         .schedule-table .weekend-row .date-cell {
@@ -372,8 +505,8 @@
         }
 
         .assignment-cell {
-            font-size: 11px;
-            line-height: 1.4;
+            font-size: 10px;
+            line-height: 1.3;
         }
 
         .assignment-name {
@@ -383,7 +516,7 @@
 
         .assignment-time {
             color: var(--gray-600);
-            font-size: 10px;
+            font-size: 9px;
         }
 
         /* ===== MODALS ===== */
@@ -398,7 +531,8 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 20px;
+            padding: 15px;
+            overflow-y: auto;
         }
 
         .modal-overlay.active {
@@ -413,31 +547,39 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin: auto;
         }
 
         .modal-header {
-            padding: 20px;
+            padding: 15px;
             border-bottom: 1px solid var(--gray-200);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 15px;
         }
 
         .modal-footer {
-            padding: 20px;
+            padding: 15px;
             border-top: 1px solid var(--gray-200);
             display: flex;
             gap: 10px;
             justify-content: flex-end;
+            position: sticky;
+            bottom: 0;
+            background: white;
         }
 
         /* ===== FORMS ===== */
@@ -450,7 +592,7 @@
             margin-bottom: 5px;
             font-weight: 500;
             color: var(--gray-700);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-input,
@@ -472,35 +614,87 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* ===== STATION CHIPS ===== */
-        .stations-list {
+        /* ===== AVAILABILITY EDITOR ===== */
+        .availability-editor {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .station-chip {
-            padding: 6px 12px;
-            background: var(--gray-100);
-            border-radius: 20px;
-            font-size: 13px;
+        .availability-day {
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            background: var(--gray-50);
+        }
+
+        .availability-day-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        .station-chip.active {
+        .availability-day-date {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .availability-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .availability-btn {
+            padding: 8px 12px;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .availability-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .availability-btn.active {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .availability-btn.preferred {
+            border-color: var(--primary);
             background: var(--primary);
             color: white;
         }
 
-        .remove-chip {
-            cursor: pointer;
-            font-weight: bold;
+        .availability-btn.unavailable {
+            border-color: var(--danger);
+            background: var(--danger);
+            color: white;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .time-inputs input {
+            flex: 1;
+            padding: 6px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 12px;
         }
 
         /* ===== STAFF LIST ===== */
@@ -518,25 +712,30 @@
             background: var(--gray-50);
             border-radius: 8px;
             border: 2px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .staff-info {
             flex: 1;
+            min-width: 150px;
         }
 
         .staff-name {
             font-weight: 600;
             margin-bottom: 3px;
+            font-size: 14px;
         }
 
         .staff-stats {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--gray-600);
         }
 
         .staff-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         /* ===== SHIFTS EDITOR ===== */
@@ -554,256 +753,95 @@
             background: var(--gray-50);
             border-radius: 8px;
             border: 2px solid var(--gray-200);
+            flex-wrap: wrap;
         }
 
         .shift-info {
             flex: 1;
+            min-width: 120px;
         }
 
         .shift-station {
             font-weight: 600;
             color: var(--primary);
-        }
-
-        .shift-time {
-            font-size: 12px;
-            color: var(--gray-600);
-        }
-
-        /* ===== AVAILABILITY EDITOR ===== */
-        .availability-legend {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-size: 13px;
         }
 
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+        .shift-time {
+            font-size: 11px;
+            color: var(--gray-600);
         }
 
-        .legend-color.available {
-            background: var(--success);
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
-        .legend-color.preferred {
-            background: var(--primary);
+        .stat-card {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-200);
         }
 
-        .legend-color.unavailable {
-            background: var(--danger);
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray-600);
+            margin-bottom: 4px;
         }
 
-        .availability-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.2;
-            border-radius: 6px;
-            pointer-events: none;
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
         }
 
-        .availability-overlay.available {
-            background: var(--success);
+        .stations-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
-        .availability-overlay.preferred {
-            background: var(--primary);
+        .station-chip {
+            padding: 6px 12px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .availability-overlay.unavailable {
-            background: var(--danger);
+        .remove-chip {
+            cursor: pointer;
+            font-weight: bold;
         }
 
         .edit-mode-banner {
             background: var(--warning);
             color: white;
-            padding: 12px 20px;
+            padding: 12px 15px;
             text-align: center;
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-radius: 8px;
             display: none;
+            font-size: 13px;
         }
 
         .edit-mode-banner.active {
             display: block;
         }
 
-        /* ===== STATS CARDS ===== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid var(--gray-200);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--gray-600);
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .calendar-grid {
-                grid-template-columns: repeat(7, 1fr);
-                gap: 4px;
-            }
-
-            .calendar-day {
-                min-height: 80px;
-                padding: 4px;
-                font-size: 12px;
-            }
-
-            .day-shifts {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                padding: 5px;
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .header-title h1 {
-                font-size: 18px;
-            }
-
-            .header-actions {
-                width: 100%;
-            }
-
-            .btn {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-
-            .month-display {
-                font-size: 16px;
-                min-width: 150px;
-            }
-
-            .calendar-view,
-            .table-view {
-                padding: 10px;
-            }
-
-            .calendar-day {
-                min-height: 60px;
-                padding: 3px;
-            }
-
-            .day-number {
-                font-size: 12px;
-            }
-
-            .schedule-table {
-                font-size: 10px;
-            }
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 5px;
-                min-width: 70px;
-            }
-
-            .modal {
-                max-width: 100%;
-                margin: 0;
-                border-radius: 0;
-                max-height: 100vh;
-            }
-
-            .view-tabs {
-                width: 100%;
-            }
-
-            .view-tab {
-                flex: 1;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .calendar-grid {
-                grid-template-columns: repeat(7, 1fr);
-                gap: 2px;
-            }
-
-            .weekday {
-                font-size: 10px;
-                padding: 5px 2px;
-            }
-
-            .calendar-day {
-                min-height: 50px;
-                padding: 2px;
-            }
-
-            .day-number {
-                font-size: 11px;
-            }
-
-            .day-stats {
-                display: none;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== UTILITIES ===== */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-10 {
-            margin-top: 10px;
-        }
-
-        .mb-10 {
-            margin-bottom: 10px;
-        }
-
         .alert {
             padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 15px;
+            font-size: 13px;
         }
 
         .alert-success {
@@ -824,19 +862,178 @@
             border: 1px solid #fca5a5;
         }
 
-        /* ===== LOADING ===== */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .calendar-day {
+                min-height: 80px;
+                font-size: 12px;
+            }
+
+            .day-shifts {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 5px;
+            }
+
+            .header {
+                padding: 12px 15px;
+            }
+
+            .header-title h1 {
+                font-size: 16px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .btn {
+                padding: 7px 10px;
+                font-size: 12px;
+            }
+
+            .month-display {
+                font-size: 14px;
+                min-width: 130px;
+            }
+
+            .calendar-view,
+            .table-view {
+                padding: 10px;
+            }
+
+            .calendar-day {
+                min-height: 60px;
+                padding: 4px;
+            }
+
+            .day-number {
+                font-size: 11px;
+            }
+
+            .weekday {
+                font-size: 10px;
+                padding: 5px 2px;
+            }
+
+            .modal {
+                max-width: 100%;
+                margin: 0;
+                border-radius: 12px;
+            }
+
+            .view-tabs {
+                width: 100%;
+            }
+
+            .view-tab {
+                flex: 1;
+                text-align: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-item,
+            .shift-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .staff-actions {
+                width: 100%;
+            }
+
+            .staff-actions button {
+                flex: 1;
+            }
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            .login-title {
+                font-size: 22px;
+            }
+
+            .staff-list-login {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+
+            .staff-login-btn {
+                padding: 15px 10px;
+                font-size: 13px;
+            }
+
+            .role-selector {
+                flex-direction: column;
+            }
+
+            .nav-section {
+                flex-direction: column;
+            }
+
+            .current-user {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-grid {
+                gap: 3px;
+            }
+
+            .calendar-day {
+                min-height: 50px;
+                padding: 3px;
+            }
+
+            .day-number {
+                font-size: 10px;
+            }
+
+            .day-stats {
+                font-size: 8px;
+                padding: 1px 3px;
+            }
+
+            .availability-time {
+                font-size: 8px;
+            }
+        }
+
+        /* ===== UTILITIES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
         }
 
         /* ===== PRINT STYLES ===== */
@@ -848,7 +1045,8 @@
             .header-actions,
             .view-tabs,
             .btn,
-            .edit-mode-banner {
+            .edit-mode-banner,
+            .login-screen {
                 display: none !important;
             }
 
@@ -857,12 +1055,12 @@
             }
 
             .schedule-table {
-                font-size: 10px;
+                font-size: 9px;
             }
 
             .schedule-table th,
             .schedule-table td {
-                padding: 4px;
+                padding: 3px;
             }
         }
 
@@ -894,13 +1092,44 @@
         }
 
         .progress-text {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--gray-600);
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-title">🏥 System Grafików</div>
+            <div class="login-subtitle">OAIiT - Dyżury Anestezjologów</div>
+            
+            <div class="role-selector">
+                <button class="role-btn active" onclick="app.selectRole('admin')" id="adminRoleBtn">
+                    <span class="role-icon">👨‍💼</span>
+                    Administrator
+                </button>
+                <button class="role-btn" onclick="app.selectRole('staff')" id="staffRoleBtn">
+                    <span class="role-icon">👨‍⚕️</span>
+                    Personel
+                </button>
+            </div>
+
+            <div id="staffSelectDiv" class="hidden">
+                <div class="form-label">Wybierz swoją osobę:</div>
+                <div class="staff-list-login" id="staffListLogin"></div>
+            </div>
+
+            <div id="adminLoginDiv">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 15px; font-size: 16px;" onclick="app.loginAsAdmin()">
+                    Zaloguj jako Administrator
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="app-container hidden" id="mainApp">
         <!-- HEADER -->
         <div class="header">
             <div class="header-top">
@@ -908,6 +1137,13 @@
                     <h1>System Grafików Medycznych</h1>
                     <div class="header-subtitle">OAIiT - Dyżury Anestezjologów</div>
                 </div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <div class="current-user" id="currentUser"></div>
+                    <button class="btn btn-outline btn-sm" onclick="app.logout()">Wyloguj</button>
+                </div>
+            </div>
+
+            <div id="adminControls" class="hidden">
                 <div class="header-actions">
                     <button class="btn btn-outline btn-sm" onclick="app.manageStations()">⚙️ Stanowiska</button>
                     <button class="btn btn-outline btn-sm" onclick="app.manageStaff()">👥 Personel</button>
@@ -921,6 +1157,7 @@
                 <div class="view-tabs">
                     <button class="view-tab active" onclick="app.switchView('calendar')">📅 Kalendarz</button>
                     <button class="view-tab" onclick="app.switchView('table')">📊 Tabela</button>
+                    <button class="view-tab" id="availabilityTab" onclick="app.switchView('availability')">🗓️ Moje dyspozycje</button>
                 </div>
 
                 <div class="month-nav">
@@ -930,12 +1167,6 @@
                     <button class="btn btn-outline btn-sm" onclick="app.goToToday()">Dziś</button>
                 </div>
             </div>
-        </div>
-
-        <!-- EDIT MODE BANNER -->
-        <div class="edit-mode-banner" id="editModeBanner">
-            <span id="editModeText"></span>
-            <button class="btn btn-sm btn-danger" style="margin-left: 15px" onclick="app.exitEditMode()">Zakończ edycję</button>
         </div>
 
         <!-- CALENDAR VIEW -->
@@ -958,13 +1189,22 @@
                 <h3>Grafik - <span id="tableMonthDisplay"></span></h3>
                 <div class="stats-grid" id="statsGrid"></div>
             </div>
-            <div style="overflow-x: auto;">
+            <div class="table-container">
                 <table class="schedule-table" id="scheduleTable"></table>
             </div>
         </div>
+
+        <!-- AVAILABILITY VIEW -->
+        <div class="calendar-view hidden" id="availabilityView">
+            <div class="alert alert-info">
+                <strong>ℹ️ Jak wypełnić dyspozycje:</strong><br>
+                Kliknij przycisk przy dniu, żeby zaznaczyć swoją dostępność. Możesz podać godziny (np. dostępny tylko do 14:00).
+            </div>
+            <div class="availability-editor" id="availabilityEditor"></div>
+        </div>
     </div>
 
-    <!-- DAY MODAL -->
+    <!-- DAY MODAL (Admin) -->
     <div class="modal-overlay" id="dayModal">
         <div class="modal">
             <div class="modal-header">
@@ -973,7 +1213,7 @@
             </div>
             <div class="modal-body">
                 <div class="shifts-editor" id="shiftsEditor"></div>
-                <button class="btn btn-success mt-10" onclick="app.addShiftToDay()">+ Dodaj dyżur</button>
+                <button class="btn btn-success mt-10" style="width: 100%;" onclick="app.addShiftToDay()">+ Dodaj dyżur</button>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="app.closeDayModal()">Zamknij</button>
@@ -1013,6 +1253,55 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="app.closeAddShiftModal()">Anuluj</button>
                 <button class="btn btn-success" onclick="app.saveShift()">Zapisz</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AVAILABILITY MODAL -->
+    <div class="modal-overlay" id="availabilityModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="availabilityModalTitle"></div>
+                <button class="btn btn-icon btn-outline" onclick="app.closeAvailabilityModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="availability-options">
+                    <button class="availability-btn" onclick="app.setDayAvailability('available')">
+                        ✅ Dostępny
+                    </button>
+                    <button class="availability-btn" onclick="app.setDayAvailability('preferred')">
+                        ⭐ Preferowany
+                    </button>
+                    <button class="availability-btn" onclick="app.setDayAvailability('unavailable')">
+                        ❌ Niedostępny
+                    </button>
+                    <button class="availability-btn" onclick="app.setDayAvailability(null)">
+                        🔄 Wyczyść
+                    </button>
+                </div>
+
+                <div class="form-group mt-10">
+                    <label class="form-label">
+                        <input type="checkbox" id="hasTimeLimit" onchange="app.toggleTimeLimit()">
+                        Ograniczenie czasowe (np. dostępny tylko do 14:00)
+                    </label>
+                </div>
+
+                <div id="timeLimitInputs" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Od godziny</label>
+                            <input type="time" class="form-input" id="availableFrom" value="08:00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Do godziny</label>
+                            <input type="time" class="form-input" id="availableTo" value="16:00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="app.closeAvailabilityModal()">Zamknij</button>
             </div>
         </div>
     </div>
@@ -1088,7 +1377,7 @@
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="respectAvailability" checked>
-                        Respektuj dyspozycje personelu
+                        Respektuj dyspozycje personelu (godziny i dostępność)
                     </label>
                 </div>
 
@@ -1112,7 +1401,9 @@
                 this.currentDate = new Date();
                 this.currentView = 'calendar';
                 this.selectedDate = null;
-                this.editMode = null; // { type: 'availability', staffId: 'xxx' }
+                this.currentUser = null; // { role: 'admin' | 'staff', staffId: 'xxx' }
+                this.selectedRole = 'admin';
+                this.selectedAvailabilityDate = null;
                 
                 // Data structure
                 this.stations = [
@@ -1122,7 +1413,7 @@
                     'Anestezjolog II 08:00-16:00',
                     'Anestezjolog III',
                     'Anestezjolog IV Ortopedia',
-                    'Sala Wybudzeni',
+                    'Sala Wybudzeń',
                     'Endoskopia'
                 ];
 
@@ -1140,7 +1431,7 @@
                 // shifts: { 'YYYY-MM-DD': [{ id, station, start, end, staffId }] }
                 this.shifts = {};
                 
-                // availability: { staffId: { 'YYYY-MM-DD': 'available|preferred|unavailable' } }
+                // availability: { staffId: { 'YYYY-MM-DD': { status: 'available|preferred|unavailable', from: '08:00', to: '16:00' } } }
                 this.availability = {};
 
                 this.loadData();
@@ -1152,12 +1443,12 @@
             }
 
             init() {
-                this.render();
+                this.renderLoginScreen();
                 this.autoSave();
             }
 
             autoSave() {
-                setInterval(() => this.saveData(), 30000); // Auto-save every 30s
+                setInterval(() => this.saveData(), 30000);
             }
 
             saveData() {
@@ -1205,16 +1496,77 @@
                 alert('✅ Dane zostały wyeksportowane!');
             }
 
+            // ===== LOGIN =====
+
+            renderLoginScreen() {
+                const staffList = document.getElementById('staffListLogin');
+                staffList.innerHTML = this.staff.map(person => `
+                    <button class="staff-login-btn" onclick="app.loginAsStaff('${person.id}')">
+                        ${person.name}
+                    </button>
+                `).join('');
+            }
+
+            selectRole(role) {
+                this.selectedRole = role;
+                document.getElementById('adminRoleBtn').classList.toggle('active', role === 'admin');
+                document.getElementById('staffRoleBtn').classList.toggle('active', role === 'staff');
+                
+                if (role === 'admin') {
+                    document.getElementById('adminLoginDiv').classList.remove('hidden');
+                    document.getElementById('staffSelectDiv').classList.add('hidden');
+                } else {
+                    document.getElementById('adminLoginDiv').classList.add('hidden');
+                    document.getElementById('staffSelectDiv').classList.remove('hidden');
+                }
+            }
+
+            loginAsAdmin() {
+                this.currentUser = { role: 'admin' };
+                this.showMainApp();
+            }
+
+            loginAsStaff(staffId) {
+                this.currentUser = { role: 'staff', staffId };
+                this.showMainApp();
+            }
+
+            logout() {
+                this.currentUser = null;
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+
+            showMainApp() {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                
+                // Update UI based on role
+                const staff = this.getStaffById(this.currentUser.staffId);
+                if (this.currentUser.role === 'admin') {
+                    document.getElementById('currentUser').innerHTML = '👨‍💼 Administrator';
+                    document.getElementById('adminControls').classList.remove('hidden');
+                    document.getElementById('availabilityTab').classList.add('hidden');
+                } else {
+                    document.getElementById('currentUser').innerHTML = `👨‍⚕️ ${staff.name}`;
+                    document.getElementById('adminControls').classList.add('hidden');
+                    document.getElementById('availabilityTab').classList.remove('hidden');
+                }
+                
+                this.render();
+            }
+
             // ===== RENDERING =====
 
             render() {
                 this.renderMonthDisplay();
                 if (this.currentView === 'calendar') {
                     this.renderCalendar();
-                } else {
+                } else if (this.currentView === 'table') {
                     this.renderTable();
+                } else if (this.currentView === 'availability') {
+                    this.renderAvailabilityView();
                 }
-                this.updateEditModeBanner();
             }
 
             renderMonthDisplay() {
@@ -1232,7 +1584,7 @@
                 const firstDay = new Date(year, month, 1);
                 const lastDay = new Date(year, month + 1, 0);
                 const daysInMonth = lastDay.getDate();
-                const startDayOfWeek = (firstDay.getDay() + 6) % 7; // Monday = 0
+                const startDayOfWeek = (firstDay.getDay() + 6) % 7;
 
                 // Empty cells
                 for (let i = 0; i < startDayOfWeek; i++) {
@@ -1250,26 +1602,43 @@
                     cell.className = 'calendar-day';
                     cell.dataset.date = dateStr;
 
-                    // Weekend
                     const dayOfWeek = date.getDay();
                     if (dayOfWeek === 0 || dayOfWeek === 6) {
                         cell.classList.add('weekend');
                     }
 
-                    // Today
                     if (this.formatDate(date) === this.formatDate(today)) {
                         cell.classList.add('today');
                     }
 
-                    // Day number
                     const dayNum = document.createElement('div');
                     dayNum.className = 'day-number';
                     dayNum.textContent = day;
                     cell.appendChild(dayNum);
 
+                    // Show availability for staff
+                    if (this.currentUser && this.currentUser.role === 'staff') {
+                        const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                        if (avail) {
+                            const indicator = document.createElement('div');
+                            indicator.className = 'availability-indicator';
+                            if (avail.status === 'available') indicator.textContent = '✅';
+                            else if (avail.status === 'preferred') indicator.textContent = '⭐';
+                            else if (avail.status === 'unavailable') indicator.textContent = '❌';
+                            cell.appendChild(indicator);
+
+                            if (avail.from || avail.to) {
+                                const timeInfo = document.createElement('div');
+                                timeInfo.className = 'availability-time';
+                                timeInfo.textContent = `${avail.from || '...'} - ${avail.to || '...'}`;
+                                cell.appendChild(timeInfo);
+                            }
+                        }
+                    }
+
                     // Shifts
                     const dayShifts = this.shifts[dateStr] || [];
-                    if (dayShifts.length > 0) {
+                    if (dayShifts.length > 0 && this.currentUser && this.currentUser.role === 'admin') {
                         const shiftsContainer = document.createElement('div');
                         shiftsContainer.className = 'day-shifts';
                         
@@ -1280,13 +1649,12 @@
                                 badge.classList.add('assigned');
                             }
                             const staff = this.getStaffById(shift.staffId);
-                            badge.textContent = staff ? staff.name.split(' ')[1] : shift.station.split(' ')[0];
+                            badge.textContent = staff ? staff.name.split(' ').pop() : shift.station.split(' ')[0];
                             shiftsContainer.appendChild(badge);
                         });
                         
                         cell.appendChild(shiftsContainer);
 
-                        // Stats
                         const assigned = dayShifts.filter(s => s.staffId).length;
                         const total = dayShifts.length;
                         const stats = document.createElement('div');
@@ -1295,20 +1663,8 @@
                         cell.appendChild(stats);
                     }
 
-                    // Availability overlay
-                    if (this.editMode && this.editMode.type === 'availability') {
-                        const status = this.availability[this.editMode.staffId]?.[dateStr];
-                        if (status) {
-                            const overlay = document.createElement('div');
-                            overlay.className = `availability-overlay ${status}`;
-                            cell.appendChild(overlay);
-                        }
-                    }
-
                     // Click handler
-                    if (this.editMode && this.editMode.type === 'availability') {
-                        cell.addEventListener('click', () => this.toggleAvailability(dateStr));
-                    } else {
+                    if (this.currentUser && this.currentUser.role === 'admin') {
                         cell.addEventListener('click', () => this.openDayModal(dateStr));
                     }
 
@@ -1400,6 +1756,115 @@
                 `;
             }
 
+            renderAvailabilityView() {
+                if (!this.currentUser || this.currentUser.role !== 'staff') return;
+
+                const container = document.getElementById('availabilityEditor');
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                container.innerHTML = '';
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(year, month, day);
+                    const dateStr = this.formatDate(date);
+                    const dayName = date.toLocaleDateString('pl-PL', { weekday: 'long' });
+                    
+                    const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                    
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'availability-day';
+                    
+                    let statusText = 'Nie ustawiono';
+                    let statusIcon = '⚪';
+                    if (avail) {
+                        if (avail.status === 'available') {
+                            statusText = 'Dostępny';
+                            statusIcon = '✅';
+                        } else if (avail.status === 'preferred') {
+                            statusText = 'Preferowany';
+                            statusIcon = '⭐';
+                        } else if (avail.status === 'unavailable') {
+                            statusText = 'Niedostępny';
+                            statusIcon = '❌';
+                        }
+                        
+                        if (avail.from || avail.to) {
+                            statusText += ` (${avail.from || '...'} - ${avail.to || '...'})`;
+                        }
+                    }
+                    
+                    dayDiv.innerHTML = `
+                        <div class="availability-day-header">
+                            <div class="availability-day-date">${day} ${dayName}</div>
+                            <div>${statusIcon} ${statusText}</div>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="app.editDayAvailability('${dateStr}')">
+                            Edytuj
+                        </button>
+                    `;
+                    
+                    container.appendChild(dayDiv);
+                }
+            }
+
+            editDayAvailability(dateStr) {
+                this.selectedAvailabilityDate = dateStr;
+                const date = new Date(dateStr);
+                document.getElementById('availabilityModalTitle').textContent = 
+                    date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' });
+                
+                const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                if (avail && (avail.from || avail.to)) {
+                    document.getElementById('hasTimeLimit').checked = true;
+                    document.getElementById('timeLimitInputs').classList.remove('hidden');
+                    if (avail.from) document.getElementById('availableFrom').value = avail.from;
+                    if (avail.to) document.getElementById('availableTo').value = avail.to;
+                } else {
+                    document.getElementById('hasTimeLimit').checked = false;
+                    document.getElementById('timeLimitInputs').classList.add('hidden');
+                }
+                
+                document.getElementById('availabilityModal').classList.add('active');
+            }
+
+            closeAvailabilityModal() {
+                document.getElementById('availabilityModal').classList.remove('active');
+            }
+
+            toggleTimeLimit() {
+                const checked = document.getElementById('hasTimeLimit').checked;
+                document.getElementById('timeLimitInputs').classList.toggle('hidden', !checked);
+            }
+
+            setDayAvailability(status) {
+                if (!this.currentUser || this.currentUser.role !== 'staff') return;
+
+                const staffId = this.currentUser.staffId;
+                const dateStr = this.selectedAvailabilityDate;
+                
+                if (!this.availability[staffId]) {
+                    this.availability[staffId] = {};
+                }
+
+                if (status === null) {
+                    delete this.availability[staffId][dateStr];
+                } else {
+                    const hasTimeLimit = document.getElementById('hasTimeLimit').checked;
+                    this.availability[staffId][dateStr] = { status };
+                    
+                    if (hasTimeLimit) {
+                        this.availability[staffId][dateStr].from = document.getElementById('availableFrom').value;
+                        this.availability[staffId][dateStr].to = document.getElementById('availableTo').value;
+                    }
+                }
+
+                this.saveData();
+                this.closeAvailabilityModal();
+                this.renderAvailabilityView();
+            }
+
             // ===== NAVIGATION =====
 
             changeMonth(delta) {
@@ -1420,21 +1885,26 @@
                 });
                 event.target.classList.add('active');
 
+                document.getElementById('calendarView').classList.add('hidden');
+                document.getElementById('tableView').classList.add('hidden');
+                document.getElementById('availabilityView').classList.add('hidden');
+
                 if (view === 'calendar') {
                     document.getElementById('calendarView').classList.remove('hidden');
-                    document.getElementById('tableView').classList.add('hidden');
                     this.renderCalendar();
-                } else {
-                    document.getElementById('calendarView').classList.add('hidden');
+                } else if (view === 'table') {
                     document.getElementById('tableView').classList.remove('hidden');
                     this.renderTable();
+                } else if (view === 'availability') {
+                    document.getElementById('availabilityView').classList.remove('hidden');
+                    this.renderAvailabilityView();
                 }
             }
 
             // ===== DAY MODAL =====
 
             openDayModal(dateStr) {
-                if (this.editMode) return;
+                if (this.currentUser.role !== 'admin') return;
 
                 this.selectedDate = dateStr;
                 const date = new Date(dateStr);
@@ -1471,7 +1941,7 @@
                             <div class="shift-station">${shift.station}</div>
                             <div class="shift-time">${shift.start} - ${shift.end}</div>
                         </div>
-                        <select class="form-select" style="max-width: 200px;" onchange="app.assignStaffToShift('${this.selectedDate}', ${index}, this.value)">
+                        <select class="form-select" style="max-width: 180px; min-width: 140px;" onchange="app.assignStaffToShift('${this.selectedDate}', ${index}, this.value)">
                             <option value="">-- Nie przypisano --</option>
                             ${this.staff.map(s => `
                                 <option value="${s.id}" ${s.id === shift.staffId ? 'selected' : ''}>
@@ -1496,11 +1966,9 @@
             openAddShiftModal(dateStr = null) {
                 this.selectedDate = dateStr || this.selectedDate;
                 
-                // Populate stations
                 const stationSelect = document.getElementById('shiftStation');
                 stationSelect.innerHTML = this.stations.map(s => `<option value="${s}">${s}</option>`).join('');
                 
-                // Populate staff
                 const staffSelect = document.getElementById('shiftStaff');
                 staffSelect.innerHTML = '<option value="">-- Nie przypisuj --</option>' +
                     this.staff.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
@@ -1603,7 +2071,6 @@
                     const station = this.stations[index];
                     this.stations.splice(index, 1);
                     
-                    // Remove shifts for this station
                     Object.keys(this.shifts).forEach(dateStr => {
                         this.shifts[dateStr] = this.shifts[dateStr].filter(s => s.station !== station);
                         if (this.shifts[dateStr].length === 0) {
@@ -1639,8 +2106,7 @@
                                 <div class="staff-stats">${stats.total} dyżurów (${stats.hours24} x 24h)</div>
                             </div>
                             <div class="staff-actions">
-                                <button class="btn btn-outline btn-sm" onclick="app.editAvailability('${person.id}')">📅 Dyspozycje</button>
-                                <button class="btn btn-danger btn-sm" onclick="app.removeStaff('${person.id}')">×</button>
+                                <button class="btn btn-danger btn-sm" onclick="app.removeStaff('${person.id}')">Usuń</button>
                             </div>
                         </div>
                     `;
@@ -1651,13 +2117,15 @@
                 const input = document.getElementById('newStaffName');
                 const name = input.value.trim();
                 if (name) {
+                    const newId = this.generateId();
                     this.staff.push({
-                        id: this.generateId(),
+                        id: newId,
                         name
                     });
                     input.value = '';
                     this.saveData();
                     this.renderStaffList();
+                    this.renderLoginScreen();
                 }
             }
 
@@ -1666,7 +2134,6 @@
                 if (confirm(`Czy na pewno usunąć ${staff.name}? Wszystkie przypisania zostaną usunięte.`)) {
                     this.staff = this.staff.filter(s => s.id !== staffId);
                     
-                    // Remove assignments
                     Object.keys(this.shifts).forEach(dateStr => {
                         this.shifts[dateStr].forEach(shift => {
                             if (shift.staffId === staffId) {
@@ -1675,11 +2142,11 @@
                         });
                     });
                     
-                    // Remove availability
                     delete this.availability[staffId];
                     
                     this.saveData();
                     this.renderStaffList();
+                    this.renderLoginScreen();
                 }
             }
 
@@ -1703,62 +2170,6 @@
                 }
 
                 return { total, hours24 };
-            }
-
-            // ===== AVAILABILITY =====
-
-            editAvailability(staffId) {
-                this.editMode = { type: 'availability', staffId };
-                this.closeStaffModal();
-                this.render();
-            }
-
-            exitEditMode() {
-                this.editMode = null;
-                this.render();
-            }
-
-            updateEditModeBanner() {
-                const banner = document.getElementById('editModeBanner');
-                const text = document.getElementById('editModeText');
-
-                if (this.editMode && this.editMode.type === 'availability') {
-                    const staff = this.getStaffById(this.editMode.staffId);
-                    text.innerHTML = `
-                        📅 Edytujesz dyspozycje dla: <strong>${staff.name}</strong>. 
-                        Kliknij dni w kalendarzu: 
-                        <span style="display: inline-block; width: 12px; height: 12px; background: var(--success); margin: 0 3px;"></span> dostępny → 
-                        <span style="display: inline-block; width: 12px; height: 12px; background: var(--primary); margin: 0 3px;"></span> preferowany → 
-                        <span style="display: inline-block; width: 12px; height: 12px; background: var(--danger); margin: 0 3px;"></span> niedostępny → brak
-                    `;
-                    banner.classList.add('active');
-                } else {
-                    banner.classList.remove('active');
-                }
-            }
-
-            toggleAvailability(dateStr) {
-                if (!this.editMode || this.editMode.type !== 'availability') return;
-
-                const staffId = this.editMode.staffId;
-                if (!this.availability[staffId]) {
-                    this.availability[staffId] = {};
-                }
-
-                const statuses = ['available', 'preferred', 'unavailable', null];
-                const current = this.availability[staffId][dateStr];
-                const currentIndex = statuses.indexOf(current);
-                const nextIndex = (currentIndex + 1) % statuses.length;
-                const nextStatus = statuses[nextIndex];
-
-                if (nextStatus === null) {
-                    delete this.availability[staffId][dateStr];
-                } else {
-                    this.availability[staffId][dateStr] = nextStatus;
-                }
-
-                this.saveData();
-                this.renderCalendar();
             }
 
             // ===== GENERATOR =====
@@ -1785,7 +2196,6 @@
                 const progressText = document.getElementById('progressText');
                 progress.classList.add('active');
 
-                // Reset all assignments
                 const year = this.currentDate.getFullYear();
                 const month = this.currentDate.getMonth();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1796,7 +2206,6 @@
                     }
                 });
 
-                // Initialize workload
                 const workload = {};
                 const workload24h = {};
                 this.staff.forEach(person => {
@@ -1807,13 +2216,11 @@
                 let assignedCount = 0;
                 let totalShifts = 0;
 
-                // Count total shifts
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = this.formatDate(new Date(year, month, day));
                     totalShifts += (this.shifts[dateStr] || []).length;
                 }
 
-                // Assign shifts day by day
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = this.formatDate(new Date(year, month, day));
                     const dayShifts = this.shifts[dateStr] || [];
@@ -1821,27 +2228,36 @@
                     for (const shift of dayShifts) {
                         const is24h = shift.station.includes('24h');
 
-                        // Find candidates
                         const candidates = this.staff
                             .map(person => {
-                                const availability = this.availability[person.id]?.[dateStr];
+                                const avail = this.availability[person.id]?.[dateStr];
                                 
-                                // Check constraints
                                 if (workload[person.id] >= maxShifts) return null;
                                 if (is24h && workload24h[person.id] >= max24h) return null;
-                                if (respectAvailability && availability === 'unavailable') return null;
+                                
+                                if (respectAvailability && avail) {
+                                    if (avail.status === 'unavailable') return null;
+                                    
+                                    // Check time compatibility
+                                    if (avail.from || avail.to) {
+                                        const shiftStart = shift.start;
+                                        const shiftEnd = shift.end;
+                                        
+                                        if (avail.from && shiftStart < avail.from) return null;
+                                        if (avail.to && shiftEnd > avail.to) return null;
+                                    }
+                                }
 
                                 return {
                                     id: person.id,
                                     name: person.name,
-                                    availability,
+                                    availability: avail?.status,
                                     workload: workload[person.id],
                                     workload24h: workload24h[person.id]
                                 };
                             })
                             .filter(c => c !== null)
                             .sort((a, b) => {
-                                // Sort by: preferred > available > none, then by workload
                                 const availScore = { preferred: 2, available: 1 };
                                 const scoreA = availScore[a.availability] || 0;
                                 const scoreB = availScore[b.availability] || 0;
@@ -1858,7 +2274,6 @@
                             assignedCount++;
                         }
 
-                        // Update progress
                         const percent = Math.round((assignedCount / totalShifts) * 100);
                         progressFill.style.width = `${percent}%`;
                         progressText.textContent = `Przypisano ${assignedCount} z ${totalShifts} dyżurów (${percent}%)`;
@@ -1885,7 +2300,6 @@
             }
         }
 
-        // Initialize app
         let app;
         document.addEventListener('DOMContentLoaded', () => {
             app = new ScheduleApp();
