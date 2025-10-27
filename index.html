@@ -1281,79 +1281,147 @@
 
         /* ===== PRINT ===== */
         @media print {
-            body {
-                background: white;
+            * {
+                margin: 0;
+                padding: 0;
             }
 
+            body {
+                background: white;
+                padding: 5mm;
+            }
+
+            /* Ukryj wszystko oprócz tabeli */
+            .login-screen,
             .header-actions,
             .view-tabs,
             .btn,
-            .login-screen,
             .month-nav,
             .stats-grid,
-            .room-hours-section {
+            .room-hours-section,
+            .calendar-view,
+            .availability-view,
+            .header-subtitle,
+            .current-user,
+            .header-top > div:last-child,
+            .nav-section,
+            .table-header .stats-grid {
                 display: none !important;
+            }
+
+            .header {
+                padding: 0;
+                margin-bottom: 5mm;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .header-title h1 {
+                font-size: 14pt;
+                margin-bottom: 2mm;
+                text-align: center;
             }
 
             .table-view {
                 box-shadow: none;
                 padding: 0;
-            }
-
-            .header {
-                padding: 10px;
-                margin-bottom: 10px;
-            }
-
-            .header-title h1 {
-                font-size: 18px;
-            }
-
-            .header-subtitle,
-            .current-user {
-                display: none;
-            }
-
-            .schedule-table {
-                font-size: 8px;
-                min-width: auto;
-            }
-
-            .schedule-table th {
-                padding: 4px 2px;
-                font-size: 7px;
-            }
-
-            .schedule-table td {
-                padding: 4px 2px;
-                font-size: 8px;
-            }
-
-            .assignment-name {
-                font-size: 8px;
-            }
-
-            .assignment-time {
-                font-size: 7px;
-            }
-
-            .shift-24h-badge {
-                font-size: 6px;
-                padding: 2px 4px;
-            }
-
-            .table-title {
-                font-size: 16px;
-                margin-bottom: 10px;
+                border-radius: 0;
             }
 
             .table-header {
-                margin-bottom: 10px;
+                margin-bottom: 3mm;
+            }
+
+            .table-title {
+                font-size: 12pt;
+                margin-bottom: 2mm;
+                text-align: center;
+                font-weight: 700;
+            }
+
+            .table-container {
+                border: none;
+                border-radius: 0;
+            }
+
+            .schedule-table {
+                font-size: 7pt;
+                min-width: auto;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .schedule-table th {
+                padding: 2mm 1mm;
+                font-size: 7pt;
+                background: #333 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: white !important;
+                border: 0.5pt solid #333;
+            }
+
+            .schedule-table td {
+                padding: 1.5mm 1mm;
+                font-size: 6.5pt;
+                border: 0.5pt solid #999;
+                vertical-align: top;
+                line-height: 1.3;
+            }
+
+            .schedule-table .date-cell {
+                font-weight: 700;
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                min-width: auto;
+                width: 40pt;
+                text-align: center;
+            }
+
+            .schedule-table .weekend-row .date-cell {
+                background: #ffe4e6 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .assignment-name {
+                font-size: 7pt;
+                font-weight: 700;
+                color: #000 !important;
+                display: block;
+                margin-bottom: 0.5mm;
+            }
+
+            .assignment-time {
+                font-size: 6pt;
+                color: #666 !important;
+                display: block;
+            }
+
+            .shift-24h-badge {
+                font-size: 5pt;
+                padding: 0.5mm 1mm;
+                background: #ef4444 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: white !important;
+                border-radius: 1mm;
+                display: inline-block;
+                margin-left: 1mm;
             }
 
             @page {
-                size: landscape;
-                margin: 10mm;
+                size: A4 landscape;
+                margin: 8mm;
+            }
+
+            /* Jeśli jest więcej niż 8 stanowisk, zmniejsz jeszcze bardziej */
+            .schedule-table th:not(.date-cell) {
+                max-width: 80pt;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     </style>
@@ -1412,6 +1480,7 @@
                     <button class="btn btn-outline btn-sm" onclick="app.manageStations()">⚙️ Stanowiska</button>
                     <button class="btn btn-outline btn-sm" onclick="app.manageStaff()">👥 Personel</button>
                     <button class="btn btn-success btn-sm" onclick="app.showGenerator()">🤖 Generuj Grafik</button>
+                    <button class="btn btn-danger btn-sm" onclick="app.clearSchedule()">🗑️ Wyczyść Grafik</button>
                     <button class="btn btn-warning btn-sm" onclick="app.generateTestData()">🧪 Generuj Przykład</button>
                     <button class="btn btn-primary btn-sm" onclick="app.exportData()">💾 Eksport</button>
                     <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Drukuj</button>
@@ -1469,7 +1538,7 @@
         <div class="calendar-view hidden" id="availabilityView">
             <div class="alert alert-info">
                 <strong>ℹ️ Wypełnij swoje dyspozycje</strong><br>
-                Zaznacz dni kiedy jesteś dostępny, preferowany lub niedostępny. Możesz podać konkretne godziny (np. dostępny 08:00-14:00).
+                Domyślnie wszystkie dni są oznaczone jako <strong>niedostępne</strong>. Zaznacz dni kiedy jesteś dostępny lub preferowany. Możesz podać konkretne godziny (np. dostępny 08:00-14:00).
             </div>
             <div class="availability-editor" id="availabilityEditor"></div>
         </div>
@@ -1486,8 +1555,8 @@
                 <div class="preferences-card">
                     <h3>Limity dyżurów</h3>
                     <div class="preference-item">
-                        <label class="form-label">Maksymalna liczba dyżurów w miesiącu</label>
-                        <input type="number" class="form-input" id="prefMaxShifts" min="0" max="31" value="15">
+                        <label class="form-label">Maksymalna liczba dni w miesiącu</label>
+                        <input type="number" class="form-input" id="prefMaxShifts" min="0" max="31" value="20">
                     </div>
                     <div class="preference-item">
                         <label class="form-label">Maksymalna liczba dyżurów 24h w miesiącu</label>
@@ -2153,7 +2222,12 @@
                     cell.appendChild(dayNum);
 
                     if (this.currentUser && this.currentUser.role === 'staff') {
-                        const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                        let avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                        // Domyślnie niedostępny jeśli nie ustawiono
+                        if (!avail) {
+                            avail = { status: 'unavailable' };
+                        }
+                        
                         if (avail) {
                             const indicator = document.createElement('div');
                             indicator.className = 'availability-indicator';
@@ -2319,24 +2393,24 @@
                     const dateStr = this.formatDate(date);
                     const dayName = date.toLocaleDateString('pl-PL', { weekday: 'long' });
                     
-                    const avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                    // Domyślnie niedostępny jeśli nie ustawiono
+                    let avail = this.availability[this.currentUser.staffId]?.[dateStr];
+                    if (!avail) {
+                        avail = { status: 'unavailable' };
+                    }
                     
                     const dayDiv = document.createElement('div');
                     dayDiv.className = 'availability-day';
                     
-                    let statusHtml = '<span style="color: var(--gray-500)">⚪ Nie ustawiono</span>';
-                    if (avail) {
-                        if (avail.status === 'available') {
-                            statusHtml = '<span class="availability-status available">✅ Dostępny</span>';
-                        } else if (avail.status === 'preferred') {
-                            statusHtml = '<span class="availability-status preferred">⭐ Preferowany</span>';
-                        } else if (avail.status === 'unavailable') {
-                            statusHtml = '<span class="availability-status unavailable">❌ Niedostępny</span>';
-                        }
-                        
-                        if (avail.from || avail.to) {
-                            statusHtml += ` <span style="color: var(--gray-600); font-size: 13px;">(${avail.from || '...'} - ${avail.to || '...'})</span>`;
-                        }
+                    let statusHtml = '<span class="availability-status unavailable">❌ Niedostępny</span>';
+                    if (avail.status === 'available') {
+                        statusHtml = '<span class="availability-status available">✅ Dostępny</span>';
+                    } else if (avail.status === 'preferred') {
+                        statusHtml = '<span class="availability-status preferred">⭐ Preferowany</span>';
+                    }
+                    
+                    if (avail.from || avail.to) {
+                        statusHtml += ` <span style="color: var(--gray-600); font-size: 13px;">(${avail.from || '...'} - ${avail.to || '...'})</span>`;
                     }
                     
                     dayDiv.innerHTML = `
@@ -2791,13 +2865,13 @@
                 container.innerHTML = this.staff.map(person => {
                     const stats = this.getStaffStats(person.id);
                     const prefs = this.preferences[person.id];
-                    const prefText = prefs ? `Limit: ${prefs.maxShifts} dyż. (${prefs.max24h}×24h)` : 'Brak preferencji';
+                    const prefText = prefs ? `Limit: ${prefs.maxShifts} dni (${prefs.max24h}×24h)` : 'Brak preferencji';
                     
                     return `
                         <div class="staff-item">
                             <div class="staff-info">
                                 <div class="staff-name">${person.name}</div>
-                                <div class="staff-stats">${stats.total} dyżurów (${stats.hours24} × 24h) • ${prefText}</div>
+                                <div class="staff-stats">${stats.total} dni (${stats.hours24} × 24h) • ${prefText}</div>
                             </div>
                             <div class="staff-actions">
                                 <button class="btn btn-danger btn-sm" onclick="app.removeStaff('${person.id}')">Usuń</button>
@@ -2872,6 +2946,28 @@
 
             // ===== GENERATOR =====
 
+            clearSchedule() {
+                if (!confirm('Czy na pewno wyczyścić cały grafik w bieżącym miesiącu?\n\nUsuniętych zostanie wszystkie przypisania personelu, ale dyżury (bez przypisań) pozostaną.')) {
+                    return;
+                }
+
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
+
+                Object.keys(this.shifts).forEach(dateStr => {
+                    if (dateStr.startsWith(monthPrefix)) {
+                        this.shifts[dateStr].forEach(shift => {
+                            shift.staffId = null;
+                        });
+                    }
+                });
+
+                this.saveData();
+                this.render();
+                alert('✅ Grafik został wyczyszczony!\n\nDyżury pozostały, ale wszystkie przypisania personelu zostały usunięte.');
+            }
+
             showGenerator() {
                 document.getElementById('generatorModal').classList.add('active');
             }
@@ -2931,7 +3027,12 @@
                         const candidates = this.staff
                             .map(person => {
                                 const prefs = this.preferences[person.id] || { maxShifts: 20, max24h: 10, preferredStations: [] };
-                                const avail = this.availability[person.id]?.[dateStr];
+                                let avail = this.availability[person.id]?.[dateStr];
+                                
+                                // Domyślnie niedostępny jeśli nie ustawiono
+                                if (!avail) {
+                                    avail = { status: 'unavailable' };
+                                }
                                 
                                 // Check limits
                                 if (respectPreferences) {
@@ -2940,7 +3041,7 @@
                                 }
                                 
                                 // Check availability
-                                if (respectAvailability && avail) {
+                                if (respectAvailability) {
                                     if (avail.status === 'unavailable') return null;
                                     
                                     // Check time compatibility
@@ -2957,10 +3058,8 @@
                                 let score = 0;
                                 
                                 // Availability bonus
-                                if (avail) {
-                                    if (avail.status === 'preferred') score += 100;
-                                    else if (avail.status === 'available') score += 50;
-                                }
+                                if (avail.status === 'preferred') score += 100;
+                                else if (avail.status === 'available') score += 50;
                                 
                                 // Station preference bonus
                                 if (respectPreferences && prefs.preferredStations.includes(shift.station)) {
