@@ -4,16 +4,16 @@ class ScheduleApp {
         this.view = 'calendar';
         this.currentUser = null;
         
-        // Dane domyślne - Pełna lista z oryginału
-        this.defaultStations = [
-            { id: 'oait_d', name: 'OAIT Dzienny', is24h: false, start: '07:00', end: '15:00' },
-            { id: 'oait_24', name: 'OAIT 24h', is24h: true, start: '08:00', end: '08:00' },
-            { id: 'anes_1', name: 'Anestezjolog I 24h', is24h: true, start: '08:00', end: '08:00' },
-            { id: 'anes_2', name: 'Anestezjolog II', is24h: false, start: '08:00', end: '15:00' },
-            { id: 'anes_3', name: 'Anestezjolog III', is24h: false, start: '08:00', end: '15:00' },
-            { id: 'anes_ort', name: 'Anestezjolog Ortopedia', is24h: false, start: '08:00', end: '15:00' },
-            { id: 'wybudz', name: 'Sala Wybudzeń', is24h: false, start: '08:00', end: '15:00' },
-            { id: 'endo', name: 'Endoskopia', is24h: false, start: '08:00', end: '15:00' }
+        // Definicja wszystkich stanowisk
+        this.stationsConfig = [
+            { id: 'oait_24', name: 'OAIT 24h', isWeekendMain: true, start: '08:00', end: '08:00' },
+            { id: 'anes_1', name: 'Anestezjolog I 24h', isWeekendMain: true, start: '08:00', end: '08:00' },
+            { id: 'oait_d', name: 'OAIT Dzienny', isWeekendMain: false, start: '07:00', end: '15:00' },
+            { id: 'anes_2', name: 'Anestezjolog II', isWeekendMain: false, start: '08:00', end: '15:00' },
+            { id: 'anes_3', name: 'Anestezjolog III', isWeekendMain: false, start: '08:00', end: '15:00' },
+            { id: 'anes_ort', name: 'Anestezjolog Ortopedia', isWeekendMain: false, start: '08:00', end: '15:00' },
+            { id: 'wybudz', name: 'Sala Wybudzeń', isWeekendMain: false, start: '08:00', end: '15:00' },
+            { id: 'endo', name: 'Endoskopia', isWeekendMain: false, start: '08:00', end: '15:00' }
         ];
 
         this.staff = [
@@ -24,11 +24,14 @@ class ScheduleApp {
             { id: 's5', name: 'Lek. Mazur' }
         ];
 
-        // Struktura: { 'YYYY-MM-DD': [ {stationId, staffId, start, end, customName?} ] }
+        // Dane: 
+        // schedule[date] = [ { stationId, staffId, start, end, isCustom, customName } ]
+        // availability[staffId][date] = { type: '24h'|'partial'|'none', start, end }
         this.schedule = {};
-        // Struktura: { 'YYYY-MM-DD': { 'stationId': { start, end } } }
-        this.roomHours = {}; 
-        this.availability = {}; // { staffId: { date: status } }
+        this.availability = {};
+        
+        // Flaga do edycji dnia - czy pokazac wszystkie stanowiska w weekend
+        this.showAllWeekendStations = false;
 
         this.loadData();
         this.init();
@@ -36,110 +39,64 @@ class ScheduleApp {
 
     init() {
         this.renderLogin();
-        // Auto-save co minutę
-        setInterval(() => this.saveData(), 60000);
     }
 
-    // === DATA STORAGE ===
     saveData() {
-        const data = {
+        localStorage.setItem('oait_v5', JSON.stringify({
             schedule: this.schedule,
-            roomHours: this.roomHours,
-            availability: this.availability,
-            staff: this.staff,
-            stations: this.defaultStations
-        };
-        localStorage.setItem('oait_schedule_v4', JSON.stringify(data));
+            availability: this.availability
+        }));
     }
 
     loadData() {
-        const json = localStorage.getItem('oait_schedule_v4');
-        if (json) {
-            try {
-                const data = JSON.parse(json);
-                this.schedule = data.schedule || {};
-                this.roomHours = data.roomHours || {};
-                this.availability = data.availability || {};
-                if(data.staff) this.staff = data.staff;
-                if(data.stations) this.defaultStations = data.stations;
-            } catch (e) { console.error('Load error', e); }
+        const data = JSON.parse(localStorage.getItem('oait_v5'));
+        if(data) {
+            this.schedule = data.schedule || {};
+            this.availability = data.availability || {};
         }
     }
 
-    // === LOGOWANIE ===
+    // === LOGOWANIE I UI ===
     renderLogin() {
-        const container = document.getElementById('staffLoginList');
-        container.innerHTML = this.staff.map(s => 
-            `<button class="staff-btn" onclick="app.login('staff', '${s.id}')">${s.name}</button>`
+        const list = document.getElementById('staffLoginList');
+        list.innerHTML = this.staff.map(s => 
+            `<button class="btn btn-outline w-100 mb-2" onclick="app.login('staff', '${s.id}')">${s.name}</button>`
         ).join('');
     }
-
-    selectRole(role) {
-        document.getElementById('btnAdmin').classList.toggle('active', role === 'admin');
-        document.getElementById('btnStaff').classList.toggle('active', role === 'staff');
-        
-        if (role === 'admin') {
-            document.getElementById('adminLoginView').classList.remove('hidden');
-            document.getElementById('staffLoginView').classList.add('hidden');
-        } else {
-            document.getElementById('adminLoginView').classList.add('hidden');
-            document.getElementById('staffLoginView').classList.remove('hidden');
-        }
-    }
-
-    loginAsAdmin() { this.login('admin', null); }
 
     login(role, id) {
         this.currentUser = { role, id };
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         
-        // Setup UI based on role
         const nameDisplay = document.getElementById('currentUserName');
-        const roleDisplay = document.getElementById('currentUserRole');
+        nameDisplay.textContent = role === 'admin' ? 'Administrator' : this.staff.find(s => s.id === id)?.name;
+        document.getElementById('currentUserRole').textContent = role === 'admin' ? 'Zarządzanie' : 'Lekarz';
+
+        // Toggle widoczności narzędzi
+        const adminTools = document.getElementById('adminTools');
+        const navAvail = document.getElementById('navAvailability');
         
-        if (role === 'admin') {
-            nameDisplay.textContent = 'Administrator';
-            roleDisplay.textContent = 'Zarządzanie';
-            document.getElementById('adminTools').classList.remove('hidden');
-            document.getElementById('staffTools').classList.add('hidden');
-            document.getElementById('navAvailability').classList.add('hidden');
+        if(role === 'admin') {
+            adminTools.classList.remove('hidden');
+            navAvail.classList.add('hidden');
         } else {
-            const person = this.staff.find(s => s.id === id);
-            nameDisplay.textContent = person ? person.name : 'Użytkownik';
-            roleDisplay.textContent = 'Zespół lekarski';
-            document.getElementById('adminTools').classList.add('hidden');
-            document.getElementById('staffTools').classList.remove('hidden');
-            document.getElementById('navAvailability').classList.remove('hidden');
+            adminTools.classList.add('hidden');
+            navAvail.classList.remove('hidden');
         }
         this.render();
     }
 
-    logout() {
-        this.currentUser = null;
-        document.getElementById('mainApp').classList.add('hidden');
-        document.getElementById('loginScreen').classList.remove('hidden');
-    }
+    logout() { location.reload(); }
 
-    // === NAWIGACJA ===
-    setView(viewName) {
-        this.view = viewName;
+    setView(view) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+        document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('hidden');
+        
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
         
-        // Prosta detekcja aktywnego przycisku
-        const buttons = document.querySelectorAll('.nav-btn');
-        if(viewName === 'calendar') buttons[0].classList.add('active');
-        if(viewName === 'table') buttons[1].classList.add('active');
-        if(viewName === 'availability') buttons[2].classList.add('active');
-
-        document.getElementById('viewCalendar').classList.add('hidden');
-        document.getElementById('viewTable').classList.add('hidden');
-        document.getElementById('viewAvailability').classList.add('hidden');
-
-        if (viewName === 'calendar') document.getElementById('viewCalendar').classList.remove('hidden');
-        if (viewName === 'table') document.getElementById('viewTable').classList.remove('hidden');
-        if (viewName === 'availability') document.getElementById('viewAvailability').classList.remove('hidden');
-        
+        this.view = view;
         this.render();
     }
 
@@ -147,411 +104,342 @@ class ScheduleApp {
         this.date.setMonth(this.date.getMonth() + delta);
         this.render();
     }
-    setToday() {
-        this.date = new Date();
-        this.render();
-    }
+    setToday() { this.date = new Date(); this.render(); }
+    
+    formatDate(d) { return d.toISOString().split('T')[0]; }
 
-    // === GŁÓWNY RENDERER ===
+    // === RENDERER ===
     render() {
-        this.updateMonthTitle();
-        if (this.view === 'calendar') this.renderCalendar();
-        if (this.view === 'table') this.renderTable();
-        if (this.view === 'availability') this.renderAvailability();
-    }
+        const mName = this.date.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
+        document.getElementById('monthTitle').textContent = mName.charAt(0).toUpperCase() + mName.slice(1);
 
-    updateMonthTitle() {
-        const str = this.date.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
-        document.getElementById('monthTitle').textContent = str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    getDaysInMonth() {
-        const y = this.date.getFullYear();
-        const m = this.date.getMonth();
-        const days = new Date(y, m + 1, 0).getDate();
-        const firstDay = new Date(y, m, 1).getDay(); // 0=Sun
-        // Fix Monday as 0 for loop
-        const startOffset = (firstDay === 0 ? 6 : firstDay - 1);
-        return { y, m, days, startOffset };
-    }
-
-    formatDate(y, m, d) {
-        return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        if(this.view === 'calendar') this.renderCalendar();
+        if(this.view === 'table') this.renderTable();
+        if(this.view === 'availability') this.renderAvailability();
     }
 
     // === KALENDARZ ===
     renderCalendar() {
         const grid = document.getElementById('calendarGrid');
         grid.innerHTML = '';
-        const { y, m, days, startOffset } = this.getDaysInMonth();
+        
+        const y = this.date.getFullYear();
+        const m = this.date.getMonth();
+        const days = new Date(y, m+1, 0).getDate();
+        const firstDay = new Date(y, m, 1).getDay(); // 0=Nd
+        const offset = (firstDay === 0 ? 6 : firstDay - 1);
 
-        // Puste dni
-        for(let i=0; i<startOffset; i++) {
-            grid.innerHTML += `<div class="cal-day empty"></div>`;
-        }
-
-        const todayStr = this.formatDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        for(let i=0; i<offset; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
 
         for(let d=1; d<=days; d++) {
-            const dateStr = this.formatDate(y, m, d);
             const dateObj = new Date(y, m, d);
+            const dateStr = this.formatDate(dateObj);
             const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+
+            const div = document.createElement('div');
+            div.className = `cal-day ${isWeekend ? 'weekend' : ''}`;
             
-            const dayDiv = document.createElement('div');
-            dayDiv.className = `cal-day ${isWeekend ? 'weekend' : ''} ${dateStr === todayStr ? 'today' : ''}`;
-            
-            // Nagłówek dnia
-            let header = `<div class="day-head"><span class="day-num">${d}</span>`;
-            // Kropka dostępności dla staffu
-            if (this.currentUser.role === 'staff') {
-                const status = this.availability[this.currentUser.id]?.[dateStr];
-                if(status) {
-                    let color = status === 'available' ? 'var(--success)' : (status === 'preferred' ? 'var(--primary)' : 'var(--danger)');
-                    header += `<div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>`;
+            // Header dnia
+            let html = `<div class="day-head"><span>${d}</span>`;
+            if(this.currentUser.role === 'staff') {
+                const myAvail = this.availability[this.currentUser.id]?.[dateStr];
+                if(myAvail) {
+                    let color = myAvail.type === '24h' ? '#10b981' : (myAvail.type === 'partial' ? '#f59e0b' : '#ef4444');
+                    html += `<div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>`;
                 }
             }
-            header += `</div>`;
+            html += `</div>`;
 
-            // Dyżury
-            let content = `<div style="display:flex; flex-direction:column; gap:2px">`;
+            // Pobierz dyżury do wyświetlenia
             const shifts = this.getShiftsForDate(dateStr);
-            const assignedShifts = shifts.filter(s => s.staffId); // Pokaż tylko obsadzone w widoku ogólnym
-            
-            // Jeśli admin, pokaż też nieobsadzone ważne (24h)
-            const shiftsToShow = this.currentUser.role === 'admin' ? shifts : assignedShifts;
-            
-            // Limit wyświetlania
-            shiftsToShow.slice(0, 4).forEach(s => {
-                const staff = this.staff.find(st => st.id === s.staffId);
-                const station = this.defaultStations.find(st => st.id === s.stationId);
-                const label = staff ? staff.name.split(' ').pop() : (station ? station.name : 'Wakat');
-                
-                content += `<span class="shift-chip ${s.staffId ? 'assigned' : ''} ${station?.is24h ? 'is-24h' : ''}">
-                    ${label}
-                </span>`;
+            // W weekendy w widoku ogólnym pokazujemy tylko główne, chyba że ktoś jest przypisany do innych
+            const visibleShifts = shifts.filter(s => {
+                if(s.staffId) return true; // Zawsze pokaż obsadzone
+                // Jeśli puste: pokaż jeśli to nie weekend LUB jeśli to główne stanowisko weekendowe
+                const config = this.stationsConfig.find(c => c.id === s.stationId);
+                if(isWeekend) {
+                     // Jeśli to customowy dyżur, pokaż go
+                     if(s.isCustom) return true;
+                     return config && config.isWeekendMain;
+                }
+                return true;
             });
-            
-            if (shiftsToShow.length > 4) {
-                content += `<span style="font-size:0.7rem; color:#666; text-align:center">+${shiftsToShow.length - 4} więcej</span>`;
-            }
-            content += `</div>`;
 
-            dayDiv.innerHTML = header + content;
-            
-            if (this.currentUser.role === 'admin') {
-                dayDiv.onclick = () => this.openDayModal(dateStr);
-            }
-            grid.appendChild(dayDiv);
-        }
-    }
-
-    // Zwraca połączoną listę dyżurów (zapisane + domyślne puste miejsca)
-    getShiftsForDate(dateStr) {
-        const saved = this.schedule[dateStr] || [];
-        // Stwórz mapę ID stanowisk, które już są w grafiku
-        const usedStationIds = new Set(saved.map(s => s.stationId));
-        
-        // Dodaj puste sloty dla domyślnych stanowisk, jeśli ich nie ma
-        const defaults = this.defaultStations.map(ds => {
-            if (usedStationIds.has(ds.id)) return null;
-            return {
-                stationId: ds.id,
-                staffId: null,
-                start: ds.start,
-                end: ds.end
-            };
-        }).filter(s => s !== null);
-
-        // Customowe dyżury są już w 'saved'
-        return [...defaults, ...saved];
-    }
-
-    // === MODAL DNIA (OBSTAWIANIE SAL) ===
-    openDayModal(dateStr) {
-        this.currentEditDate = dateStr;
-        const dateObj = new Date(dateStr);
-        document.getElementById('modalDayTitle').textContent = `Grafik na ${dateObj.toLocaleDateString('pl-PL')}`;
-        document.getElementById('modalDay').classList.remove('hidden');
-
-        // 1. Render Godzin Sal
-        const hoursContainer = document.getElementById('roomHoursList');
-        hoursContainer.innerHTML = this.defaultStations.filter(s => !s.is24h).map(s => {
-            // Pobierz zapisane godziny lub domyślne
-            const savedHours = this.roomHours[dateStr]?.[s.id] || { start: s.start, end: s.end };
-            return `
-                <div class="hour-edit-item">
-                    <div style="flex:1; font-weight:500">${s.name}</div>
-                    <input type="time" class="form-input" value="${savedHours.start}" 
-                        onchange="app.updateRoomHour('${s.id}', 'start', this.value)">
-                    <span>-</span>
-                    <input type="time" class="form-input" value="${savedHours.end}" 
-                        onchange="app.updateRoomHour('${s.id}', 'end', this.value)">
-                </div>
-            `;
-        }).join('');
-
-        // 2. Render Obsady
-        this.renderAssignmentsList();
-    }
-
-    renderAssignmentsList() {
-        const container = document.getElementById('assignmentsList');
-        const shifts = this.getShiftsForDate(this.currentEditDate);
-        
-        container.innerHTML = shifts.map((shift, idx) => {
-            const station = this.defaultStations.find(s => s.id === shift.stationId);
-            // Pobierz aktualne godziny (mogły być zmienione wyżej)
-            const currentHours = !station?.is24h && this.roomHours[this.currentEditDate]?.[shift.stationId] 
-                ? this.roomHours[this.currentEditDate][shift.stationId] 
-                : { start: shift.start, end: shift.end };
+            visibleShifts.slice(0, 4).forEach(s => {
+                const staff = this.staff.find(st => st.id === s.staffId);
+                const config = this.stationsConfig.find(c => c.id === s.stationId);
+                let label = staff ? staff.name.split(' ').pop() : (s.customName || config.name);
                 
-            const stationName = station ? station.name : (shift.customName || 'Inne');
-            const is24h = station ? station.is24h : false;
+                let classes = 'shift-chip';
+                if(s.staffId) classes += ' assigned';
+                if(config?.isWeekendMain) classes += ' weekend-main';
+                
+                html += `<span class="${classes}">${label}</span>`;
+            });
+
+            if(visibleShifts.length > 4) html += `<small style="color:#888">+${visibleShifts.length - 4}</small>`;
+
+            div.innerHTML = html;
+            if(this.currentUser.role === 'admin') {
+                div.onclick = () => this.openDayModal(dateStr, isWeekend);
+            }
+            grid.appendChild(div);
+        }
+    }
+
+    getShiftsForDate(dateStr) {
+        // Jeśli mamy zapisane w DB, zwróć je.
+        // Jeśli nie, wygeneruj domyślne "puste" sloty na podstawie konfiguracji
+        if(this.schedule[dateStr]) return this.schedule[dateStr];
+        
+        // Generuj domyślne
+        return this.stationsConfig.map(c => ({
+            stationId: c.id,
+            staffId: null,
+            start: c.start,
+            end: c.end,
+            isCustom: false
+        }));
+    }
+
+    // === MODAL DNIA (EDYCJA) ===
+    openDayModal(dateStr, isWeekend) {
+        this.currentEditDate = dateStr;
+        this.isWeekendEdit = isWeekend;
+        this.showAllWeekendStations = !isWeekend; // Reset flagi: w weekendy ukryj na start
+
+        document.getElementById('modalDayTitle').textContent = dateStr;
+        document.getElementById('modalDay').classList.remove('hidden');
+        document.getElementById('weekendNotice').classList.toggle('hidden', !isWeekend);
+        document.getElementById('btnAddStandard').classList.toggle('hidden', !isWeekend);
+        
+        this.renderAssignments();
+    }
+
+    renderAssignments() {
+        const container = document.getElementById('assignmentsList');
+        // Pobierz aktualny stan dyżurów (albo z pamięci albo generuj domyślne)
+        let shifts = this.schedule[this.currentEditDate];
+        if(!shifts) shifts = this.getShiftsForDate(this.currentEditDate); // generuj domyślne
+
+        // Filtrowanie widoku weekendowego w modalu
+        let displayShifts = shifts;
+        if(this.isWeekendEdit && !this.showAllWeekendStations) {
+            displayShifts = shifts.filter(s => {
+                if(s.staffId || s.isCustom) return true; // Pokaż jeśli ktoś jest wpisany lub to custom
+                const conf = this.stationsConfig.find(c => c.id === s.stationId);
+                return conf && conf.isWeekendMain; // Pokaż tylko główne
+            });
+        }
+
+        container.innerHTML = displayShifts.map((s, idx) => {
+            const conf = this.stationsConfig.find(c => c.id === s.stationId);
+            const name = s.isCustom ? s.customName : conf.name;
+            const isMain = conf?.isWeekendMain;
+
+            // Znajdź prawdziwy indeks w głównej tablicy `shifts` do edycji
+            const realIdx = shifts.indexOf(s);
 
             return `
-                <div class="assignment-row ${is24h ? 'is-24h' : ''}">
-                    <div class="station-label">
-                        ${stationName}
-                        ${is24h ? '<span style="color:var(--danger); font-weight:bold">24h</span>' : ''}
-                    </div>
-                    <div class="text-sm text-muted">
-                        ${currentHours.start} - ${currentHours.end}
-                    </div>
-                    <div>
-                        <select class="assign-select" onchange="app.updateAssignment('${shift.stationId}', this.value, ${idx})">
-                            <option value="">-- Wakat --</option>
-                            ${this.staff.map(s => `
-                                <option value="${s.id}" ${s.id === shift.staffId ? 'selected' : ''}>${s.name}</option>
-                            `).join('')}
-                        </select>
-                    </div>
-                    ${!station ? `<button class="btn btn-danger btn-sm" onclick="app.removeCustomShift(${idx})">&times;</button>` : ''}
+            <div class="assignment-row ${s.isCustom ? 'custom' : ''}">
+                <div style="font-weight:500">
+                    ${name} 
+                    ${isMain ? '<span style="color:red; font-size:0.7em">24h</span>' : ''}
                 </div>
-            `;
+                
+                <div class="time-range-row" style="gap:2px">
+                    <input type="time" class="form-input" style="padding:2px; font-size:0.8rem" value="${s.start}" 
+                        onchange="app.updateShiftTime(${realIdx}, 'start', this.value)">
+                    -
+                    <input type="time" class="form-input" style="padding:2px; font-size:0.8rem" value="${s.end}" 
+                        onchange="app.updateShiftTime(${realIdx}, 'end', this.value)">
+                </div>
+
+                <div>
+                    <select class="assign-select" onchange="app.updateAssignment(${realIdx}, this.value)">
+                        <option value="">-- Wakat --</option>
+                        ${this.staff.map(st => `<option value="${st.id}" ${st.id === s.staffId ? 'selected' : ''}>${st.name}</option>`).join('')}
+                    </select>
+                </div>
+
+                ${s.isCustom ? `<button class="btn btn-danger btn-sm" onclick="app.removeCustom(${realIdx})">×</button>` : ''}
+            </div>`;
         }).join('');
-    }
-
-    updateRoomHour(stationId, field, value) {
-        if (!this.roomHours[this.currentEditDate]) this.roomHours[this.currentEditDate] = {};
-        if (!this.roomHours[this.currentEditDate][stationId]) {
-            const def = this.defaultStations.find(s => s.id === stationId);
-            this.roomHours[this.currentEditDate][stationId] = { start: def.start, end: def.end };
+        
+        // Zapisz ewentualną inicjalizację w pamięci tymczasowej, żeby nie zgubić "wygenerowanych" przy dodawaniu customa
+        if(!this.schedule[this.currentEditDate]) {
+            this.schedule[this.currentEditDate] = shifts;
         }
-        this.roomHours[this.currentEditDate][stationId][field] = value;
-        this.saveData();
-        this.renderAssignmentsList(); // Odśwież listę, by pokazać nowe godziny
     }
 
-    updateAssignment(stationId, staffId, idx) {
-        // Pobierz aktualny stan (połączony)
-        const currentShifts = this.getShiftsForDate(this.currentEditDate);
-        const shiftToUpdate = currentShifts[idx];
-        
-        shiftToUpdate.staffId = staffId || null;
-        
-        // Zapisz tylko te, które mają przypisanie LUB są customowe, LUB mają zmienione godziny (to już w roomHours)
-        // Ale dla prostoty zapisu grafiku - nadpisujemy całą tablicę dla tego dnia
-        // Musimy jednak odróżnić "domyślne puste" od "zapisanych pustych". 
-        // Logika: Zapisujemy w this.schedule wszystkie, które mają staffId lub są customowe.
-        
-        // Aktualizacja tablicy
-        currentShifts[idx] = shiftToUpdate;
-
-        // Filtrujemy: Zapisujemy te które mają lekarza LUB są customowe
-        const toSave = currentShifts.filter(s => s.staffId || !this.defaultStations.find(ds => ds.id === s.stationId));
-        
-        this.schedule[this.currentEditDate] = toSave;
-        this.saveData();
-        this.render(); // Odśwież tło (kalendarz)
+    addStandardWeekendStations() {
+        this.showAllWeekendStations = true;
+        document.getElementById('btnAddStandard').classList.add('hidden');
+        this.renderAssignments();
     }
 
     addCustomShiftRow() {
-        const name = prompt("Nazwa stanowiska:");
+        const name = prompt("Nazwa stanowiska (np. Dodatkowy zabieg):");
         if(!name) return;
-        
-        const newShift = {
+
+        // Jeśli schedule nie istnieje dla tego dnia, zainicjuj go domyślnymi
+        if(!this.schedule[this.currentEditDate]) {
+            this.schedule[this.currentEditDate] = this.getShiftsForDate(this.currentEditDate);
+        }
+
+        this.schedule[this.currentEditDate].push({
             stationId: 'custom_' + Date.now(),
-            customName: name,
             staffId: null,
             start: '08:00',
-            end: '15:00'
-        };
+            end: '15:00',
+            isCustom: true,
+            customName: name
+        });
         
-        if(!this.schedule[this.currentEditDate]) this.schedule[this.currentEditDate] = [];
-        this.schedule[this.currentEditDate].push(newShift);
         this.saveData();
-        this.renderAssignmentsList();
+        this.renderAssignments();
     }
 
-    removeCustomShift(idx) {
-        // Tutaj logika jest trudniejsza bo idx odnosi się do połączonej listy. 
-        // Uproszczenie: customowe zawsze są na końcu listy getShiftsForDate jeśli tak zaimplementowaliśmy, 
-        // ale bezpieczniej operować na ID. W tym demo odświeżymy całość.
-        if(confirm("Usunąć?")) {
-            // Znajdź w saved
-            const shifts = this.getShiftsForDate(this.currentEditDate);
-            const target = shifts[idx];
-            // Usuń z this.schedule
-            if(this.schedule[this.currentEditDate]) {
-                this.schedule[this.currentEditDate] = this.schedule[this.currentEditDate].filter(s => s.stationId !== target.stationId);
-            }
+    updateShiftTime(idx, field, val) {
+        this.schedule[this.currentEditDate][idx][field] = val;
+        this.saveData();
+    }
+
+    updateAssignment(idx, staffId) {
+        this.schedule[this.currentEditDate][idx].staffId = staffId || null;
+        this.saveData();
+        this.render(); // Odśwież kalendarz w tle
+    }
+
+    removeCustom(idx) {
+        if(confirm('Usunąć?')) {
+            this.schedule[this.currentEditDate].splice(idx, 1);
             this.saveData();
-            this.renderAssignmentsList();
+            this.renderAssignments();
         }
     }
 
     closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // === TABELA ZBIORCZA ===
-    renderTable() {
-        const table = document.getElementById('mainTable');
-        const { y, m, days } = this.getDaysInMonth();
-        
-        // Header
-        let html = `<thead><tr><th class="col-date">Data</th>`;
-        this.defaultStations.forEach(s => {
-            html += `<th>${s.name} ${s.is24h ? '<span style="color:var(--danger)">(24h)</span>' : ''}</th>`;
-        });
-        html += `</tr></thead><tbody>`;
-
-        for(let d=1; d<=days; d++) {
-            const dateStr = this.formatDate(y, m, d);
-            const dateObj = new Date(y, m, d);
-            const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
-            const shifts = this.getShiftsForDate(dateStr);
-            
-            html += `<tr class="${isWeekend ? 'row-weekend' : ''}">`;
-            html += `<td class="col-date">${d} <span class="text-muted text-sm">${dateObj.toLocaleDateString('pl-PL', {weekday:'short'})}</span></td>`;
-            
-            this.defaultStations.forEach(s => {
-                const shift = shifts.find(sh => sh.stationId === s.id);
-                let cell = '';
-                if(shift && shift.staffId) {
-                    const staff = this.staff.find(st => st.id === shift.staffId);
-                    cell = `<div style="font-weight:600; color:var(--primary)">${staff ? staff.name : '???'}</div>`;
-                    if(!s.is24h) {
-                        // Sprawdź czy godziny nadpisane
-                        const hours = this.roomHours[dateStr]?.[s.id] || {start: shift.start, end: shift.end};
-                        cell += `<div class="text-muted text-sm">${hours.start}-${hours.end}</div>`;
-                    }
-                } else {
-                    cell = `<span style="color:#ccc">-</span>`;
-                }
-                html += `<td>${cell}</td>`;
-            });
-            html += `</tr>`;
-        }
-        html += `</tbody>`;
-        table.innerHTML = html;
-    }
-
     // === DOSTĘPNOŚĆ ===
     renderAvailability() {
         const grid = document.getElementById('availGrid');
         grid.innerHTML = '';
-        const { y, m, days } = this.getDaysInMonth();
-        const myId = this.currentUser.id;
+        const y = this.date.getFullYear(), m = this.date.getMonth();
+        const days = new Date(y, m+1, 0).getDate();
 
         for(let d=1; d<=days; d++) {
-            const dateStr = this.formatDate(y, m, d);
-            const status = this.availability[myId]?.[dateStr];
+            const dateStr = this.formatDate(new Date(y, m, d));
+            const avail = this.availability[this.currentUser.id]?.[dateStr];
             
             const div = document.createElement('div');
-            div.className = `avail-cell ${status ? 'status-'+status : ''}`;
+            let statusClass = 'status-none'; // domyślnie czerwone (brak wpisu traktujemy jako brak dyspozycji lub do uzupełnienia)
+            let label = 'Brak';
+            let timeInfo = '';
+
+            if(avail) {
+                statusClass = 'status-' + avail.type;
+                if(avail.type === '24h') label = '24h';
+                if(avail.type === 'partial') { label = 'Częściowa'; timeInfo = `${avail.start}-${avail.end}`; }
+                if(avail.type === 'none') label = 'Niedostępny';
+            } else {
+                // Brak wpisu - neutralny szary lub czerwony?
+                // Użytkownik prosił o opcję "brak dyspozycji", więc domyślny stan może być neutralny (pusty)
+                statusClass = ''; 
+                label = '-';
+            }
+
+            div.className = `avail-cell ${statusClass}`;
             div.innerHTML = `
                 <div style="font-weight:bold; font-size:1.2rem">${d}</div>
-                <div class="text-sm">${status ? (status==='available'?'Dostępny':(status==='unavailable'?'Niedostępny':'Preferowany')) : '-'}</div>
+                <div style="font-weight:600">${label}</div>
+                <div style="font-size:0.8rem">${timeInfo}</div>
             `;
-            div.onclick = () => {
-                this.currentEditDate = dateStr;
-                document.getElementById('modalAvailDate').textContent = dateStr;
-                document.getElementById('modalAvailEdit').classList.remove('hidden');
-            };
+            div.onclick = () => this.openAvailModal(dateStr);
             grid.appendChild(div);
         }
     }
 
-    setAvailStatus(status) {
-        const myId = this.currentUser.id;
-        if(!this.availability[myId]) this.availability[myId] = {};
+    openAvailModal(dateStr) {
+        this.currentAvailDate = dateStr;
+        document.getElementById('modalAvailDate').textContent = dateStr;
+        document.getElementById('modalAvailEdit').classList.remove('hidden');
         
-        if(status === null) delete this.availability[myId][this.currentEditDate];
-        else this.availability[myId][this.currentEditDate] = status;
+        // Reset form
+        const inputs = document.getElementsByName('availType');
+        inputs.forEach(i => i.checked = false);
+        document.getElementById('availTimeInputs').classList.add('hidden');
+
+        // Fill form if exists
+        const current = this.availability[this.currentUser.id]?.[dateStr];
+        if(current) {
+            const rad = document.querySelector(`input[name="availType"][value="${current.type}"]`);
+            if(rad) rad.checked = true;
+            if(current.type === 'partial') {
+                document.getElementById('availTimeInputs').classList.remove('hidden');
+                document.getElementById('availStart').value = current.start;
+                document.getElementById('availEnd').value = current.end;
+            }
+        }
+    }
+
+    toggleAvailInputs() {
+        const type = document.querySelector('input[name="availType"]:checked').value;
+        document.getElementById('availTimeInputs').classList.toggle('hidden', type !== 'partial');
+    }
+
+    saveAvailability() {
+        const typeEl = document.querySelector('input[name="availType"]:checked');
+        if(!typeEl) return; // nic nie wybrano
+
+        const type = typeEl.value;
+        const data = { type };
+        if(type === 'partial') {
+            data.start = document.getElementById('availStart').value;
+            data.end = document.getElementById('availEnd').value;
+        }
+        
+        if(!this.availability[this.currentUser.id]) this.availability[this.currentUser.id] = {};
+        this.availability[this.currentUser.id][this.currentAvailDate] = data;
         
         this.saveData();
         this.closeModal('modalAvailEdit');
         this.renderAvailability();
     }
 
-    // === GENERATOR I INNE ===
-    openGenerator() { document.getElementById('modalGenerator').classList.remove('hidden'); }
-    
-    runGenerator() {
-        // Prosta symulacja generatora
-        const { y, m, days } = this.getDaysInMonth();
-        const respect = document.getElementById('genRespectAvail').checked;
+    // === TABELA ZBIORCZA ===
+    renderTable() {
+        const table = document.getElementById('mainTable');
+        const y = this.date.getFullYear(), m = this.date.getMonth();
+        const days = new Date(y, m+1, 0).getDate();
         
-        // Wyczyść obecny grafik
-        const newSchedule = {};
+        // Nagłówki
+        let html = `<thead><tr><th>Data</th>`;
+        this.stationsConfig.forEach(s => html += `<th>${s.name}</th>`);
+        html += `</tr></thead><tbody>`;
 
         for(let d=1; d<=days; d++) {
-            const dateStr = this.formatDate(y, m, d);
-            const dayShifts = [];
+            const dateStr = this.formatDate(new Date(y, m, d));
+            const shifts = this.getShiftsForDate(dateStr);
             
-            this.defaultStations.forEach(s => {
-                // Prosty randomizer, pomija weekendy dla dziennych
-                const dateObj = new Date(y, m, d);
-                const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
-                
-                if(isWeekend && !s.is24h) return; 
-
-                // Znajdź kogoś dostępnego
-                let candidate = null;
-                // Szukamy losowego lekarza 10 razy
-                for(let k=0; k<10; k++) {
-                    const randStaff = this.staff[Math.floor(Math.random() * this.staff.length)];
-                    const avail = this.availability[randStaff.id]?.[dateStr];
-                    
-                    if (respect && avail === 'unavailable') continue;
-                    candidate = randStaff;
-                    break;
+            html += `<tr><td style="font-weight:bold">${d}</td>`;
+            this.stationsConfig.forEach(conf => {
+                const s = shifts.find(sh => sh.stationId === conf.id);
+                let cell = '-';
+                if(s && s.staffId) {
+                    const staff = this.staff.find(st => st.id === s.staffId);
+                    cell = `${staff.name}<br><small>${s.start}-${s.end}</small>`;
                 }
-
-                if(candidate) {
-                    dayShifts.push({
-                        stationId: s.id,
-                        staffId: candidate.id,
-                        start: s.start,
-                        end: s.end
-                    });
-                }
+                html += `<td>${cell}</td>`;
             });
-            if(dayShifts.length > 0) newSchedule[dateStr] = dayShifts;
+            html += `</tr>`;
         }
-        
-        this.schedule = newSchedule;
-        this.saveData();
-        this.closeModal('modalGenerator');
-        this.render();
-        alert('Grafik wygenerowany!');
+        table.innerHTML = html + `</tbody>`;
     }
 
-    clearMonth() {
-        if(confirm('Czy na pewno wyczyścić CAŁY grafik w tym miesiącu?')) {
-            this.schedule = {};
-            this.saveData();
-            this.render();
-        }
-    }
-    
-    // Manage Placeholders
-    openStaffModal() { alert('Zarządzanie personelem (Demo)'); }
-    openStationsModal() { alert('Zarządzanie stanowiskami (Demo)'); }
-    openPreferences() { alert('Preferencje (Demo)'); }
-    addStaff() {}
-    addStation() {}
+    // Helpery
+    clearMonth() { if(confirm('Wyczyścić?')) { this.schedule={}; this.saveData(); this.render(); } }
+    runGenerator() { alert('Generator w tej wersji jest wyłączony (wymagałby skomplikowanej logiki dopasowania do nowych godzin).'); }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    window.app = new ScheduleApp();
-});
+document.addEventListener('DOMContentLoaded', () => { window.app = new ScheduleApp(); });
