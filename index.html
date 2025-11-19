@@ -31,7 +31,7 @@
             </div>
 
             <div id="staffSelectDiv" class="hidden fade-in">
-                <label class="input-label">Wybierz użytkownika</label>
+                <label class="input-label">Wybierz użytkownika:</label>
                 <div class="staff-grid" id="staffListLogin"></div>
             </div>
 
@@ -63,8 +63,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <div class="user-profile" id="currentUser">
-                    </div>
+                <div class="user-profile" id="currentUser"></div>
                 <button class="btn-logout" onclick="app.logout()">Wyloguj</button>
             </div>
         </aside>
@@ -124,25 +123,20 @@
         </main>
     </div>
 
-    <div class="modal-backdrop" id="dayModal">
+    <div class="modal-backdrop hidden" id="dayModal">
         <div class="modal">
             <div class="modal-header">
                 <h3 id="dayModalTitle">Szczegóły dnia</h3>
                 <button class="close-btn" onclick="app.closeDayModal()">×</button>
             </div>
             <div class="modal-body">
-                <div class="section-title">Godziny pracy sal</div>
-                <div id="roomHoursContainer" class="room-hours-grid"></div>
-                
-                <div class="section-title mt-4">Dyżury</div>
                 <div class="shifts-list" id="shiftsEditor"></div>
-                
                 <button class="btn btn-dashed mt-3" onclick="app.addShiftToDay()">+ Dodaj dyżur</button>
             </div>
         </div>
     </div>
 
-    <div class="modal-backdrop" id="addShiftModal">
+    <div class="modal-backdrop hidden" id="addShiftModal">
         <div class="modal modal-sm">
             <div class="modal-header">
                 <h3>Nowy dyżur</h3>
@@ -153,9 +147,7 @@
                     <label>Stanowisko</label>
                     <select id="shiftStation" class="form-control"></select>
                 </div>
-                
                 <div id="shift24hNotice" class="notice-badge hidden">To stanowisko jest 24h (08:00 - 08:00)</div>
-
                 <div class="form-row" id="shiftTimeInputs">
                     <div class="form-group">
                         <label>Start</label>
@@ -166,7 +158,6 @@
                         <input type="time" id="shiftEnd" class="form-control" value="15:00">
                     </div>
                 </div>
-                
                 <div class="form-group">
                     <label>Lekarz</label>
                     <select id="shiftStaff" class="form-control">
@@ -181,7 +172,7 @@
         </div>
     </div>
 
-    <div class="modal-backdrop" id="preferencesModal">
+    <div class="modal-backdrop hidden" id="preferencesModal">
         <div class="modal">
             <div class="modal-header">
                 <h3>Moje Preferencje</h3>
@@ -207,7 +198,7 @@
         </div>
     </div>
 
-    <div class="modal-backdrop" id="availabilityModal">
+    <div class="modal-backdrop hidden" id="availabilityModal">
         <div class="modal modal-sm">
             <div class="modal-header">
                 <h3 id="availabilityModalTitle">Edycja dostępności</h3>
@@ -220,12 +211,10 @@
                     <button class="avail-btn danger" onclick="app.setDayAvailability('unavailable')">Niedostępny</button>
                     <button class="avail-btn neutral" onclick="app.setDayAvailability(null)">Wyczyść</button>
                 </div>
-                
                 <div class="form-check mt-3">
                     <input type="checkbox" id="hasTimeLimit" onchange="app.toggleTimeLimit()">
                     <label for="hasTimeLimit">Tylko w godzinach...</label>
                 </div>
-                
                 <div id="timeLimitInputs" class="form-row hidden mt-2">
                     <input type="time" id="availableFrom" class="form-control">
                     <span>-</span>
@@ -235,7 +224,7 @@
         </div>
     </div>
 
-    <div class="modal-backdrop" id="generatorModal">
+    <div class="modal-backdrop hidden" id="generatorModal">
         <div class="modal">
             <div class="modal-header">
                 <h3>Generator Grafiku</h3>
@@ -243,17 +232,8 @@
             </div>
             <div class="modal-body">
                 <div class="info-banner warning">
-                    Uwaga: Ta operacja nadpisze istniejące przypisania w tym miesiącu.
+                    Uwaga: Nadpisze to grafik w wyświetlanym miesiącu.
                 </div>
-                <div class="form-check mt-3">
-                    <input type="checkbox" id="respectAvailability" checked>
-                    <label for="respectAvailability">Respektuj dostępność</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="respectPreferences" checked>
-                    <label for="respectPreferences">Respektuj preferencje</label>
-                </div>
-
                 <div class="progress-container hidden" id="generatorProgress">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
@@ -267,54 +247,4 @@
         </div>
     </div>
 
-    <div class="modal-backdrop" id="staffModal">
-        <div class="modal">
-            <div class="modal-header"><h3>Zarządzanie Personelem</h3><button class="close-btn" onclick="app.closeStaffModal()">×</button></div>
-            <div class="modal-body">
-                <div class="list-container" id="staffList"></div>
-                <div class="add-row mt-3">
-                    <input type="text" id="newStaffName" class="form-control" placeholder="Nowy pracownik...">
-                    <button class="btn btn-success" onclick="app.addStaff()">+</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-backdrop" id="stationsModal">
-        <div class="modal">
-            <div class="modal-header"><h3>Zarządzanie Stanowiskami</h3><button class="close-btn" onclick="app.closeStationsModal()">×</button></div>
-            <div class="modal-body">
-                <div class="list-container" id="stationsList"></div>
-                <div class="add-row mt-3">
-                    <input type="text" id="newStationName" class="form-control" placeholder="Nowe stanowisko...">
-                    <button class="btn btn-success" onclick="app.addStation()">+</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-backdrop" id="editStationModal">
-        <div class="modal modal-sm">
-            <div class="modal-header"><h3>Edycja Stanowiska</h3><button class="close-btn" onclick="app.closeEditStationModal()">×</button></div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Nazwa</label>
-                    <input type="text" id="editStationName" class="form-control">
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="editStation24h" onchange="app.toggleEditStation24h()">
-                    <label for="editStation24h">Dyżur 24h</label>
-                </div>
-                <div id="editStationDefaultHours" class="form-row mt-2">
-                    <input type="time" id="editStationStart" class="form-control">
-                    <span>-</span>
-                    <input type="time" id="editStationEnd" class="form-control">
-                </div>
-                <button class="btn btn-primary btn-full mt-4" onclick="app.saveStationEdit()">Zapisz</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    <div class="modal-backdrop hidden" id="staffModal">
