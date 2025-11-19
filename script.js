@@ -99,13 +99,13 @@ class ScheduleApp {
 
     logout() { location.reload(); }
 
-    setView(view) {
+    setView(view, event) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
         const target = document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1));
         if(target) target.classList.remove('hidden');
         
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
+        if (event) event.target.classList.add('active');
         
         this.view = view;
         this.render();
