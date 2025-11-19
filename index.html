@@ -1,124 +1,4 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonogram OAIiT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="login-container" id="loginScreen">
-        <div class="login-box">
-            <div class="login-header">
-                <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                </svg>
-                <h1>Harmonogram OAIiT</h1>
-                <p>Panel zarządzania dyżurami</p>
-            </div>
-
-            <div class="role-tabs">
-                <button class="role-tab active" onclick="app.selectRole('admin')" id="btnAdmin">Administrator</button>
-                <button class="role-tab" onclick="app.selectRole('staff')" id="btnStaff">Zespół</button>
-            </div>
-
-            <div id="staffLoginView" class="hidden fade-in">
-                <label class="form-label">Wybierz użytkownika</label>
-                <div class="staff-grid" id="staffLoginList"></div>
-            </div>
-
-            <div id="adminLoginView" class="fade-in">
-                <button class="btn btn-primary btn-block" onclick="app.loginAsAdmin()">Zaloguj do panelu</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="app-container hidden" id="mainApp">
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="brand-icon">H</div>
-                <span>OAIiT Manager</span>
-            </div>
-            <nav class="nav-links">
-                <button class="nav-btn active" onclick="app.setView('calendar')">Kalendarz</button>
-                <button class="nav-btn" onclick="app.setView('table')">Tabela zbiorcza</button>
-                <button class="nav-btn hidden" id="navAvailability" onclick="app.setView('availability')">Moja dostępność</button>
-            </nav>
-            <div class="user-panel">
-                <div class="user-info">
-                    <div class="user-name" id="currentUserName"></div>
-                    <div class="user-role" id="currentUserRole"></div>
-                </div>
-                <button class="btn-logout" onclick="app.logout()">Wyloguj</button>
-            </div>
-        </aside>
-
-        <main class="content">
-            <header class="topbar">
-                <div class="date-nav">
-                    <button class="btn-icon" onclick="app.changeMonth(-1)">&lt;</button>
-                    <h2 id="monthTitle">Styczeń 2025</h2>
-                    <button class="btn-icon" onclick="app.changeMonth(1)">&gt;</button>
-                    <button class="btn btn-outline btn-sm" onclick="app.setToday()">Dziś</button>
-                </div>
-                <div class="tools hidden" id="adminTools">
-                    <button class="btn btn-primary btn-sm" onclick="app.openGenerator()">Auto-Grafik</button>
-                    <button class="btn btn-danger btn-sm" onclick="app.clearMonth()">Wyczyść</button>
-                </div>
-            </header>
-
-            <div id="viewCalendar" class="view-section">
-                <div class="calendar-header-row">
-                    <div>Pon</div><div>Wt</div><div>Śr</div><div>Czw</div><div>Pt</div><div class="text-danger">Sob</div><div class="text-danger">Niedz</div>
-                </div>
-                <div class="calendar-grid" id="calendarGrid"></div>
-            </div>
-
-            <div id="viewTable" class="view-section hidden">
-                <div class="table-responsive">
-                    <table class="main-table" id="mainTable"></table>
-                </div>
-            </div>
-
-            <div id="viewAvailability" class="view-section hidden">
-                <div class="info-box">
-                    <span>Kliknij na dzień, aby określić swoją dyspozycyjność.</span>
-                </div>
-                <div class="avail-grid" id="availGrid"></div>
-            </div>
-        </main>
-    </div>
-
-    <div class="modal-overlay hidden" id="modalDay">
-        <div class="modal modal-lg">
-            <div class="modal-header">
-                <h3 id="modalDayTitle">Szczegóły dnia</h3>
-                <button class="btn-close" onclick="app.closeModal('modalDay')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="weekendNotice" class="alert alert-info hidden">
-                    To jest weekend. Domyślnie wyświetlamy tylko 2 dyżurnych.
-                </div>
-
-                <div class="section-header">
-                    <h4>Obsada i Godziny</h4>
-                </div>
-                <div class="assignments-list" id="assignmentsList"></div>
-
-                <div class="add-custom-shift mt-3">
-                    <button class="btn btn-outline btn-sm w-100" onclick="app.addCustomShiftRow()">+ Dodaj niestandardowy dyżur</button>
-                    <button id="btnAddStandard" class="btn btn-outline btn-sm w-100 mt-2 hidden" onclick="app.addStandardWeekendStations()">+ Pokaż pozostałe stanowiska</button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="app.closeModal('modalDay')">Zamknij</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="modalAvailEdit">
+<div class="modal-overlay hidden" id="modalAvailEdit">
         <div class="modal modal-sm">
             <div class="modal-header">
                 <h3 id="modalAvailDate">Edycja</h3>
@@ -130,33 +10,24 @@
                     <label class="avail-radio-card">
                         <input type="radio" name="availType" value="24h" onchange="app.toggleAvailInputs()">
                         <div class="card-content">
-                            <span class="icon success">🟢</span>
-                            <span class="title">Pełna (24h)</span>
-                            <span class="desc">Gotowość całą dobę</span>
+                            <span class="icon">🟢</span><span class="title">Pełna (24h)</span>
                         </div>
                     </label>
-
                     <label class="avail-radio-card">
                         <input type="radio" name="availType" value="partial" onchange="app.toggleAvailInputs()">
                         <div class="card-content">
-                            <span class="icon warning">🟡</span>
-                            <span class="title">Częściowa</span>
-                            <span class="desc">Określone godziny</span>
+                            <span class="icon">🟡</span><span class="title">Częściowa</span>
                         </div>
                     </label>
-
                     <label class="avail-radio-card">
                         <input type="radio" name="availType" value="none" onchange="app.toggleAvailInputs()">
                         <div class="card-content">
-                            <span class="icon danger">🔴</span>
-                            <span class="title">Brak</span>
-                            <span class="desc">Niedostępny</span>
+                            <span class="icon">🔴</span><span class="title">Brak</span>
                         </div>
                     </label>
                 </div>
-
                 <div id="availTimeInputs" class="mt-3 hidden fade-in">
-                    <label class="form-label">Godziny dostępności:</label>
+                    <label class="form-label">Godziny:</label>
                     <div class="time-range-row">
                         <input type="time" id="availStart" class="form-input" value="07:00">
                         <span>-</span>
@@ -170,15 +41,3 @@
             </div>
         </div>
     </div>
-    
-    <div class="modal-overlay hidden" id="modalGenerator">
-        <div class="modal">
-            <div class="modal-header"><h3>Generator</h3><button class="btn-close" onclick="app.closeModal('modalGenerator')">&times;</button></div>
-            <div class="modal-body"><p>Generator automatycznie obsadzi dyżury.</p></div>
-            <div class="modal-footer"><button class="btn btn-primary" onclick="app.runGenerator()">Generuj</button></div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
