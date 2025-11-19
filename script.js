@@ -4,7 +4,7 @@ class ScheduleApp {
         this.view = 'calendar';
         this.currentUser = null;
         
-        // Definicja wszystkich stanowisk
+        // Konfiguracja stanowisk
         this.stationsConfig = [
             { id: 'oait_24', name: 'OAIT 24h', isWeekendMain: true, start: '08:00', end: '08:00' },
             { id: 'anes_1', name: 'Anestezjolog I 24h', isWeekendMain: true, start: '08:00', end: '08:00' },
@@ -24,16 +24,19 @@ class ScheduleApp {
             { id: 's5', name: 'Lek. Mazur' }
         ];
 
-        // Dane: 
-        // schedule[date] = [ { stationId, staffId, start, end, isCustom, customName } ]
-        // availability[staffId][date] = { type: '24h'|'partial'|'none', start, end }
         this.schedule = {};
         this.availability = {};
-        
-        // Flaga do edycji dnia - czy pokazac wszystkie stanowiska w weekend
         this.showAllWeekendStations = false;
 
-        this.loadData();
+        // BEZPIECZNY START
+        try {
+            this.loadData();
+        } catch(e) {
+            console.error("Błąd ładowania danych, resetuję.", e);
+            this.schedule = {};
+            this.availability = {};
+        }
+
         this.init();
     }
 
@@ -42,38 +45,44 @@ class ScheduleApp {
     }
 
     saveData() {
-        localStorage.setItem('oait_v5', JSON.stringify({
-            schedule: this.schedule,
-            availability: this.availability
-        }));
+        try {
+            localStorage.setItem('oait_v6_fix', JSON.stringify({
+                schedule: this.schedule,
+                availability: this.availability
+            }));
+        } catch(e) { console.error("Błąd zapisu", e); }
     }
 
     loadData() {
-        const data = JSON.parse(localStorage.getItem('oait_v5'));
-        if(data) {
+        const json = localStorage.getItem('oait_v6_fix');
+        if(json) {
+            const data = JSON.parse(json);
             this.schedule = data.schedule || {};
             this.availability = data.availability || {};
         }
     }
 
-    // === LOGOWANIE I UI ===
+    // === LOGOWANIE ===
     renderLogin() {
         const list = document.getElementById('staffLoginList');
-        list.innerHTML = this.staff.map(s => 
-            `<button class="btn btn-outline w-100 mb-2" onclick="app.login('staff', '${s.id}')">${s.name}</button>`
-        ).join('');
+        if(list) {
+            list.innerHTML = this.staff.map(s => 
+                `<button class="btn btn-outline w-100 mb-2" onclick="app.login('staff', '${s.id}')">${s.name}</button>`
+            ).join('');
+        }
     }
 
     login(role, id) {
         this.currentUser = { role, id };
+        
+        // Ukryj login, pokaż app
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
         
         const nameDisplay = document.getElementById('currentUserName');
-        nameDisplay.textContent = role === 'admin' ? 'Administrator' : this.staff.find(s => s.id === id)?.name;
-        document.getElementById('currentUserRole').textContent = role === 'admin' ? 'Zarządzanie' : 'Lekarz';
+        nameDisplay.textContent = role === 'admin' ? 'Administrator' : (this.staff.find(s => s.id === id)?.name || 'Lekarz');
+        document.getElementById('currentUserRole').textContent = role === 'admin' ? 'Zarządzanie' : 'Zespół';
 
-        // Toggle widoczności narzędzi
         const adminTools = document.getElementById('adminTools');
         const navAvail = document.getElementById('navAvailability');
         
@@ -84,6 +93,7 @@ class ScheduleApp {
             adminTools.classList.add('hidden');
             navAvail.classList.remove('hidden');
         }
+        
         this.render();
     }
 
@@ -91,7 +101,8 @@ class ScheduleApp {
 
     setView(view) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-        document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('hidden');
+        const target = document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1));
+        if(target) target.classList.remove('hidden');
         
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
@@ -105,11 +116,12 @@ class ScheduleApp {
         this.render();
     }
     setToday() { this.date = new Date(); this.render(); }
-    
     formatDate(d) { return d.toISOString().split('T')[0]; }
 
     // === RENDERER ===
     render() {
+        if(!this.currentUser) return;
+
         const mName = this.date.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
         document.getElementById('monthTitle').textContent = mName.charAt(0).toUpperCase() + mName.slice(1);
 
@@ -129,7 +141,11 @@ class ScheduleApp {
         const firstDay = new Date(y, m, 1).getDay(); // 0=Nd
         const offset = (firstDay === 0 ? 6 : firstDay - 1);
 
-        for(let i=0; i<offset; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
+        for(let i=0; i<offset; i++) {
+            const d = document.createElement('div');
+            d.className = 'cal-day empty'; // Używamy elementu zamiast innerHTML string
+            grid.appendChild(d);
+        }
 
         for(let d=1; d<=days; d++) {
             const dateObj = new Date(y, m, d);
@@ -139,29 +155,23 @@ class ScheduleApp {
             const div = document.createElement('div');
             div.className = `cal-day ${isWeekend ? 'weekend' : ''}`;
             
-            // Header dnia
+            // Header
             let html = `<div class="day-head"><span>${d}</span>`;
             if(this.currentUser.role === 'staff') {
                 const myAvail = this.availability[this.currentUser.id]?.[dateStr];
                 if(myAvail) {
-                    let color = myAvail.type === '24h' ? '#10b981' : (myAvail.type === 'partial' ? '#f59e0b' : '#ef4444');
-                    html += `<div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>`;
+                    const colors = { '24h': '#10b981', 'partial': '#f59e0b', 'none': '#ef4444' };
+                    html += `<div style="width:8px; height:8px; border-radius:50%; background:${colors[myAvail.type] || '#ccc'}"></div>`;
                 }
             }
             html += `</div>`;
 
-            // Pobierz dyżury do wyświetlenia
+            // Shifts
             const shifts = this.getShiftsForDate(dateStr);
-            // W weekendy w widoku ogólnym pokazujemy tylko główne, chyba że ktoś jest przypisany do innych
             const visibleShifts = shifts.filter(s => {
-                if(s.staffId) return true; // Zawsze pokaż obsadzone
-                // Jeśli puste: pokaż jeśli to nie weekend LUB jeśli to główne stanowisko weekendowe
+                if(s.staffId) return true; 
                 const config = this.stationsConfig.find(c => c.id === s.stationId);
-                if(isWeekend) {
-                     // Jeśli to customowy dyżur, pokaż go
-                     if(s.isCustom) return true;
-                     return config && config.isWeekendMain;
-                }
+                if(isWeekend) return s.isCustom || (config && config.isWeekendMain);
                 return true;
             });
 
@@ -170,11 +180,12 @@ class ScheduleApp {
                 const config = this.stationsConfig.find(c => c.id === s.stationId);
                 let label = staff ? staff.name.split(' ').pop() : (s.customName || config.name);
                 
-                let classes = 'shift-chip';
-                if(s.staffId) classes += ' assigned';
-                if(config?.isWeekendMain) classes += ' weekend-main';
+                let classes = ['shift-chip'];
+                if(s.staffId) classes.push('assigned');
+                if(s.isCustom) classes.push('is-custom');
+                if(config?.isWeekendMain) classes.push('weekend-main');
                 
-                html += `<span class="${classes}">${label}</span>`;
+                html += `<span class="${classes.join(' ')}">${label}</span>`;
             });
 
             if(visibleShifts.length > 4) html += `<small style="color:#888">+${visibleShifts.length - 4}</small>`;
@@ -188,11 +199,7 @@ class ScheduleApp {
     }
 
     getShiftsForDate(dateStr) {
-        // Jeśli mamy zapisane w DB, zwróć je.
-        // Jeśli nie, wygeneruj domyślne "puste" sloty na podstawie konfiguracji
         if(this.schedule[dateStr]) return this.schedule[dateStr];
-        
-        // Generuj domyślne
         return this.stationsConfig.map(c => ({
             stationId: c.id,
             staffId: null,
@@ -202,33 +209,41 @@ class ScheduleApp {
         }));
     }
 
-    // === MODAL DNIA (EDYCJA) ===
+    // === MODAL EDYCJI DNIA ===
     openDayModal(dateStr, isWeekend) {
         this.currentEditDate = dateStr;
         this.isWeekendEdit = isWeekend;
-        this.showAllWeekendStations = !isWeekend; // Reset flagi: w weekendy ukryj na start
+        this.showAllWeekendStations = !isWeekend; 
 
         document.getElementById('modalDayTitle').textContent = dateStr;
         document.getElementById('modalDay').classList.remove('hidden');
-        document.getElementById('weekendNotice').classList.toggle('hidden', !isWeekend);
-        document.getElementById('btnAddStandard').classList.toggle('hidden', !isWeekend);
+        
+        const notice = document.getElementById('weekendNotice');
+        const btnStd = document.getElementById('btnAddStandard');
+        
+        if(isWeekend) {
+            notice.classList.remove('hidden');
+            btnStd.classList.remove('hidden');
+        } else {
+            notice.classList.add('hidden');
+            btnStd.classList.add('hidden');
+        }
         
         this.renderAssignments();
     }
 
     renderAssignments() {
         const container = document.getElementById('assignmentsList');
-        // Pobierz aktualny stan dyżurów (albo z pamięci albo generuj domyślne)
         let shifts = this.schedule[this.currentEditDate];
-        if(!shifts) shifts = this.getShiftsForDate(this.currentEditDate); // generuj domyślne
+        if(!shifts) shifts = this.getShiftsForDate(this.currentEditDate);
 
-        // Filtrowanie widoku weekendowego w modalu
+        // Filtrowanie weekendowe
         let displayShifts = shifts;
         if(this.isWeekendEdit && !this.showAllWeekendStations) {
             displayShifts = shifts.filter(s => {
-                if(s.staffId || s.isCustom) return true; // Pokaż jeśli ktoś jest wpisany lub to custom
+                if(s.staffId || s.isCustom) return true;
                 const conf = this.stationsConfig.find(c => c.id === s.stationId);
-                return conf && conf.isWeekendMain; // Pokaż tylko główne
+                return conf && conf.isWeekendMain;
             });
         }
 
@@ -236,8 +251,6 @@ class ScheduleApp {
             const conf = this.stationsConfig.find(c => c.id === s.stationId);
             const name = s.isCustom ? s.customName : conf.name;
             const isMain = conf?.isWeekendMain;
-
-            // Znajdź prawdziwy indeks w głównej tablicy `shifts` do edycji
             const realIdx = shifts.indexOf(s);
 
             return `
@@ -246,7 +259,6 @@ class ScheduleApp {
                     ${name} 
                     ${isMain ? '<span style="color:red; font-size:0.7em">24h</span>' : ''}
                 </div>
-                
                 <div class="time-range-row" style="gap:2px">
                     <input type="time" class="form-input" style="padding:2px; font-size:0.8rem" value="${s.start}" 
                         onchange="app.updateShiftTime(${realIdx}, 'start', this.value)">
@@ -254,19 +266,17 @@ class ScheduleApp {
                     <input type="time" class="form-input" style="padding:2px; font-size:0.8rem" value="${s.end}" 
                         onchange="app.updateShiftTime(${realIdx}, 'end', this.value)">
                 </div>
-
                 <div>
                     <select class="assign-select" onchange="app.updateAssignment(${realIdx}, this.value)">
                         <option value="">-- Wakat --</option>
                         ${this.staff.map(st => `<option value="${st.id}" ${st.id === s.staffId ? 'selected' : ''}>${st.name}</option>`).join('')}
                     </select>
                 </div>
-
                 ${s.isCustom ? `<button class="btn btn-danger btn-sm" onclick="app.removeCustom(${realIdx})">×</button>` : ''}
             </div>`;
         }).join('');
         
-        // Zapisz ewentualną inicjalizację w pamięci tymczasowej, żeby nie zgubić "wygenerowanych" przy dodawaniu customa
+        // Zapisz stan, aby nie stracić wygenerowanych domyślnych
         if(!this.schedule[this.currentEditDate]) {
             this.schedule[this.currentEditDate] = shifts;
         }
@@ -279,10 +289,9 @@ class ScheduleApp {
     }
 
     addCustomShiftRow() {
-        const name = prompt("Nazwa stanowiska (np. Dodatkowy zabieg):");
+        const name = prompt("Nazwa:");
         if(!name) return;
-
-        // Jeśli schedule nie istnieje dla tego dnia, zainicjuj go domyślnymi
+        
         if(!this.schedule[this.currentEditDate]) {
             this.schedule[this.currentEditDate] = this.getShiftsForDate(this.currentEditDate);
         }
@@ -304,13 +313,11 @@ class ScheduleApp {
         this.schedule[this.currentEditDate][idx][field] = val;
         this.saveData();
     }
-
     updateAssignment(idx, staffId) {
         this.schedule[this.currentEditDate][idx].staffId = staffId || null;
         this.saveData();
-        this.render(); // Odśwież kalendarz w tle
+        this.render();
     }
-
     removeCustom(idx) {
         if(confirm('Usunąć?')) {
             this.schedule[this.currentEditDate].splice(idx, 1);
@@ -318,8 +325,6 @@ class ScheduleApp {
             this.renderAssignments();
         }
     }
-
-    closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
     // === DOSTĘPNOŚĆ ===
     renderAvailability() {
@@ -333,27 +338,25 @@ class ScheduleApp {
             const avail = this.availability[this.currentUser.id]?.[dateStr];
             
             const div = document.createElement('div');
-            let statusClass = 'status-none'; // domyślnie czerwone (brak wpisu traktujemy jako brak dyspozycji lub do uzupełnienia)
-            let label = 'Brak';
-            let timeInfo = '';
+            let cls = 'status-none'; 
+            let txt = 'Brak';
+            let sub = '';
 
             if(avail) {
-                statusClass = 'status-' + avail.type;
-                if(avail.type === '24h') label = '24h';
-                if(avail.type === 'partial') { label = 'Częściowa'; timeInfo = `${avail.start}-${avail.end}`; }
-                if(avail.type === 'none') label = 'Niedostępny';
+                cls = 'status-' + avail.type;
+                if(avail.type === '24h') txt = '24h';
+                if(avail.type === 'partial') { txt = 'Częściowa'; sub = `${avail.start}-${avail.end}`; }
+                if(avail.type === 'none') txt = 'Niedostępny';
             } else {
-                // Brak wpisu - neutralny szary lub czerwony?
-                // Użytkownik prosił o opcję "brak dyspozycji", więc domyślny stan może być neutralny (pusty)
-                statusClass = ''; 
-                label = '-';
+                // Domyślny stan (pusty)
+                cls = ''; txt = '-';
             }
 
-            div.className = `avail-cell ${statusClass}`;
+            div.className = `avail-cell ${cls}`;
             div.innerHTML = `
                 <div style="font-weight:bold; font-size:1.2rem">${d}</div>
-                <div style="font-weight:600">${label}</div>
-                <div style="font-size:0.8rem">${timeInfo}</div>
+                <div style="font-weight:600">${txt}</div>
+                <div style="font-size:0.8rem">${sub}</div>
             `;
             div.onclick = () => this.openAvailModal(dateStr);
             grid.appendChild(div);
@@ -365,32 +368,32 @@ class ScheduleApp {
         document.getElementById('modalAvailDate').textContent = dateStr;
         document.getElementById('modalAvailEdit').classList.remove('hidden');
         
-        // Reset form
-        const inputs = document.getElementsByName('availType');
-        inputs.forEach(i => i.checked = false);
+        // Reset formularza
+        document.querySelectorAll('input[name="availType"]').forEach(i => i.checked = false);
         document.getElementById('availTimeInputs').classList.add('hidden');
 
-        // Fill form if exists
-        const current = this.availability[this.currentUser.id]?.[dateStr];
-        if(current) {
-            const rad = document.querySelector(`input[name="availType"][value="${current.type}"]`);
-            if(rad) rad.checked = true;
-            if(current.type === 'partial') {
+        const curr = this.availability[this.currentUser.id]?.[dateStr];
+        if(curr) {
+            const r = document.querySelector(`input[name="availType"][value="${curr.type}"]`);
+            if(r) r.checked = true;
+            if(curr.type === 'partial') {
                 document.getElementById('availTimeInputs').classList.remove('hidden');
-                document.getElementById('availStart').value = current.start;
-                document.getElementById('availEnd').value = current.end;
+                document.getElementById('availStart').value = curr.start;
+                document.getElementById('availEnd').value = curr.end;
             }
         }
     }
 
     toggleAvailInputs() {
         const type = document.querySelector('input[name="availType"]:checked').value;
-        document.getElementById('availTimeInputs').classList.toggle('hidden', type !== 'partial');
+        const inputs = document.getElementById('availTimeInputs');
+        if(type === 'partial') inputs.classList.remove('hidden');
+        else inputs.classList.add('hidden');
     }
 
     saveAvailability() {
         const typeEl = document.querySelector('input[name="availType"]:checked');
-        if(!typeEl) return; // nic nie wybrano
+        if(!typeEl) return;
 
         const type = typeEl.value;
         const data = { type };
@@ -407,13 +410,12 @@ class ScheduleApp {
         this.renderAvailability();
     }
 
-    // === TABELA ZBIORCZA ===
+    // === TABELA ===
     renderTable() {
         const table = document.getElementById('mainTable');
         const y = this.date.getFullYear(), m = this.date.getMonth();
         const days = new Date(y, m+1, 0).getDate();
         
-        // Nagłówki
         let html = `<thead><tr><th>Data</th>`;
         this.stationsConfig.forEach(s => html += `<th>${s.name}</th>`);
         html += `</tr></thead><tbody>`;
@@ -428,7 +430,7 @@ class ScheduleApp {
                 let cell = '-';
                 if(s && s.staffId) {
                     const staff = this.staff.find(st => st.id === s.staffId);
-                    cell = `${staff.name}<br><small>${s.start}-${s.end}</small>`;
+                    cell = `${staff.name}<br><small style="color:#666">${s.start}-${s.end}</small>`;
                 }
                 html += `<td>${cell}</td>`;
             });
@@ -438,8 +440,11 @@ class ScheduleApp {
     }
 
     // Helpery
+    closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     clearMonth() { if(confirm('Wyczyścić?')) { this.schedule={}; this.saveData(); this.render(); } }
-    runGenerator() { alert('Generator w tej wersji jest wyłączony (wymagałby skomplikowanej logiki dopasowania do nowych godzin).'); }
+    openGenerator() { alert('Generator wyłączony w tej wersji.'); }
 }
 
-document.addEventListener('DOMContentLoaded', () => { window.app = new ScheduleApp(); });
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new ScheduleApp();
+});
